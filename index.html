@@ -456,197 +456,197 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="./supabase-config.js"></script>
 
-<script>
-(async function () {
-  const statusBox = document.createElement("p");
-  statusBox.style.cssText = "color:#a7b2c9;margin-top:12px;font-size:14px";
-  const dealsSection = document.querySelector("#deals .grid");
-  const newsSection = document.querySelector("#news .grid");
-  const videosSection = document.querySelector("#videos .notice");
-
-  if (!window.supabase || !window.SUPABASE_URL ||
-      !window.SUPABASE_PUBLISHABLE_KEY ||
-      window.SUPABASE_PUBLISHABLE_KEY === "PASTE_YOUR_PUBLISHABLE_KEY_HERE") {
-    console.warn("Supabase configuration is incomplete.");
-    return;
-  }
-
-  const client = window.supabase.createClient(
-    window.SUPABASE_URL,
-    window.SUPABASE_PUBLISHABLE_KEY
-  );
-
-  if (dealsSection) dealsSection.before(statusBox);
-  statusBox.textContent = "Loading latest content...";
-
-  const { data, error } = await client
-    .from("content")
-    .select("id,title,description,content_type,image_url,external_url,current_price,original_price,category,created_at")
-    .eq("status", "published")
-    .order("created_at", { ascending: false });
-
-  if (error) {
-    statusBox.textContent = "Latest content is temporarily unavailable.";
-    console.error("Content loading failed:", error.message);
-    return;
-  }
-
-  const items = data || [];
-
-  function escapeHTML(value) {
-    return String(value ?? "").replace(/[&<>"']/g, function (ch) {
-      return {
-        "&": "&amp;", "<": "&lt;", ">": "&gt;",
-        '"': "&quot;", "'": "&#39;"
-      }[ch];
-    });
-  }
-
-  function safeURL(value) {
-    try {
-      const url = new URL(value);
-      return ["https:", "http:"].includes(url.protocol) ? url.href : "";
-    } catch {
-      return "";
+  <script>
+  (async function () {
+    const statusBox = document.createElement("p");
+    statusBox.style.cssText = "color:#a7b2c9;margin-top:12px;font-size:14px";
+    const dealsSection = document.querySelector("#deals .grid");
+    const newsSection = document.querySelector("#news .grid");
+    const videosSection = document.querySelector("#videos .notice");
+  
+    if (!window.supabase || !window.SUPABASE_URL ||
+        !window.SUPABASE_PUBLISHABLE_KEY ||
+        window.SUPABASE_PUBLISHABLE_KEY === "PASTE_YOUR_PUBLISHABLE_KEY_HERE") {
+      console.warn("Supabase configuration is incomplete.");
+      return;
     }
-  }
-
-  function card(item, emoji) {
-  const url = safeURL(item.external_url);
-  const image = safeURL(item.image_url);
-
-  const current = Number(item.current_price);
-  const original = Number(item.original_price);
-
-  const hasCurrent =
-    item.current_price !== null &&
-    item.current_price !== "" &&
-    Number.isFinite(current) &&
-    current >= 0;
-
-  const hasOriginal =
-    item.original_price !== null &&
-    item.original_price !== "" &&
-    Number.isFinite(original) &&
-    original > 0;
-
-  const hasDiscount =
-    hasCurrent &&
-    hasOriginal &&
-    original > current;
-
-  const discount = hasDiscount
-    ? Math.round(((original - current) / original) * 100)
-    : 0;
-
-  const savings = hasDiscount ? original - current : 0;
-
-  const priceHTML = hasCurrent
-    ? `
-      <div class="deal-price-row">
-        <span class="deal-current-price">
-          ₹${current.toLocaleString("en-IN", {
-            maximumFractionDigits: 2
-          })}
-        </span>
-        ${hasDiscount ? `
-          <span class="deal-original-price">
-            ₹${original.toLocaleString("en-IN", {
+  
+    const client = window.supabase.createClient(
+      window.SUPABASE_URL,
+      window.SUPABASE_PUBLISHABLE_KEY
+    );
+  
+    if (dealsSection) dealsSection.before(statusBox);
+    statusBox.textContent = "Loading latest content...";
+  
+    const { data, error } = await client
+      .from("content")
+      .select("id,title,description,content_type,image_url,external_url,current_price,original_price,category,created_at")
+      .eq("status", "published")
+      .order("created_at", { ascending: false });
+  
+    if (error) {
+      statusBox.textContent = "Latest content is temporarily unavailable.";
+      console.error("Content loading failed:", error.message);
+      return;
+    }
+  
+    const items = data || [];
+  
+    function escapeHTML(value) {
+      return String(value ?? "").replace(/[&<>"']/g, function (ch) {
+        return {
+          "&": "&amp;", "<": "&lt;", ">": "&gt;",
+          '"': "&quot;", "'": "&#39;"
+        }[ch];
+      });
+    }
+  
+    function safeURL(value) {
+      try {
+        const url = new URL(value);
+        return ["https:", "http:"].includes(url.protocol) ? url.href : "";
+      } catch {
+        return "";
+      }
+    }
+  
+    function card(item, emoji) {
+    const url = safeURL(item.external_url);
+    const image = safeURL(item.image_url);
+  
+    const current = Number(item.current_price);
+    const original = Number(item.original_price);
+  
+    const hasCurrent =
+      item.current_price !== null &&
+      item.current_price !== "" &&
+      Number.isFinite(current) &&
+      current >= 0;
+  
+    const hasOriginal =
+      item.original_price !== null &&
+      item.original_price !== "" &&
+      Number.isFinite(original) &&
+      original > 0;
+  
+    const hasDiscount =
+      hasCurrent &&
+      hasOriginal &&
+      original > current;
+  
+    const discount = hasDiscount
+      ? Math.round(((original - current) / original) * 100)
+      : 0;
+  
+    const savings = hasDiscount ? original - current : 0;
+  
+    const priceHTML = hasCurrent
+      ? `
+        <div class="deal-price-row">
+          <span class="deal-current-price">
+            ₹${current.toLocaleString("en-IN", {
               maximumFractionDigits: 2
             })}
           </span>
-        ` : ""}
-      </div>
-      ${hasDiscount ? `
-        <p class="deal-savings">
-          You save ₹${savings.toLocaleString("en-IN", {
-            maximumFractionDigits: 2
-          })}
-        </p>
-      ` : ""}
-    `
-    : "";
-
-  const imageHTML = image
-    ? `<img class="deal-image"
-            src="${escapeHTML(image)}"
-            alt="${escapeHTML(item.title)}"
-            loading="lazy">`
-    : `<div class="deal-placeholder">${emoji}</div>`;
-
-  const categoryHTML = item.category
-    ? `<div class="deal-category">${escapeHTML(item.category)}</div>`
-    : "";
-
-  const buttonHTML = url
-    ? `<a class="deal-buy-btn"
-          href="${escapeHTML(url)}"
-          target="_blank"
-          rel="sponsored nofollow noopener noreferrer">
-          Buy Now ↗
-       </a>`
-    : `<span class="deal-buy-btn disabled">Link coming soon</span>`;
-
-  return `
-    <article class="card deal-card">
-      <div class="deal-image-wrap">
-        ${imageHTML}
+          ${hasDiscount ? `
+            <span class="deal-original-price">
+              ₹${original.toLocaleString("en-IN", {
+                maximumFractionDigits: 2
+              })}
+            </span>
+          ` : ""}
+        </div>
         ${hasDiscount ? `
-          <span class="discount-badge">
-            ${discount}% OFF
-          </span>
+          <p class="deal-savings">
+            You save ₹${savings.toLocaleString("en-IN", {
+              maximumFractionDigits: 2
+            })}
+          </p>
         ` : ""}
-      </div>
-
-      ${categoryHTML}
-      <h3>${escapeHTML(item.title)}</h3>
-
-      ${item.description ? `
-        <p class="deal-description">
-          ${escapeHTML(item.description)}
-        </p>
-      ` : ""}
-
-      ${priceHTML}
-      ${buttonHTML}
-    </article>
-  `;
-}
-
-
-  const deals = items.filter(item => item.content_type === "deal");
-  const news = items.filter(item => item.content_type === "news");
-  const videos = items.filter(item => item.content_type === "video");
-  const posts = items.filter(item => item.content_type === "post");
-
-  if (deals.length && dealsSection) {
-    dealsSection.innerHTML = deals.map(item => card(item, "🛍️")).join("");
+      `
+      : "";
+  
+    const imageHTML = image
+      ? `<img class="deal-image"
+              src="${escapeHTML(image)}"
+              alt="${escapeHTML(item.title)}"
+              loading="lazy">`
+      : `<div class="deal-placeholder">${emoji}</div>`;
+  
+    const categoryHTML = item.category
+      ? `<div class="deal-category">${escapeHTML(item.category)}</div>`
+      : "";
+  
+    const buttonHTML = url
+      ? `<a class="deal-buy-btn"
+            href="${escapeHTML(url)}"
+            target="_blank"
+            rel="sponsored nofollow noopener noreferrer">
+            Buy Now ↗
+         </a>`
+      : `<span class="deal-buy-btn disabled">Link coming soon</span>`;
+  
+    return `
+      <article class="card deal-card">
+        <div class="deal-image-wrap">
+          ${imageHTML}
+          ${hasDiscount ? `
+            <span class="discount-badge">
+              ${discount}% OFF
+            </span>
+          ` : ""}
+        </div>
+  
+        ${categoryHTML}
+        <h3>${escapeHTML(item.title)}</h3>
+  
+        ${item.description ? `
+          <p class="deal-description">
+            ${escapeHTML(item.description)}
+          </p>
+        ` : ""}
+  
+        ${priceHTML}
+        ${buttonHTML}
+      </article>
+    `;
   }
-
-  if (news.length && newsSection) {
-    newsSection.innerHTML = news.map(item => card(item, "📰")).join("");
-  }
-
-  if (videos.length && videosSection) {
-    videosSection.innerHTML = `
-      <div class="grid">
-        ${videos.map(item => card(item, "▶️")).join("")}
-      </div>`;
-  }
-
-  const postsSection = document.querySelector("#posts .notice");
-  if (posts.length && postsSection) {
-    postsSection.outerHTML = `
-      <div class="grid">
-        ${posts.map(item => card(item, "📚")).join("")}
-      </div>`;
-  }
-
-  statusBox.textContent = items.length
-    ? "Latest content loaded."
-    : "No published content yet. Check back soon.";
-})();
-</script>
-</body>
-</html>
-
+  
+  
+    const deals = items.filter(item => item.content_type === "deal");
+    const news = items.filter(item => item.content_type === "news");
+    const videos = items.filter(item => item.content_type === "video");
+    const posts = items.filter(item => item.content_type === "post");
+  
+    if (deals.length && dealsSection) {
+      dealsSection.innerHTML = deals.map(item => card(item, "🛍️")).join("");
+    }
+  
+    if (news.length && newsSection) {
+      newsSection.innerHTML = news.map(item => card(item, "📰")).join("");
+    }
+  
+    if (videos.length && videosSection) {
+      videosSection.innerHTML = `
+        <div class="grid">
+          ${videos.map(item => card(item, "▶️")).join("")}
+        </div>`;
+    }
+  
+    const postsSection = document.querySelector("#posts .notice");
+    if (posts.length && postsSection) {
+      postsSection.outerHTML = `
+        <div class="grid">
+          ${posts.map(item => card(item, "📚")).join("")}
+        </div>`;
+    }
+  
+    statusBox.textContent = items.length
+      ? "Latest content loaded."
+      : "No published content yet. Check back soon.";
+  })();
+  </script>
+  </body>
+  </html>
+  
