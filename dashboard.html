@@ -1,0 +1,351 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Admin Dashboard | ZUBAiR Tech Talks</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; background: #0b1020; color: #f4f7ff; font-family: Arial, sans-serif; }
+    header { padding: 18px 5%; border-bottom: 1px solid #26334b; display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap; }
+    header a { color:#44d7e8; text-decoration:none; }
+    main { width:min(1000px,92%); margin:30px auto; }
+    .panel { background:#121a2d; border:1px solid #26334b; padding:22px; border-radius:14px; margin-bottom:20px; }
+    h1 { font-size:27px; } h2 { font-size:20px; margin-top:0; }
+    p, .muted { color:#a7b2c9; font-size:14px; line-height:1.6; }
+    label { display:block; margin:14px 0 6px; font-size:14px; }
+    input, select, textarea { width:100%; padding:12px; border:1px solid #34435e; border-radius:8px; background:#0b1020; color:#fff; font:inherit; }
+    textarea { min-height:90px; resize:vertical; }
+    button { cursor:pointer; border:0; padding:10px 14px; border-radius:8px; background:#3984ff; color:white; font-weight:bold; }
+    button.secondary { background:#34435e; } button.danger { background:#a93648; }
+    button:disabled { opacity:.6; cursor:wait; }
+    .formgrid { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+    .item { border:1px solid #26334b; border-radius:10px; padding:15px; margin-top:12px; overflow-wrap:anywhere; }
+    .item h3 { margin:0 0 6px; }
+    .actions { display:flex; flex-wrap:wrap; gap:8px; margin-top:12px; }
+    #message { overflow-wrap:anywhere; }
+    @media(max-width:650px) { .formgrid { grid-template-columns:1fr; } header { align-items:flex-start; } }
+  </style>
+</head>
+<body>
+  <header>
+    <strong>ZUBAiR Tech Talks / Admin</strong>
+    <div class="actions">
+      <a href="./" style="padding:10px">View website</a>
+      <button id="logout" class="secondary">Log out</button>
+    </div>
+  </header>
+
+  <main>
+    <h1>Content Dashboard</h1>
+    <p>Manage deals, videos, tech news and guides.</p>
+    <p id="message" role="status" aria-live="polite">Checking admin access...</p>
+
+    <section id="dashboard" hidden>
+      <div class="panel">
+        <h2 id="formTitle">Add content</h2>
+        <form id="contentForm">
+          <input type="hidden" id="contentId">
+          <label for="title">Title *</label>
+          <input id="title" maxlength="180" required>
+
+          <label for="description">Description</label>
+          <textarea id="description" maxlength="5000"></textarea>
+
+          <div class="formgrid">
+            <div>
+              <label for="type">Content type *</label>
+              <select id="type" required>
+                <option value="deal">Deal</option>
+                <option value="video">Video</option>
+                <option value="news">Tech News</option>
+                <option value="post">Post / Guide</option>
+              </select>
+            </div>
+            <div>
+              <label for="status">Status *</label>
+              <select id="status">
+                <option value="draft">Draft</option>
+                <option value="published">Published</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="formgrid">
+            <div>
+              <label for="category">Category</label>
+              <input id="category" maxlength="100" placeholder="Mobiles, AI, Accessories...">
+            </div>
+            <div>
+              <label for="image">Image URL (optional)</label>
+              <input id="image" type="url" placeholder="https://...">
+            </div>
+          </div>
+
+          <label for="url">External URL (optional)</label>
+          <input id="url" type="url" placeholder="YouTube, product or article URL">
+
+          <div class="formgrid">
+            <div>
+              <label for="price">Current price (₹, optional)</label>
+              <input id="price" type="number" min="0" step="0.01">
+            </div>
+            <div>
+              <label for="original">Original price (₹, optional)</label>
+              <input id="original" type="number" min="0" step="0.01">
+            </div>
+          </div>
+
+          <div class="actions">
+            <button id="save" type="submit">Save content</button>
+            <button id="cancel" type="button" class="secondary" hidden>Cancel edit</button>
+          </div>
+        </form>
+      </div>
+
+      <div class="panel">
+        <h2>Your content</h2>
+        <div class="formgrid">
+          <div>
+            <label for="filterType">Filter by type</label>
+            <select id="filterType">
+              <option value="">All types</option>
+              <option value="deal">Deals</option>
+              <option value="video">Videos</option>
+              <option value="news">Tech News</option>
+              <option value="post">Posts / Guides</option>
+            </select>
+          </div>
+          <div>
+            <label for="filterStatus">Filter by status</label>
+            <select id="filterStatus">
+              <option value="">All statuses</option>
+              <option value="draft">Drafts</option>
+              <option value="published">Published</option>
+            </select>
+          </div>
+        </div>
+        <div id="contentList"></div>
+      </div>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="./supabase-config.js"></script>
+  <script>
+    (async function () {
+      const message = document.getElementById("message");
+      const dashboard = document.getElementById("dashboard");
+      const form = document.getElementById("contentForm");
+      const list = document.getElementById("contentList");
+      const saveButton = document.getElementById("save");
+      let client;
+      let records = [];
+
+      function say(text) { message.textContent = text; }
+      function esc(value) {
+        return String(value ?? "").replace(/[&<>"']/g, c => ({
+          "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;"
+        }[c]));
+      }
+      function validURL(value) {
+        if (!value) return null;
+        try {
+          const u = new URL(value);
+          return ["https:", "http:"].includes(u.protocol) ? u.href : null;
+        } catch { return null; }
+      }
+
+      if (!window.supabase || !window.SUPABASE_URL ||
+          !window.SUPABASE_PUBLISHABLE_KEY ||
+          window.SUPABASE_PUBLISHABLE_KEY === "PASTE_YOUR_PUBLISHABLE_KEY_HERE") {
+        say("Configuration missing. Check supabase-config.js.");
+        return;
+      }
+
+      client = window.supabase.createClient(
+        window.SUPABASE_URL,
+        window.SUPABASE_PUBLISHABLE_KEY
+      );
+
+      const { data: sessionData, error: sessionError } = await client.auth.getSession();
+      if (sessionError || !sessionData.session) {
+        window.location.replace("./admin.html");
+        return;
+      }
+
+      const user = sessionData.session.user;
+      const { data: admin, error: adminError } = await client
+        .from("admin_users")
+        .select("user_id")
+        .eq("user_id", user.id)
+        .maybeSingle();
+
+      if (adminError || !admin) {
+        await client.auth.signOut();
+        say("This account is not authorized as an admin.");
+        return;
+      }
+
+      dashboard.hidden = false;
+      say("Signed in as " + user.email);
+
+      async function loadContent() {
+        say("Loading content...");
+        const { data, error } = await client
+          .from("content")
+          .select("id,title,description,content_type,image_url,external_url,current_price,original_price,category,status,created_at")
+          .order("created_at", { ascending: false });
+
+        if (error) {
+          say("Could not load content. Check database permissions.");
+          return;
+        }
+        records = data || [];
+        renderList();
+        say("Content loaded: " + records.length + " item(s).");
+      }
+
+      function renderList() {
+        const type = document.getElementById("filterType").value;
+        const status = document.getElementById("filterStatus").value;
+        const shown = records.filter(r =>
+          (!type || r.content_type === type) &&
+          (!status || r.status === status)
+        );
+
+        if (!shown.length) {
+          list.innerHTML = '<p class="muted">No matching content yet.</p>';
+          return;
+        }
+
+        list.innerHTML = shown.map(r => `
+          <article class="item">
+            <h3>${esc(r.title)}</h3>
+            <p>${esc(r.content_type)} · ${esc(r.status)}</p>
+            <p>${esc(r.description)}</p>
+            <div class="actions">
+              <button data-edit="${esc(r.id)}" class="secondary">Edit</button>
+              <button data-toggle="${esc(r.id)}">${r.status === "published" ? "Unpublish" : "Publish"}</button>
+              <button data-delete="${esc(r.id)}" class="danger">Delete</button>
+            </div>
+          </article>`).join("");
+      }
+
+      function resetForm() {
+        form.reset();
+        document.getElementById("contentId").value = "";
+        document.getElementById("formTitle").textContent = "Add content";
+        saveButton.textContent = "Save content";
+        document.getElementById("cancel").hidden = true;
+      }
+
+      form.addEventListener("submit", async event => {
+        event.preventDefault();
+        saveButton.disabled = true;
+        say("Saving content...");
+
+        const title = document.getElementById("title").value.trim();
+        const type = document.getElementById("type").value;
+        const status = document.getElementById("status").value;
+        const priceText = document.getElementById("price").value;
+        const originalText = document.getElementById("original").value;
+        const imageText = document.getElementById("image").value.trim();
+        const urlText = document.getElementById("url").value.trim();
+
+        const payload = {
+          title,
+          description: document.getElementById("description").value.trim(),
+          content_type: type,
+          status,
+          category: document.getElementById("category").value.trim() || null,
+          image_url: imageText ? validURL(imageText) : null,
+          external_url: urlText ? validURL(urlText) : null,
+          current_price: priceText === "" ? null : Number(priceText),
+          original_price: originalText === "" ? null : Number(originalText),
+          updated_at: new Date().toISOString()
+        };
+
+        if (!title || (imageText && !payload.image_url) ||
+            (urlText && !payload.external_url) ||
+            (priceText !== "" && (!Number.isFinite(payload.current_price) || payload.current_price < 0)) ||
+            (originalText !== "" && (!Number.isFinite(payload.original_price) || payload.original_price < 0))) {
+          say("Please check the title, URLs and prices.");
+          saveButton.disabled = false;
+          return;
+        }
+
+        const id = document.getElementById("contentId").value;
+        const result = id
+          ? await client.from("content").update(payload).eq("id", id)
+          : await client.from("content").insert(payload);
+
+        if (result.error) {
+          say("Save failed. Check the error and database permissions in Supabase.");
+          console.error(result.error.message);
+        } else {
+          say("Content saved successfully.");
+          resetForm();
+          await loadContent();
+        }
+        saveButton.disabled = false;
+      });
+
+      list.addEventListener("click", async event => {
+        const btn = event.target.closest("button");
+        if (!btn) return;
+        const id = btn.dataset.edit || btn.dataset.toggle || btn.dataset.delete;
+        const record = records.find(r => r.id === id);
+        if (!record) return;
+
+        if (btn.dataset.edit) {
+          document.getElementById("contentId").value = record.id;
+          document.getElementById("title").value = record.title || "";
+          document.getElementById("description").value = record.description || "";
+          document.getElementById("type").value = record.content_type;
+          document.getElementById("status").value = record.status;
+          document.getElementById("category").value = record.category || "";
+          document.getElementById("image").value = record.image_url || "";
+          document.getElementById("url").value = record.external_url || "";
+          document.getElementById("price").value = record.current_price ?? "";
+          document.getElementById("original").value = record.original_price ?? "";
+          document.getElementById("formTitle").textContent = "Edit content";
+          saveButton.textContent = "Update content";
+          document.getElementById("cancel").hidden = false;
+          window.scrollTo({ top: 0, behavior: "smooth" });
+          return;
+        }
+
+        if (btn.dataset.delete) {
+          if (!confirm("Delete this content permanently?")) return;
+          const { error } = await client.from("content").delete().eq("id", id);
+          if (error) say("Delete failed. Check admin permissions.");
+          else { say("Content deleted."); await loadContent(); }
+          return;
+        }
+
+        if (btn.dataset.toggle) {
+          const newStatus = record.status === "published" ? "draft" : "published";
+          const { error } = await client.from("content")
+            .update({ status: newStatus, updated_at: new Date().toISOString() })
+            .eq("id", id);
+          if (error) say("Status update failed. Check admin permissions.");
+          else { say("Content status updated."); await loadContent(); }
+        }
+      });
+
+      document.getElementById("cancel").addEventListener("click", resetForm);
+      document.getElementById("filterType").addEventListener("change", renderList);
+      document.getElementById("filterStatus").addEventListener("change", renderList);
+
+      document.getElementById("logout").addEventListener("click", async () => {
+        await client.auth.signOut();
+        window.location.replace("./admin.html");
+      });
+
+      await loadContent();
+    })();
+  </script>
+</body>
+</html>
