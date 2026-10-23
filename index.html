@@ -128,6 +128,136 @@
     .footer-row { display: flex; justify-content: space-between; gap: 15px; flex-wrap: wrap; }
     footer a { margin-right: 14px; }
     footer a:hover { color: var(--cyan); }
+    
+/* Professional product deal cards */
+.deal-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  overflow: hidden;
+  min-width: 0;
+}
+
+.deal-image-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 210px;
+  margin-bottom: 14px;
+  padding: 10px;
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.deal-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.deal-placeholder {
+  font-size: 55px;
+}
+
+.discount-badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: #b42336;
+  color: #fff;
+  padding: 5px 9px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.deal-category {
+  color: var(--cyan);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .7px;
+  margin-bottom: 5px;
+}
+
+.deal-card h3 {
+  margin: 4px 0 8px;
+  font-size: 17px;
+  line-height: 1.45;
+}
+
+.deal-description {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.6;
+  margin-bottom: 12px;
+}
+
+.deal-price-row {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: auto 0 15px;
+  padding-top: 8px;
+}
+
+.deal-current-price {
+  font-size: 25px;
+  font-weight: 800;
+  color: #fff;
+}
+
+.deal-original-price {
+  font-size: 14px;
+  color: var(--muted);
+  text-decoration: line-through;
+}
+
+.deal-savings {
+  font-size: 12px;
+  color: #7ee6a2;
+  margin: -7px 0 14px;
+}
+
+.deal-buy-btn {
+  display: block;
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 9px;
+  text-align: center;
+  background: var(--blue);
+  color: #fff !important;
+  font-size: 14px;
+  font-weight: 800;
+  transition: background .2s, transform .2s;
+}
+
+.deal-buy-btn:hover {
+  background: #2369df;
+  transform: translateY(-1px);
+}
+
+.deal-buy-btn.disabled {
+  background: #34435e;
+  color: var(--muted) !important;
+  cursor: default;
+  pointer-events: none;
+}
+
+@media (max-width: 760px) {
+  .deal-image-wrap {
+    height: 230px;
+  }
+
+  .deal-card h3 {
+    font-size: 16px;
+  }
+}
+
 
     @media (max-width: 760px) {
       .hero { padding-top: 55px; }
@@ -382,20 +512,108 @@
   }
 
   function card(item, emoji) {
-    const url = safeURL(item.external_url);
-    const image = safeURL(item.image_url);
-    const price = item.current_price != null
-      ? `<p>Price: ₹${escapeHTML(item.current_price)}${item.original_price != null ? ` · MRP: ₹${escapeHTML(item.original_price)}` : ""}</p>`
-      : "";
+function card(item, emoji) {
+  const url = safeURL(item.external_url);
+  const image = safeURL(item.image_url);
 
-    return `<article class="card">
-      ${image ? `<img src="${escapeHTML(image)}" alt="" loading="lazy" style="width:100%;max-height:180px;object-fit:cover;border-radius:10px">` : `<div class="emoji">${emoji}</div>`}
+  const current = Number(item.current_price);
+  const original = Number(item.original_price);
+
+  const hasCurrent =
+    item.current_price !== null &&
+    item.current_price !== "" &&
+    Number.isFinite(current) &&
+    current >= 0;
+
+  const hasOriginal =
+    item.original_price !== null &&
+    item.original_price !== "" &&
+    Number.isFinite(original) &&
+    original > 0;
+
+  const hasDiscount =
+    hasCurrent &&
+    hasOriginal &&
+    original > current;
+
+  const discount = hasDiscount
+    ? Math.round(((original - current) / original) * 100)
+    : 0;
+
+  const savings = hasDiscount ? original - current : 0;
+
+  const priceHTML = hasCurrent
+    ? `
+      <div class="deal-price-row">
+        <span class="deal-current-price">
+          ₹${current.toLocaleString("en-IN", {
+            maximumFractionDigits: 2
+          })}
+        </span>
+        ${hasDiscount ? `
+          <span class="deal-original-price">
+            ₹${original.toLocaleString("en-IN", {
+              maximumFractionDigits: 2
+            })}
+          </span>
+        ` : ""}
+      </div>
+      ${hasDiscount ? `
+        <p class="deal-savings">
+          You save ₹${savings.toLocaleString("en-IN", {
+            maximumFractionDigits: 2
+          })}
+        </p>
+      ` : ""}
+    `
+    : "";
+
+  const imageHTML = image
+    ? `<img class="deal-image"
+            src="${escapeHTML(image)}"
+            alt="${escapeHTML(item.title)}"
+            loading="lazy">`
+    : `<div class="deal-placeholder">${emoji}</div>`;
+
+  const categoryHTML = item.category
+    ? `<div class="deal-category">${escapeHTML(item.category)}</div>`
+    : "";
+
+  const buttonHTML = url
+    ? `<a class="deal-buy-btn"
+          href="${escapeHTML(url)}"
+          target="_blank"
+          rel="sponsored nofollow noopener noreferrer">
+          Buy Now ↗
+       </a>`
+    : `<span class="deal-buy-btn disabled">Link coming soon</span>`;
+
+  return `
+    <article class="card deal-card">
+      <div class="deal-image-wrap">
+        ${imageHTML}
+        ${hasDiscount ? `
+          <span class="discount-badge">
+            ${discount}% OFF
+          </span>
+        ` : ""}
+      </div>
+
+      ${categoryHTML}
       <h3>${escapeHTML(item.title)}</h3>
-      <p>${escapeHTML(item.description)}</p>
-      ${price}
-      ${url ? `<a href="${escapeHTML(url)}" target="_blank" rel="noopener noreferrer">View details ↗</a>` : ""}
-    </article>`;
-  }
+
+      ${item.description ? `
+        <p class="deal-description">
+          ${escapeHTML(item.description)}
+        </p>
+      ` : ""}
+
+      ${priceHTML}
+      ${buttonHTML}
+    </article>
+  `;
+}
+
 
   const deals = items.filter(item => item.content_type === "deal");
   const news = items.filter(item => item.content_type === "news");
