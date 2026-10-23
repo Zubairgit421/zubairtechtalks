@@ -179,35 +179,63 @@ imageURLInput.addEventListener("input", () => {
 
 imageFileInput.addEventListener("change", () => {
   const file = imageFileInput.files[0];
-
   if (!file) return;
 
-  if (!file.type.startsWith("image/") ||
-      !["image/jpeg", "image/png", "image/webp", "image/gif"].includes(file.type) ||
-      file.size > 5 * 1024 * 1024) {
+  const allowedTypes = [
+    "image/jpeg",
+    "image/png",
+    "image/webp",
+    "image/gif"
+  ];
+
+  const allowedExtension =
+    /\.(jpe?g|png|webp|gif)$/i.test(file.name);
+
+  const typeIsValid =
+    !file.type || allowedTypes.includes(file.type);
+
+  if (
+    !allowedExtension ||
+    !typeIsValid ||
+    file.size > 5 * 1024 * 1024
+  ) {
     imageFileInput.value = "";
     imageUploadMessage.textContent =
       "Choose JPG, PNG, WEBP or GIF image up to 5 MB.";
+    imagePreview.hidden = true;
     return;
   }
 
-  const previewURL = URL.createObjectURL(file);
-  imagePreview.src = previewURL;
+  imagePreview.src = URL.createObjectURL(file);
   imagePreview.hidden = false;
-  imageUploadMessage.textContent = "Image selected. Click Upload Image.";
+  imageUploadMessage.textContent =
+    "Image selected. Click Upload Image.";
 });
 
 uploadImageButton.addEventListener("click", async () => {
   const file = imageFileInput.files[0];
 
   if (!file) {
-    imageUploadMessage.textContent = "Please choose an image first.";
+    imageUploadMessage.textContent =
+      "Please choose an image first.";
     return;
   }
 
-  if (!file.type.startsWith("image/") ||
-      !["image/jpeg", "image/png", "image/webp", "image/gif"].includes(file.type) ||
-      file.size > 5 * 1024 * 1024) {
+  const allowedTypes = [
+    "image/jpeg",
+    "image/png",
+    "image/webp",
+    "image/gif"
+  ];
+
+  const allowedExtension =
+    /\.(jpe?g|png|webp|gif)$/i.test(file.name);
+
+  if (
+    !allowedExtension ||
+    (file.type && !allowedTypes.includes(file.type)) ||
+    file.size > 5 * 1024 * 1024
+  ) {
     imageUploadMessage.textContent =
       "Choose JPG, PNG, WEBP or GIF image up to 5 MB.";
     return;
@@ -220,14 +248,15 @@ uploadImageButton.addEventListener("click", async () => {
     const safeName = file.name.toLowerCase()
       .replace(/[^a-z0-9._-]/g, "-");
 
-    const path = `${user.id}/${crypto.randomUUID()}-${safeName}`;
+    const path =
+      `${user.id}/${crypto.randomUUID()}-${safeName}`;
 
     const { error: uploadError } = await client.storage
       .from("deal-images")
       .upload(path, file, {
         cacheControl: "3600",
         upsert: false,
-        contentType: file.type
+        contentType: file.type || "application/octet-stream"
       });
 
     if (uploadError) throw uploadError;
@@ -238,19 +267,23 @@ uploadImageButton.addEventListener("click", async () => {
 
     imageURLInput.value = data.publicUrl;
     showImagePreview(data.publicUrl);
+
     imageUploadMessage.textContent =
       "Upload successful! Now click Save content.";
+
   } catch (error) {
     console.error("Image upload failed:", error);
+
     imageUploadMessage.textContent =
-      "Upload failed. Check Storage bucket and admin upload policies.";
+      "Upload failed. Check Supabase Storage bucket, policies and browser console.";
   } finally {
     uploadImageButton.disabled = false;
   }
 });
 
-      let client;
-      let records = [];
+     let client;
+let user = null;
+let records = [];
 
       function say(text) { message.textContent = text; }
       function esc(value) {
@@ -284,7 +317,7 @@ uploadImageButton.addEventListener("click", async () => {
         return;
       }
 
-      const user = sessionData.session.user;
+      user = sessionData.session.user;
       const { data: admin, error: adminError } = await client
         .from("admin_users")
         .select("user_id")
@@ -345,13 +378,14 @@ uploadImageButton.addEventListener("click", async () => {
       function resetForm() {
         form.reset();
         document.getElementById("contentId").value = "";
-        showImagePreview(record.image_url || "");
-imageUploadMessage.textContent = "Existing image URL loaded.";
-        imagePreview.removeAttribute("src");
+        imageFileInput.value = "";
+imageURLInput.value = "";
+imagePreview.removeAttribute("src");
 imagePreview.hidden = true;
 imageUploadMessage.textContent = "Select an image up to 5 MB.";
         document.getElementById("formTitle").textContent = "Add content";
         saveButton.textContent = "Save content";
+        saveButton.disabled = false;
         document.getElementById("cancel").hidden = true;
       }
 
@@ -425,6 +459,7 @@ imageUploadMessage.textContent = "Select an image up to 5 MB.";
           document.getElementById("price").value = record.current_price ?? "";
           document.getElementById("original").value = record.original_price ?? "";
           document.getElementById("formTitle").textContent = "Edit content";
+          saveButton.disabled = false;
           saveButton.textContent = "Update content";
           document.getElementById("cancel").hidden = false;
           window.scrollTo({ top: 0, behavior: "smooth" });
