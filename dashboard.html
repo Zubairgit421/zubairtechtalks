@@ -25,7 +25,42 @@
     .item h3 { margin:0 0 6px; }
     .actions { display:flex; flex-wrap:wrap; gap:8px; margin-top:12px; }
     #message { overflow-wrap:anywhere; }
-    @media(max-width:650px) { .formgrid { grid-template-columns:1fr; } header { align-items:flex-start; } }
+    @media (max-width: 650px) {
+  .formgrid {
+    grid-template-columns: 1fr;
+  }
+
+  header {
+    align-items: flex-start;
+  }
+
+  main {
+    width: 94%;
+    margin: 20px auto;
+  }
+
+  .panel {
+    padding: 16px;
+  }
+
+  h1 {
+    font-size: 23px;
+  }
+
+  button {
+    min-height: 42px;
+  }
+
+  .actions button {
+    flex: 1 1 auto;
+  }
+
+  input,
+  select,
+  textarea {
+    font-size: 16px;
+  }
+}
   </style>
 </head>
 <body>
@@ -126,6 +161,13 @@
 
       <div class="panel">
         <h2>Your content</h2>
+        <label for="contentSearch">Search content</label>
+<input
+  id="contentSearch"
+  type="search"
+  placeholder="Search by title, description or category..."
+  autocomplete="off"
+>
         <div class="formgrid">
           <div>
             <label for="filterType">Filter by type</label>
@@ -351,11 +393,35 @@ let records = [];
 
       function renderList() {
         const type = document.getElementById("filterType").value;
-        const status = document.getElementById("filterStatus").value;
-        const shown = records.filter(r =>
-          (!type || r.content_type === type) &&
-          (!status || r.status === status)
-        );
+const status = document.getElementById("filterStatus").value;
+
+const search = document
+  .getElementById("contentSearch")
+  .value
+  .trim()
+  .toLowerCase();
+
+const shown = records.filter(r => {
+  const matchesType =
+    !type || r.content_type === type;
+
+  const matchesStatus =
+    !status || r.status === status;
+
+  const searchableText = [
+    r.title,
+    r.description,
+    r.category,
+    r.content_type
+  ].join(" ").toLowerCase();
+
+  const matchesSearch =
+    !search || searchableText.includes(search);
+
+  return matchesType && matchesStatus && matchesSearch;
+});
+        document.getElementById("contentSearch")
+  .addEventListener("input", renderList);
 
         if (!shown.length) {
           list.innerHTML = '<p class="muted">No matching content yet.</p>';
