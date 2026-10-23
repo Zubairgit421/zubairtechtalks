@@ -1,0 +1,301 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="ZUBAiR Tech Talks brings you the latest tech news, useful tech tips, product reviews and Amazon & Flipkart deals.">
+  <title>ZUBAiR Tech Talks | Tech Made Simple</title>
+  <style>
+    :root {
+      --bg: #0b1020;
+      --panel: #121a2d;
+      --text: #f4f7ff;
+      --muted: #a7b2c9;
+      --blue: #3984ff;
+      --cyan: #44d7e8;
+      --border: #26334b;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Arial, Helvetica, sans-serif;
+      line-height: 1.6;
+    }
+    a { color: inherit; text-decoration: none; }
+    .container { width: min(1120px, 91%); margin: auto; }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: rgba(11,16,32,.95);
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(12px);
+    }
+    nav {
+      min-height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      flex-wrap: wrap;
+      padding: 12px 0;
+    }
+    .logo { font-size: 22px; font-weight: 800; letter-spacing: -.7px; }
+    .logo span { color: var(--cyan); }
+    .nav-links { display: flex; gap: 20px; flex-wrap: wrap; font-size: 14px; }
+    .nav-links a { color: var(--muted); }
+    .nav-links a:hover { color: var(--cyan); }
+
+    .hero { padding: 82px 0 68px; }
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.25fr .75fr;
+      gap: 36px;
+      align-items: center;
+    }
+    .eyebrow {
+      display: inline-block;
+      color: var(--cyan);
+      border: 1px solid #28516a;
+      background: #102537;
+      padding: 6px 12px;
+      border-radius: 30px;
+      font-size: 12px;
+      font-weight: bold;
+      letter-spacing: 1px;
+    }
+    h1 { font-size: clamp(38px, 6vw, 66px); line-height: 1.08; margin: 20px 0; letter-spacing: -2px; }
+    h1 span { color: var(--cyan); }
+    .hero p { color: var(--muted); font-size: 17px; max-width: 590px; }
+    .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 26px; }
+    .btn {
+      display: inline-block;
+      padding: 12px 19px;
+      border-radius: 9px;
+      font-weight: bold;
+      font-size: 14px;
+      background: var(--blue);
+      color: white;
+    }
+    .btn.secondary { background: transparent; border: 1px solid var(--border); }
+    .hero-art {
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      min-height: 300px;
+      padding: 26px;
+      background: radial-gradient(circle at top right, #214e78 0, #16243e 38%, #11182a 75%);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      box-shadow: 0 25px 70px #0004;
+    }
+    .hero-art .symbol { font-size: 70px; line-height: 1.2; }
+    .hero-art h2 { font-size: 26px; margin: 14px 0 4px; }
+    .hero-art p { font-size: 14px; margin: 0; }
+
+    section { padding: 42px 0; scroll-margin-top: 85px; }
+    .section-head { margin-bottom: 23px; }
+    .section-head h2 { margin: 0; font-size: 29px; }
+    .section-head p { margin: 5px 0 0; color: var(--muted); }
+    .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 22px;
+      transition: transform .2s, border-color .2s;
+    }
+    .card:hover { transform: translateY(-4px); border-color: #426caa; }
+    .card .emoji { font-size: 29px; }
+    .card h3 { margin: 12px 0 7px; font-size: 19px; }
+    .card p { color: var(--muted); font-size: 14px; margin: 0 0 16px; }
+    .card a { color: var(--cyan); font-weight: bold; font-size: 14px; }
+    .notice {
+      background: #101b30;
+      border: 1px solid var(--border);
+      padding: 20px;
+      border-radius: 14px;
+      color: var(--muted);
+    }
+    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    footer { border-top: 1px solid var(--border); margin-top: 45px; padding: 28px 0; color: var(--muted); font-size: 13px; }
+    .footer-row { display: flex; justify-content: space-between; gap: 15px; flex-wrap: wrap; }
+    footer a { margin-right: 14px; }
+    footer a:hover { color: var(--cyan); }
+
+    @media (max-width: 760px) {
+      .hero { padding-top: 55px; }
+      .hero-grid, .about-grid { grid-template-columns: 1fr; }
+      .hero-art { min-height: 220px; }
+      .grid { grid-template-columns: 1fr; }
+      .nav-links { gap: 13px; }
+      h1 { letter-spacing: -1px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <nav>
+        <a class="logo" href="#home">ZUB<span>Ai</span>R Tech Talks</a>
+        <div class="nav-links">
+          <a href="#home">Home</a>
+          <a href="#deals">Deals</a>
+          <a href="#videos">Videos</a>
+          <a href="#news">Tech News</a>
+          <a href="#about">About</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" id="home">
+      <div class="container hero-grid">
+        <div>
+          <span class="eyebrow">TECH • TIPS • DEALS</span>
+          <h1>Technology made <span>simple.</span></h1>
+          <p>
+            Welcome to ZUBAiR Tech Talks — your place for useful tech tips,
+            the latest technology updates, product recommendations and
+            hand-picked online deals.
+          </p>
+          <div class="actions">
+            <a class="btn" href="#deals">Explore Deals ↗</a>
+            <a class="btn secondary" href="#videos">Watch Videos</a>
+          </div>
+        </div>
+        <div class="hero-art">
+          <div class="symbol">⚡</div>
+          <h2>Stay Smart. Stay Updated.</h2>
+          <p>Simple explanations. Useful technology. Smarter shopping.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="deals">
+      <div class="container">
+        <div class="section-head">
+          <h2>🔥 Latest Deals</h2>
+          <p>Discover deals and product offers worth checking out.</p>
+        </div>
+        <div class="grid">
+          <article class="card">
+            <div class="emoji">🛍️</div>
+            <h3>Amazon Deals</h3>
+            <p>Explore gadgets, electronics and offers on Amazon.</p>
+            <a href="https://www.amazon.in/" target="_blank" rel="noopener noreferrer">Explore Amazon ↗</a>
+          </article>
+          <article class="card">
+            <div class="emoji">⚡</div>
+            <h3>Flipkart Deals</h3>
+            <p>Check the latest electronics offers and online sales.</p>
+            <a href="https://www.flipkart.com/" target="_blank" rel="noopener noreferrer">Explore Flipkart ↗</a>
+          </article>
+          <article class="card">
+            <div class="emoji">🎧</div>
+            <h3>Tech Buying Guides</h3>
+            <p>Compare products and make more informed buying decisions.</p>
+            <a href="#posts">View Guides ↓</a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="videos">
+      <div class="container">
+        <div class="section-head">
+          <h2>▶️ Latest Videos</h2>
+          <p>Tech tips, smartphone features and useful how-to videos.</p>
+        </div>
+        <div class="notice">
+          Your YouTube videos will appear here. Add your YouTube channel link
+          and video links when you're ready.
+          <div class="actions">
+            <a class="btn" href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer">Visit YouTube ↗</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="news">
+      <div class="container">
+        <div class="section-head">
+          <h2>📰 Tech News</h2>
+          <p>Technology updates explained in simple language.</p>
+        </div>
+        <div class="grid">
+          <article class="card">
+            <div class="emoji">📱</div>
+            <h3>Smartphone Updates</h3>
+            <p>New phone launches, features and software updates.</p>
+          </article>
+          <article class="card">
+            <div class="emoji">🤖</div>
+            <h3>AI & Technology</h3>
+            <p>Understand new AI tools and technology developments.</p>
+          </article>
+          <article class="card">
+            <div class="emoji">🔐</div>
+            <h3>Useful Tech Tips</h3>
+            <p>Discover phone settings, app features and online safety tips.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="posts">
+      <div class="container">
+        <div class="section-head">
+          <h2>📚 Posts & Guides</h2>
+          <p>Practical guides to help you use technology better.</p>
+        </div>
+        <div class="notice">
+          Step-by-step tutorials and product comparison articles will be
+          published here as the website grows.
+        </div>
+      </div>
+    </section>
+
+    <section id="about">
+      <div class="container">
+        <div class="section-head">
+          <h2>About ZUBAiR Tech Talks</h2>
+          <p>Making tech easier to understand.</p>
+        </div>
+        <div class="about-grid">
+          <div class="card">
+            <h3>Our Mission</h3>
+            <p>Share helpful technology updates, easy tutorials and practical product recommendations.</p>
+          </div>
+          <div class="card" id="contact">
+            <h3>Connect With Us</h3>
+            <p>Follow our channel for more tech tips, videos and deals.</p>
+            <a href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer">YouTube ↗</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-row">
+      <div>© <span id="year"></span> ZUBAiR Tech Talks. All rights reserved.</div>
+      <div>
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="affiliate-disclosure.html">Affiliate Disclosure</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
