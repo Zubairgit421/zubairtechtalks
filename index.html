@@ -782,14 +782,18 @@ nav {
       });
     }
   
-    function safeURL(value) card() {
-      try {
-        const url = new URL(value);
-        return ["https:", "http:"].includes(url.protocol) ? url.href : "";
-      } catch {
-        return "";
-      }
-    }
+  function safeURL(value) {
+  try {
+    const url = new URL(value);
+    return ["https:", "http:"].includes(url.protocol) ? url.href : "";
+  } catch {
+    return "";
+  }
+}
+
+function card(item, emoji) {
+  // మీ existing card function code இక్కడే ఉండాలి
+}
   
     
 
