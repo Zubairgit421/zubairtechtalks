@@ -743,37 +743,54 @@ function card(item, emoji) {
   `;
 }
   
-    const deals = items.filter(item => item.content_type === "deal");
-    const news = items.filter(item => item.content_type === "news");
-    const videos = items.filter(item => item.content_type === "video");
-    const posts = items.filter(item => item.content_type === "post");
-  
-    if (deals.length && dealsSection) {
-      dealsSection.innerHTML = deals.map(item => card(item, "🛍️")).join("");
-    }
-  
-    if (news.length && newsSection) {
-      newsSection.innerHTML = news.map(item => card(item, "📰")).join("");
-    }
-  
-    if (videos.length && videosSection) {
-      videosSection.innerHTML = `
-        <div class="grid">
-          ${videos.map(item => card(item, "▶️")).join("")}
-        </div>`;
-    }
-  
-    const postsSection = document.querySelector("#posts .notice");
-    if (posts.length && postsSection) {
-      postsSection.outerHTML = `
-        <div class="grid">
-          ${posts.map(item => card(item, "📚")).join("")}
-        </div>`;
-    }
-  
-    statusBox.textContent = items.length
-      ? "Latest content loaded."
-      : "No published content yet. Check back soon.";
+    
+const deals = items.filter(item => item.content_type === "deal");
+const news = items.filter(item => item.content_type === "news");
+const videos = items.filter(item => item.content_type === "video");
+
+const posts = items.filter(item => item.content_type === "post");
+
+const reviews = posts.filter(item =>
+  /^Review:/i.test((item.title || "").trim())
+);
+
+const tips = posts.filter(item =>
+  !/^Review:/i.test((item.title || "").trim())
+);
+
+if (deals.length && dealsSection) {
+  dealsSection.innerHTML = deals.map(item => card(item, "🛍️")).join("");
+}
+
+if (news.length && newsSection) {
+  newsSection.innerHTML = news.map(item => card(item, "📰")).join("");
+}
+
+if (videos.length && videosSection) {
+  videosSection.innerHTML = `
+    <div class="grid">
+      ${videos.map(item => card(item, "▶️")).join("")}
+    </div>`;
+}
+
+const tipsSection = document.getElementById("homepage-tips");
+const reviewsSection = document.getElementById("homepage-reviews");
+
+if (tipsSection) {
+  tipsSection.innerHTML = tips.length
+    ? tips.slice(0, 3).map(item => card(item, "💡")).join("")
+    : '<div class="notice">No published tech tips yet. Check back soon.</div>';
+}
+
+if (reviewsSection) {
+  reviewsSection.innerHTML = reviews.length
+    ? reviews.slice(0, 3).map(item => card(item, "⭐")).join("")
+    : '<div class="notice">No published reviews yet. Check back soon.</div>';
+}
+
+statusBox.textContent = items.length
+  ? "Latest content loaded."
+  : "No published content yet. Check back soon.";
   })();
   </script>
   </body>
