@@ -458,6 +458,70 @@ nav {
   background: #1d4ed8;
 }
 
+.youtube-card {
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  border-radius: 16px;
+  background: #111c30;
+}
+
+.youtube-thumbnail {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  background: #0b1220;
+  transition: transform 0.2s ease;
+}
+
+.youtube-card > a:first-child {
+  display: block;
+  overflow: hidden;
+}
+
+.youtube-card > a:first-child:hover .youtube-thumbnail {
+  transform: scale(1.03);
+}
+
+.youtube-no-thumbnail {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 16 / 9;
+  background: #0b1220;
+  font-size: 42px;
+}
+
+.youtube-card-body {
+  padding: 16px;
+}
+
+.youtube-card-body h3 {
+  margin: 0 0 10px;
+  font-size: 18px;
+  line-height: 1.4;
+}
+
+.youtube-card-body p {
+  margin: 0 0 14px;
+  color: #cbd5e1;
+  line-height: 1.6;
+}
+
+.youtube-watch-btn {
+  display: inline-block;
+  padding: 10px 14px;
+  border-radius: 8px;
+  background: #2563eb;
+  color: #ffffff;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.youtube-watch-btn:hover {
+  background: #1d4ed8;
+}
+
   </style>
 </head>
 <body>
