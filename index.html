@@ -605,108 +605,86 @@
       }
     }
   
-    function card(item, emoji) {
-    const url = safeURL(item.external_url);
-    const image = safeURL(item.image_url);
-  
-    const current = Number(item.current_price);
-    const original = Number(item.original_price);
-  
-    const hasCurrent =
-      item.current_price !== null &&
-      item.current_price !== "" &&
-      Number.isFinite(current) &&
-      current >= 0;
-  
-    const hasOriginal =
-      item.original_price !== null &&
-      item.original_price !== "" &&
-      Number.isFinite(original) &&
-      original > 0;
-  
-    const hasDiscount =
-      hasCurrent &&
-      hasOriginal &&
-      original > current;
-  
-    const discount = hasDiscount
-      ? Math.round(((original - current) / original) * 100)
-      : 0;
-  
-    const savings = hasDiscount ? original - current : 0;
-  
-    const priceHTML = hasCurrent
-      ? `
-        <div class="deal-price-row">
-          <span class="deal-current-price">
-            ₹${current.toLocaleString("en-IN", {
-              maximumFractionDigits: 2
-            })}
-          </span>
-          ${hasDiscount ? `
-            <span class="deal-original-price">
-              ₹${original.toLocaleString("en-IN", {
-                maximumFractionDigits: 2
-              })}
-            </span>
-          ` : ""}
-        </div>
-        ${hasDiscount ? `
-          <p class="deal-savings">
-            You save ₹${savings.toLocaleString("en-IN", {
-              maximumFractionDigits: 2
-            })}
-          </p>
-        ` : ""}
-      `
-      : "";
-  
-    const imageHTML = image
-      ? `<img class="deal-image"
-              src="${escapeHTML(image)}"
-              alt="${escapeHTML(item.title)}"
-              loading="lazy">`
-      : `<div class="deal-placeholder">${emoji}</div>`;
-  
-    const categoryHTML = item.category
-      ? `<div class="deal-category">${escapeHTML(item.category)}</div>`
-      : "";
-  
-    const buttonHTML = url
-      ? `<a class="deal-buy-btn"
-            href="${escapeHTML(url)}"
-            target="_blank"
-            rel="sponsored nofollow noopener noreferrer">
-            Buy Now ↗
-         </a>`
-      : `<span class="deal-buy-btn disabled">Link coming soon</span>`;
-  
-    return `
-      <article class="card deal-card">
-        <div class="deal-image-wrap">
-          ${imageHTML}
-          ${hasDiscount ? `
-            <span class="discount-badge">
-              ${discount}% OFF
-            </span>
-          ` : ""}
-        </div>
-  
-        ${categoryHTML}
-        <h3>${escapeHTML(item.title)}</h3>
-  
-        ${item.description ? `
-          <p class="deal-description">
-            ${escapeHTML(item.description)}
-          </p>
-        ` : ""}
-  
-        ${priceHTML}
-        ${buttonHTML}
-      </article>
-    `;
-  }
-  
+    
+function card(item, emoji) {
+  const url = safeURL(item.external_url);
+  const image = safeURL(item.image_url);
+
+  const current = Number(item.current_price);
+  const original = Number(item.original_price);
+
+  const hasCurrent =
+    item.current_price !== null &&
+    item.current_price !== "" &&
+    Number.isFinite(current) &&
+    current >= 0;
+
+  const hasOriginal =
+    item.original_price !== null &&
+    item.original_price !== "" &&
+    Number.isFinite(original) &&
+    original > 0;
+
+  const hasDiscount =
+    hasCurrent && hasOriginal && original > current;
+
+  const discount = hasDiscount
+    ? Math.round(((original - current) / original) * 100)
+    : 0;
+
+  const savings = hasDiscount ? original - current : 0;
+
+  const storeName = url
+    ? new URL(url).hostname.toLowerCase().includes("amazon.")
+      ? "AMAZON"
+      : new URL(url).hostname.toLowerCase().includes("flipkart.")
+        ? "FLIPKART"
+        : "SHOP NOW"
+    : "DEAL";
+
+  const imageHTML = image
+    ? `<img class="deal-image"
+            src="${escapeHTML(image)}"
+            alt="${escapeHTML(item.title)}"
+            loading="lazy"
+            onerror="this.onerror=null;this.style.display='none';this.nextElementSibling.style.display='flex';">
+       <div class="deal-placeholder" style="display:none;">${emoji}</div>`
+    : `<div class="deal-placeholder">${emoji}</div>`;
+
+  const priceHTML = hasCurrent
+    ? `<div class="deal-price-row">
+         <span class="deal-current-price">₹${current.toLocaleString("en-IN", { maximumFractionDigits: 2 })}</span>
+         ${hasDiscount ? `<span class="deal-original-price">₹${original.toLocaleString("en-IN", { maximumFractionDigits: 2 })}</span>` : ""}
+       </div>
+       ${hasDiscount ? `<p class="deal-savings">You save ₹${savings.toLocaleString("en-IN", { maximumFractionDigits: 2 })}</p>` : ""}`
+    : "";
+
+  const categoryHTML = item.category
+    ? `<div class="deal-category">${escapeHTML(item.category)}</div>`
+    : "";
+
+  const buttonHTML = url
+    ? `<a class="deal-buy-btn"
+          href="${escapeHTML(url)}"
+          target="_blank"
+          rel="sponsored nofollow noopener noreferrer">${storeName === "AMAZON" ? "View on Amazon ↗" : storeName === "FLIPKART" ? "View on Flipkart ↗" : "Buy Now ↗"}</a>`
+    : `<span class="deal-buy-btn disabled">Link coming soon</span>`;
+
+  return `
+    <article class="card deal-card">
+      <div class="deal-image-wrap">
+        ${imageHTML}
+        ${hasDiscount ? `<span class="discount-badge">${discount}% OFF</span>` : ""}
+      </div>
+      <div class="deal-category">${storeName}</div>
+      ${categoryHTML}
+      <h3>${escapeHTML(item.title)}</h3>
+      ${item.description ? `<p class="deal-description">${escapeHTML(item.description)}</p>` : ""}
+      ${priceHTML}
+      ${buttonHTML}
+    </article>
+  `;
+}
   
     const deals = items.filter(item => item.content_type === "deal");
     const news = items.filter(item => item.content_type === "news");
