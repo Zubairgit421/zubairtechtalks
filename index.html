@@ -782,7 +782,7 @@ nav {
       });
     }
   
-    function safeURL(value) card(){
+    function safeURL(value) card() {
       try {
         const url = new URL(value);
         return ["https:", "http:"].includes(url.protocol) ? url.href : "";
