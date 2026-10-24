@@ -21,6 +21,7 @@ YT = "{http://www.youtube.com/xml/schemas/2015}"
 MEDIA = "{http://search.yahoo.com/mrss/}"
 
 
+
 def request(url, method="GET", data=None, prefer=None):
     headers = {
         "apikey": SUPABASE_KEY,
@@ -36,9 +37,29 @@ def request(url, method="GET", data=None, prefer=None):
         url, data=body, headers=headers, method=method
     )
 
-    with urllib.request.urlopen(req, timeout=30) as response:
-        raw = response.read()
-        return json.loads(raw) if raw else None
+    try:
+        with urllib.request.urlopen(req, timeout=30) as response:
+            raw = response.read()
+            status = response.status
+            content_type = response.headers.get("Content-Type", "")
+
+    except urllib.error.HTTPError as error:
+        details = error.read().decode("utf-8", errors="replace")
+        raise RuntimeError(
+            f"Supabase HTTP error {error.code}: {details[:500]}"
+        ) from error
+
+    if not raw:
+        return None
+
+    try:
+        return json.loads(raw)
+    except json.JSONDecodeError as error:
+        preview = raw[:300].decode("utf-8", errors="replace")
+        raise RuntimeError(
+            f"Expected JSON from Supabase; HTTP {status}; "
+            f"Content-Type: {content_type}; Response: {preview}"
+        ) from error
 
 
 def main():
