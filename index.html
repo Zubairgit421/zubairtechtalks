@@ -70,8 +70,30 @@
       flex-wrap: wrap;
       padding: 12px 0;
     }
-    .logo { font-size: 22px; font-weight: 800; letter-spacing: -.7px; }
-    .logo span { color: var(--cyan); }
+    .logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 21px;
+  font-weight: 800;
+  letter-spacing: -.5px;
+  color: var(--text);
+}
+
+.logo img {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+  border-radius: 50%;
+}
+
+.logo span {
+  color: var(--text);
+}
+
+.logo span::first-letter {
+  color: var(--blue);
+}
     .nav-links { display: flex; gap: 20px; flex-wrap: wrap; font-size: 14px; }
     .nav-links a { color: var(--muted); }
     .nav-links a:hover { color: var(--cyan); }
@@ -524,14 +546,121 @@ nav {
 .youtube-watch-btn:hover {
   background: #1d4ed8;
 }
+/* ZUBAiR Tech Talks - Responsive YouTube Grid */
+.youtube-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 22px;
+}
 
+.youtube-card {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, .06);
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+
+.youtube-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 14px 30px rgba(7, 91, 234, .12);
+}
+
+.youtube-card > a:first-child {
+  display: block;
+  overflow: hidden;
+  background: #080d18;
+}
+
+.youtube-thumbnail,
+.youtube-no-thumbnail {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+}
+
+.youtube-thumbnail {
+  display: block;
+  object-fit: cover;
+  transition: transform .25s ease;
+}
+
+.youtube-card > a:first-child:hover .youtube-thumbnail {
+  transform: scale(1.04);
+}
+
+.youtube-no-thumbnail {
+  display: grid;
+  place-items: center;
+  color: white;
+  font-size: 42px;
+  background: #101827;
+}
+
+.youtube-card-body {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  flex: 1;
+  padding: 17px;
+}
+
+.youtube-card-body h3 {
+  margin: 0 0 10px;
+  color: var(--text);
+  font-size: 17px;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+
+.youtube-card-body p {
+  margin: 0 0 16px;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.youtube-watch-btn {
+  display: inline-block;
+  margin-top: auto;
+  padding: 10px 14px;
+  border-radius: 8px;
+  background: var(--blue);
+  color: #fff !important;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.youtube-watch-btn:hover {
+  background: #0349c5;
+}
+
+@media (max-width: 900px) {
+  .youtube-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+  }
+}
+
+@media (max-width: 520px) {
+  .youtube-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+}
   </style>
 </head>
 <body>
   <header>
     <div class="container">
       <nav>
-        <a class="logo" href="#home">ZUB<span>Ai</span>R Tech Talks</a>
+        <a class="logo" href="#home" aria-label="ZUBAiR Tech Talks Home">
+  <img src="./logo.png" alt="ZUBAiR Tech Talks Logo">
+  <span>ZUBAiR Tech Talks</span>
+</a>
         
 <div class="nav-links">
   <a href="#home">Home</a>
@@ -604,19 +733,9 @@ nav {
     </section>
 
     <section id="videos">
-      <div class="container">
-        <div class="section-head">
-          <h2>▶️ Latest Videos</h2>
-          <p>Tech tips, smartphone features and useful how-to videos.</p>
-        </div>
-        <div class="notice">
-          Your YouTube videos will appear here. Add your YouTube channel link
-          and video links when you're ready.
-          <div class="actions">
-            <a class="btn" href="https://www.youtube.com/@zubairtechtalks" target="_blank" rel="noopener noreferrer">Subscribe on YouTube</a>
-          </div>
-        </div>
-      </div>
+      <div id="youtube-videos-grid" class="youtube-grid">
+  <div class="notice">Loading latest YouTube videos...</div>
+</div> 
     </section>
 
     <section id="news">
@@ -745,7 +864,7 @@ nav {
     statusBox.style.cssText = "color:#a7b2c9;margin-top:12px;font-size:14px";
     const dealsSection = document.querySelector("#deals .grid");
     const newsSection = document.querySelector("#news .grid");
-    const videosSection = document.querySelector("#videos .notice");
+   const videosSection = document.getElementById("youtube-videos-grid");
   
     if (!window.supabase || !window.SUPABASE_URL ||
         !window.SUPABASE_PUBLISHABLE_KEY ||
@@ -792,10 +911,6 @@ nav {
   } catch {
     return "";
   }
-}
-
-function card(item, emoji) {
-  // మీ existing card function code இక్కడే ఉండాలి
 }
   
     
