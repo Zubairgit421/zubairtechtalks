@@ -393,6 +393,71 @@ nav {
     font-size: 14px;
   }
 }
+    
+.youtube-card {
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  border-radius: 16px;
+  background: #111c30;
+}
+
+.youtube-thumbnail {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  background: #0b1220;
+  transition: transform 0.2s ease;
+}
+
+.youtube-card > a:first-child {
+  display: block;
+  overflow: hidden;
+}
+
+.youtube-card > a:first-child:hover .youtube-thumbnail {
+  transform: scale(1.03);
+}
+
+.youtube-no-thumbnail {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 16 / 9;
+  background: #0b1220;
+  font-size: 42px;
+}
+
+.youtube-card-body {
+  padding: 16px;
+}
+
+.youtube-card-body h3 {
+  margin: 0 0 10px;
+  font-size: 18px;
+  line-height: 1.4;
+}
+
+.youtube-card-body p {
+  margin: 0 0 14px;
+  color: #cbd5e1;
+  line-height: 1.6;
+}
+
+.youtube-watch-btn {
+  display: inline-block;
+  padding: 10px 14px;
+  border-radius: 8px;
+  background: #2563eb;
+  color: #ffffff;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.youtube-watch-btn:hover {
+  background: #1d4ed8;
+}
+
   </style>
 </head>
 <body>
@@ -663,82 +728,70 @@ nav {
     }
   
     
-function card(item, emoji) {
-  const url = safeURL(item.external_url);
-  const image = safeURL(item.image_url);
 
-  const current = Number(item.current_price);
-  const original = Number(item.original_price);
+function getYouTubeId(value) {
+  try {
+    const url = new URL(value);
+    const host = url.hostname.replace(/^www\./, "");
+    let id = "";
 
-  const hasCurrent =
-    item.current_price !== null &&
-    item.current_price !== "" &&
-    Number.isFinite(current) &&
-    current >= 0;
+    if (host === "youtu.be") {
+      id = url.pathname.split("/").filter(Boolean)[0] || "";
+    } else if (
+      host === "youtube.com" ||
+      host === "m.youtube.com" ||
+      host === "youtube-nocookie.com"
+    ) {
+      id =
+        url.searchParams.get("v") ||
+        url.pathname.match(/^\/(?:shorts|embed|live)\/([^/?]+)/)?.[1] ||
+        "";
+    }
 
-  const hasOriginal =
-    item.original_price !== null &&
-    item.original_price !== "" &&
-    Number.isFinite(original) &&
-    original > 0;
+    return /^[a-zA-Z0-9_-]{11}$/.test(id) ? id : "";
+  } catch {
+    return "";
+  }
+}
 
-  const hasDiscount =
-    hasCurrent && hasOriginal && original > current;
+function youtubeVideoCard(item) {
+  const videoURL = safeURL(item.external_url || "");
+  const videoId = getYouTubeId(videoURL);
+  const title = escapeHTML(item.title || "ZUBAiR Tech Talks video");
+  const description = escapeHTML(item.description || "");
 
-  const discount = hasDiscount
-    ? Math.round(((original - current) / original) * 100)
-    : 0;
-
-  const savings = hasDiscount ? original - current : 0;
-
-  const storeName = url
-    ? new URL(url).hostname.toLowerCase().includes("amazon.")
-      ? "AMAZON"
-      : new URL(url).hostname.toLowerCase().includes("flipkart.")
-        ? "FLIPKART"
-        : "SHOP NOW"
-    : "DEAL";
-
-  const imageHTML = image
-    ? `<img class="deal-image"
-            src="${escapeHTML(image)}"
-            alt="${escapeHTML(item.title)}"
-            loading="lazy"
-            onerror="this.onerror=null;this.style.display='none';this.nextElementSibling.style.display='flex';">
-       <div class="deal-placeholder" style="display:none;">${emoji}</div>`
-    : `<div class="deal-placeholder">${emoji}</div>`;
-
-  const priceHTML = hasCurrent
-    ? `<div class="deal-price-row">
-         <span class="deal-current-price">₹${current.toLocaleString("en-IN", { maximumFractionDigits: 2 })}</span>
-         ${hasDiscount ? `<span class="deal-original-price">₹${original.toLocaleString("en-IN", { maximumFractionDigits: 2 })}</span>` : ""}
-       </div>
-       ${hasDiscount ? `<p class="deal-savings">You save ₹${savings.toLocaleString("en-IN", { maximumFractionDigits: 2 })}</p>` : ""}`
+  const thumbnail = videoId
+    ? `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`
     : "";
-
-  const categoryHTML = item.category
-    ? `<div class="deal-category">${escapeHTML(item.category)}</div>`
-    : "";
-
-  const buttonHTML = url
-    ? `<a class="deal-buy-btn"
-          href="${escapeHTML(url)}"
-          target="_blank"
-          rel="sponsored nofollow noopener noreferrer">${storeName === "AMAZON" ? "View on Amazon ↗" : storeName === "FLIPKART" ? "View on Flipkart ↗" : "Buy Now ↗"}</a>`
-    : `<span class="deal-buy-btn disabled">Link coming soon</span>`;
 
   return `
-    <article class="card deal-card">
-      <div class="deal-image-wrap">
-        ${imageHTML}
-        ${hasDiscount ? `<span class="discount-badge">${discount}% OFF</span>` : ""}
+    <article class="youtube-card">
+      ${
+        thumbnail
+          ? `<a href="${escapeHTML(videoURL)}"
+                target="_blank" rel="noopener noreferrer"
+                aria-label="Watch ${title} on YouTube">
+               <img class="youtube-thumbnail"
+                    src="${thumbnail}"
+                    alt="${title}"
+                    loading="lazy">
+             </a>`
+          : `<div class="youtube-no-thumbnail">▶️</div>`
+      }
+
+      <div class="youtube-card-body">
+        <h3>${title}</h3>
+        ${description ? `<p>${description}</p>` : ""}
+        ${
+          videoURL && videoURL !== "#"
+            ? `<a class="youtube-watch-btn"
+                  href="${escapeHTML(videoURL)}"
+                  target="_blank" rel="noopener noreferrer">
+                 ▶ Watch on YouTube
+               </a>`
+            : `<p>Video link unavailable.</p>`
+        }
       </div>
-      <div class="deal-category">${storeName}</div>
-      ${categoryHTML}
-      <h3>${escapeHTML(item.title)}</h3>
-      ${item.description ? `<p class="deal-description">${escapeHTML(item.description)}</p>` : ""}
-      ${priceHTML}
-      ${buttonHTML}
     </article>
   `;
 }
@@ -766,12 +819,14 @@ if (news.length && newsSection) {
   newsSection.innerHTML = news.map(item => card(item, "📰")).join("");
 }
 
+
 if (videos.length && videosSection) {
   videosSection.innerHTML = `
     <div class="grid">
-      ${videos.map(item => card(item, "▶️")).join("")}
+      ${videos.map(item => youtubeVideoCard(item)).join("")}
     </div>`;
 }
+
 
 const tipsSection = document.getElementById("homepage-tips");
 const reviewsSection = document.getElementById("homepage-reviews");
