@@ -88,5 +88,95 @@
   <script>
     document.getElementById("year").textContent = new Date().getFullYear();
   </script>
+    
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="./supabase-config.js"></script>
+<script>
+(async function () {
+  const container = document.querySelector("main");
+  if (!container || !window.supabase ||
+      !window.SUPABASE_URL ||
+      !window.SUPABASE_PUBLISHABLE_KEY) return;
+
+  const section = document.createElement("section");
+  section.className = "article";
+  section.innerHTML = "<h2>Latest Tech Tips</h2><p>Loading tips...</p>";
+  container.appendChild(section);
+
+  const client = window.supabase.createClient(
+    window.SUPABASE_URL,
+    window.SUPABASE_PUBLISHABLE_KEY
+  );
+
+  const { data, error } = await client
+    .from("content")
+    .select("title,description,image_url,external_url,created_at")
+    .eq("status", "published")
+    .eq("content_type", "post")
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    section.innerHTML =
+      "<h2>Latest Tech Tips</h2><p>Tips are temporarily unavailable.</p>";
+    console.error(error.message);
+    return;
+  }
+
+  if (!data || data.length === 0) {
+    section.innerHTML =
+      "<h2>Latest Tech Tips</h2><p>No published tech tips yet.</p>";
+    return;
+  }
+
+  section.innerHTML = "<h2>Latest Tech Tips</h2>";
+
+  data.forEach(item => {
+    const article = document.createElement("article");
+    article.style.marginBottom = "24px";
+
+    const title = document.createElement("h3");
+    title.textContent = item.title || "Tech Tip";
+
+    const description = document.createElement("p");
+    description.textContent = item.description || "";
+
+    article.append(title, description);
+
+    if (item.image_url) {
+      try {
+        const url = new URL(item.image_url);
+        if (["https:", "http:"].includes(url.protocol)) {
+          const img = document.createElement("img");
+          img.src = url.href;
+          img.alt = item.title || "Tech tip image";
+          img.loading = "lazy";
+          img.style.cssText =
+            "width:100%;max-width:600px;height:auto;border-radius:12px";
+          article.appendChild(img);
+        }
+      } catch {}
+    }
+
+    if (item.external_url) {
+      try {
+        const url = new URL(item.external_url);
+        if (["https:", "http:"].includes(url.protocol)) {
+          const link = document.createElement("a");
+          link.href = url.href;
+          link.target = "_blank";
+          link.rel = "noopener noreferrer";
+          link.textContent = "Read more →";
+          article.appendChild(link);
+        }
+      } catch {}
+    }
+
+    section.appendChild(article);
+  });
+})();
+</script>
+</body>
+</html>
+
 </body>
 </html>
