@@ -249,24 +249,118 @@
 }
 
 @media (max-width: 760px) {
+ 
+/* Responsive layout: tablet and mobile */
+@media (max-width: 760px) {
+  .hero {
+    padding: 48px 0 35px;
+  }
+
+  .hero-grid,
+  .about-grid {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  .hero-art {
+    min-height: 210px;
+    padding: 22px;
+  }
+
+  .nav-links {
+    gap: 12px;
+    font-size: 13px;
+  }
+
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  section {
+    padding: 30px 0;
+  }
+
+  .section-head h2 {
+    font-size: 24px;
+  }
+
+  .deal-card {
+    padding: 10px;
+    border-radius: 12px;
+  }
+
   .deal-image-wrap {
-    height: 230px;
+    height: 155px;
+    margin-bottom: 10px;
+    padding: 6px;
+  }
+
+  .deal-card h3 {
+    font-size: 14px;
+    line-height: 1.4;
+    overflow-wrap: anywhere;
+  }
+
+  .deal-description {
+    font-size: 12px;
+  }
+
+  .deal-current-price {
+    font-size: 19px;
+  }
+
+  .deal-original-price {
+    font-size: 12px;
+  }
+
+  .deal-price-row {
+    gap: 5px;
+  }
+
+  .deal-buy-btn {
+    padding: 10px 6px;
+    font-size: 12px;
+  }
+
+  .discount-badge {
+    top: 6px;
+    left: 6px;
+    padding: 4px 6px;
+    font-size: 10px;
+  }
+
+  h1 {
+    letter-spacing: -1px;
+  }
+}
+
+/* Extra-small phones */
+@media (max-width: 380px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .deal-image-wrap {
+    height: 210px;
+  }
+
+  .deal-card {
+    padding: 14px;
   }
 
   .deal-card h3 {
     font-size: 16px;
   }
+
+  .deal-current-price {
+    font-size: 23px;
+  }
+
+  .deal-buy-btn {
+    font-size: 14px;
+  }
 }
-
-
-    @media (max-width: 760px) {
-      .hero { padding-top: 55px; }
-      .hero-grid, .about-grid { grid-template-columns: 1fr; }
-      .hero-art { min-height: 220px; }
-      .grid { grid-template-columns: 1fr; }
-      .nav-links { gap: 13px; }
-      h1 { letter-spacing: -1px; }
-    }
   </style>
 </head>
 <body>
