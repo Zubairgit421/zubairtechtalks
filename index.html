@@ -394,12 +394,35 @@ nav {
   }
 }
     
+
+/* Responsive YouTube video grid */
+#videos .grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+  align-items: stretch;
+}
+
 .youtube-card {
   min-width: 0;
+  display: flex;
+  flex-direction: column;
   overflow: hidden;
-  border: 1px solid rgba(148, 163, 184, 0.2);
+  background: var(--panel);
+  border: 1px solid var(--border);
   border-radius: 16px;
-  background: #111c30;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.youtube-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--blue);
+}
+
+.youtube-card > a:first-child {
+  display: block;
+  overflow: hidden;
+  background: #080d18;
 }
 
 .youtube-thumbnail {
@@ -407,99 +430,79 @@ nav {
   width: 100%;
   aspect-ratio: 16 / 9;
   object-fit: cover;
-  background: #0b1220;
+  background: #080d18;
   transition: transform 0.2s ease;
 }
 
-.youtube-card > a:first-child {
-  display: block;
-  overflow: hidden;
-}
-
 .youtube-card > a:first-child:hover .youtube-thumbnail {
-  transform: scale(1.03);
+  transform: scale(1.04);
 }
 
 .youtube-no-thumbnail {
   display: grid;
   place-items: center;
   aspect-ratio: 16 / 9;
-  background: #0b1220;
+  background: #080d18;
   font-size: 42px;
 }
 
 .youtube-card-body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  align-items: flex-start;
   padding: 16px;
 }
 
 .youtube-card-body h3 {
   margin: 0 0 10px;
-  font-size: 18px;
-  line-height: 1.4;
+  font-size: 17px;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
 }
 
 .youtube-card-body p {
-  margin: 0 0 14px;
-  color: #cbd5e1;
+  margin: 0 0 16px;
+  color: var(--muted);
+  font-size: 14px;
   line-height: 1.6;
 }
 
 .youtube-watch-btn {
   display: inline-block;
+  margin-top: auto;
   padding: 10px 14px;
   border-radius: 8px;
-  background: #2563eb;
-  color: #ffffff;
-  font-weight: 600;
-  text-decoration: none;
+  background: var(--blue);
+  color: #fff !important;
+  font-size: 14px;
+  font-weight: 700;
 }
 
 .youtube-watch-btn:hover {
-  background: #1d4ed8;
+  background: #2563eb;
 }
 
-.youtube-card {
-  min-width: 0;
-  overflow: hidden;
-  border: 1px solid rgba(148, 163, 184, 0.2);
-  border-radius: 16px;
-  background: #111c30;
+@media (max-width: 900px) {
+  #videos .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+  }
 }
 
-.youtube-thumbnail {
-  display: block;
-  width: 100%;
-  aspect-ratio: 16 / 9;
-  object-fit: cover;
-  background: #0b1220;
-  transition: transform 0.2s ease;
-}
+@media (max-width: 520px) {
+  #videos .grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
 
-.youtube-card > a:first-child {
-  display: block;
-  overflow: hidden;
-}
+  .youtube-card-body {
+    padding: 14px;
+  }
 
-.youtube-card > a:first-child:hover .youtube-thumbnail {
-  transform: scale(1.03);
-}
-
-.youtube-no-thumbnail {
-  display: grid;
-  place-items: center;
-  aspect-ratio: 16 / 9;
-  background: #0b1220;
-  font-size: 42px;
-}
-
-.youtube-card-body {
-  padding: 16px;
-}
-
-.youtube-card-body h3 {
-  margin: 0 0 10px;
-  font-size: 18px;
-  line-height: 1.4;
+  .youtube-card-body h3 {
+    font-size: 16px;
+  }
 }
 
 .youtube-card-body p {
@@ -954,11 +957,23 @@ if (news.length && newsSection) {
 }
 
 
-if (videos.length && videosSection) {
-  videosSection.innerHTML = `
-    <div class="grid">
-      ${videos.map(item => youtubeVideoCard(item)).join("")}
-    </div>`;
+
+if (videosSection) {
+  videosSection.innerHTML = videos.length
+    ? `<div class="grid">
+         ${videos.map(item => youtubeVideoCard(item)).join("")}
+       </div>`
+    : `<div class="notice">
+         No recent videos available right now.
+         <div class="actions">
+           <a class="btn"
+              href="https://www.youtube.com/@zubairtechtalks"
+              target="_blank"
+              rel="noopener noreferrer">
+             Watch on YouTube ↗
+           </a>
+         </div>
+       </div>`;
 }
 
 const tipsSection = document.getElementById("homepage-tips");
