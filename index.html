@@ -782,7 +782,7 @@ nav {
       });
     }
   
-    function safeURL(value) {
+    function safeURL(value) card(){
       try {
         const url = new URL(value);
         return ["https:", "http:"].includes(url.protocol) ? url.href : "";
@@ -792,6 +792,55 @@ nav {
     }
   
     
+
+function card(item, emoji) {
+  const title = escapeHTML(item.title || "Untitled");
+  const description = escapeHTML(item.description || "");
+  const imageURL = safeURL(item.image_url || "");
+  const externalURL = safeURL(item.external_url || "");
+
+  const isDeal = item.content_type === "deal";
+
+  if (isDeal) {
+    return `
+      <article class="card">
+        <div class="emoji">${emoji}</div>
+        ${imageURL ? `
+          <img src="${imageURL}"
+               alt="${title}"
+               loading="lazy"
+               style="width:100%;max-height:180px;object-fit:contain;border-radius:10px">
+        ` : ""}
+        <h3>${title}</h3>
+        <p>${description}</p>
+        ${externalURL ? `
+          <a href="${externalURL}"
+             target="_blank"
+             rel="noopener noreferrer">View Deal ↗</a>
+        ` : ""}
+      </article>
+    `;
+  }
+
+  return `
+    <article class="card">
+      <div class="emoji">${emoji}</div>
+      ${imageURL ? `
+        <img src="${imageURL}"
+             alt="${title}"
+             loading="lazy"
+             style="width:100%;max-height:180px;object-fit:cover;border-radius:10px">
+      ` : ""}
+      <h3>${title}</h3>
+      <p>${description}</p>
+      ${externalURL ? `
+        <a href="${externalURL}"
+           target="_blank"
+           rel="noopener noreferrer">Read More ↗</a>
+      ` : ""}
+    </article>
+  `;
+}
 
 function getYouTubeId(value) {
   try {
