@@ -12,7 +12,7 @@ FEED_URL = (
     f"?channel_id={CHANNEL_ID}"
 )
 
-SUPABASE_URL = os.environ["https://aewbseqmlriyoeugvchm.supabase.co"].rstrip("/")
+SUPABASE_URL = os.environ["SUPABASE_URL"].rstrip("/")
 SUPABASE_KEY = os.environ["SUPABASE_SERVICE_ROLE_KEY"]
 TABLE_URL = f"{SUPABASE_URL}/rest/v1/content"
 
