@@ -91,16 +91,25 @@
     
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="./supabase-config.js"></script>
+
 <script>
 (async function () {
   const container = document.querySelector("main");
-  if (!container || !window.supabase ||
-      !window.SUPABASE_URL ||
-      !window.SUPABASE_PUBLISHABLE_KEY) return;
+
+  if (
+    !container ||
+    !window.supabase ||
+    !window.SUPABASE_URL ||
+    !window.SUPABASE_PUBLISHABLE_KEY
+  ) {
+    console.error("Supabase configuration is missing.");
+    return;
+  }
 
   const section = document.createElement("section");
   section.className = "article";
-  section.innerHTML = "<h2>Latest Tech Tips</h2><p>Loading tips...</p>";
+  section.innerHTML =
+    "<h2>Latest Tech Tips</h2><p>Loading tips...</p>";
   container.appendChild(section);
 
   const client = window.supabase.createClient(
@@ -117,34 +126,42 @@
 
   if (error) {
     section.innerHTML =
-      "<h2>Latest Tech Tips</h2><p>Tips are temporarily unavailable.</p>";
-    console.error(error.message);
+      "<h2>Latest Tech Tips</h2>" +
+      "<p>Tips are temporarily unavailable.</p>";
+    console.error("Tech Tips error:", error.message);
     return;
   }
 
-  if (!data || data.length === 0) {
-    section.innerHTML =
-      "<h2>Latest Tech Tips</h2><p>No published tech tips yet.</p>";
+  // Exclude Product Reviews from Tech Tips.
+  const tips = (data || []).filter(item =>
+    !/^Review:/i.test((item.title || "").trim())
+  );
+
+  section.replaceChildren();
+
+  const heading = document.createElement("h2");
+  heading.textContent = "Latest Tech Tips";
+  section.appendChild(heading);
+
+  if (tips.length === 0) {
+    const message = document.createElement("p");
+    message.textContent = "No published tech tips yet.";
+    section.appendChild(message);
     return;
   }
 
-  section.innerHTML = "<h2>Latest Tech Tips</h2>";
-
-  data.forEach(item => {
+  tips.forEach(item => {
     const article = document.createElement("article");
     article.style.marginBottom = "24px";
 
     const title = document.createElement("h3");
     title.textContent = item.title || "Tech Tip";
-
-    const description = document.createElement("p");
-    description.textContent = item.description || "";
-
-    article.append(title, description);
+    article.appendChild(title);
 
     if (item.image_url) {
       try {
         const url = new URL(item.image_url);
+
         if (["https:", "http:"].includes(url.protocol)) {
           const img = document.createElement("img");
           img.src = url.href;
@@ -157,9 +174,16 @@
       } catch {}
     }
 
+    if (item.description) {
+      const description = document.createElement("p");
+      description.textContent = item.description;
+      article.appendChild(description);
+    }
+
     if (item.external_url) {
       try {
         const url = new URL(item.external_url);
+
         if (["https:", "http:"].includes(url.protocol)) {
           const link = document.createElement("a");
           link.href = url.href;
@@ -175,8 +199,5 @@
   });
 })();
 </script>
-</body>
-</html>
-
 </body>
 </html>
