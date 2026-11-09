@@ -1012,13 +1012,17 @@ function renderContent() {
           : "No updates published yet. Check back soon!"
       }</div>`;
 
-  dealsGrid.innerHTML = filteredDeals.length
-    ? filteredDeals.map(createCard).join("")
-    : `<div class="empty-message">${
-        currentLanguage === "te"
-          ? "మీ సెర్చ్‌కు సరిపోయే డీల్స్ లేవు."
-          : "No matching deals found."
-      }</div>`;
+  const displayedDeals = filteredDeals.slice(0, visibleDeals);
+
+dealsGrid.innerHTML = filteredDeals.length
+  ? displayedDeals.map(createCard).join("")
+  : `<div class="empty-message">${
+      currentLanguage === "te"
+        ? "మీ సెర్చ్‌కు సరిపోయే డీల్స్ లేవు."
+        : "No matching deals found."
+    }</div>`;
+
+loadMoreDeals.hidden = filteredDeals.length <= visibleDeals;
 
   dealCount.textContent = currentLanguage === "te"
     ? `మొత్తం ${filteredDeals.length} డీల్స్`
