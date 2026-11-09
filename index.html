@@ -1030,8 +1030,20 @@ loadMoreDeals.hidden = filteredDeals.length <= visibleDeals;
 }
 
 // Search and category filter events
-dealSearch.addEventListener("input", renderContent);
-dealCategory.addEventListener("change", renderContent);
+dealSearch.addEventListener("input", () => {
+  visibleDeals = 6;
+  renderContent();
+});
+
+dealCategory.addEventListener("change", () => {
+  visibleDeals = 6;
+  renderContent();
+});
+
+loadMoreDeals.addEventListener("click", () => {
+  visibleDeals += dealsPerPage;
+  renderContent();
+});
 
 // Latest content filters
 document.querySelectorAll("[data-filter]").forEach(card => {
@@ -1049,6 +1061,7 @@ document.getElementById("showAll").addEventListener("click", () => {
 document.getElementById("showDeals").addEventListener("click", () => {
   dealSearch.value = "";
   dealCategory.value = "all";
+   visibleDeals = 6;
   renderContent();
 });
 
