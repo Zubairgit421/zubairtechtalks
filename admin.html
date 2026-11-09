@@ -350,16 +350,30 @@
             </div>
           </div>
 
-          <div class="field">
-            <label for="imageUrl">Image URL</label>
-            <input
-  type="url"
-  id="image_url"
-  placeholder="https://..."
-/>
-            <input id="imageUrl" type="url" placeholder="https://example.com/image.jpg">
-            <small>Paste a publicly accessible image URL. Image upload can be added after Storage is configured.</small>
-          </div>
+         <div class="field">
+  <label for="imageUrl">Image URL</label>
+  <input id="imageUrl" type="url" placeholder="https://example.com/image.jpg">
+
+  <label for="imageFile" style="margin-top:12px;">Or upload an image</label>
+  <input
+    id="imageFile"
+    type="file"
+    accept="image/jpeg,image/png,image/webp,image/gif"
+  >
+
+  <small>Supported: JPG, PNG, WEBP and GIF. Maximum size: 5 MB.</small>
+
+  <button class="btn btn-light" id="uploadImageBtn" type="button" style="margin-top:10px;">
+    Upload Image
+  </button>
+
+  <div id="imageUploadMessage" class="message" role="status"></div>
+
+  <div id="imagePreview" class="hidden" style="margin-top:12px;">
+    <img id="previewImage" alt="Image preview"
+      style="max-width:220px;max-height:160px;border-radius:10px;object-fit:contain;">
+  </div>
+</div>
 
           <div class="field">
             <label for="externalUrl">External link</label>
