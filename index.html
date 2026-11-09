@@ -861,6 +861,9 @@
     const languageBtn = document.getElementById("languageBtn");
     const menuBtn = document.getElementById("menuBtn");
     const navLinks = document.getElementById("navLinks");
+    const dealSearch = document.getElementById("dealSearch");
+const dealCategory = document.getElementById("dealCategory");
+const dealCount = document.getElementById("dealCount");
 
     let currentLanguage = "en";
     let allContent = [];
@@ -940,6 +943,28 @@
     }
 
     function renderContent() {
+      function renderDealCategories() {
+  const selectedCategory = dealCategory.value;
+
+  const categories = [
+    ...new Set(
+      allContent
+        .filter(item => item.content_type === "deal")
+        .map(item => item.category?.trim())
+        .filter(Boolean)
+    )
+  ].sort();
+
+  dealCategory.innerHTML =
+    '<option value="all">All categories</option>' +
+    categories.map(category =>
+      `<option value="${escapeHTML(category)}">${escapeHTML(category)}</option>`
+    ).join("");
+
+  dealCategory.value = categories.includes(selectedCategory)
+    ? selectedCategory
+    : "all";
+}
       const latestItems = activeFilter === "all"
         ? allContent.filter(item => item.content_type !== "deal")
         : allContent.filter(item => item.content_type === activeFilter && item.content_type !== "deal");
