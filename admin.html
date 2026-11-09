@@ -619,6 +619,101 @@
     }
 
     document.getElementById("resetBtn").addEventListener("click", resetEditor);
+    const imageFileInput = document.getElementById("imageFile");
+const uploadImageBtn = document.getElementById("uploadImageBtn");
+const imageUploadMessage = document.getElementById("imageUploadMessage");
+const imagePreview = document.getElementById("imagePreview");
+const previewImage = document.getElementById("previewImage");
+const imageUrlInput = document.getElementById("imageUrl");
+
+const allowedImageTypes = [
+  "image/jpeg",
+  "image/png",
+  "image/webp",
+  "image/gif"
+];
+
+imageFileInput.addEventListener("change", () => {
+  clearMessage(imageUploadMessage);
+
+  const file = imageFileInput.files[0];
+
+  if (!file) return;
+
+  if (!allowedImageTypes.includes(file.type)) {
+    imageFileInput.value = "";
+    showMessage(imageUploadMessage, "Please select JPG, PNG, WEBP or GIF.", "error");
+    imagePreview.classList.add("hidden");
+    return;
+  }
+
+  if (file.size > 5 * 1024 * 1024) {
+    imageFileInput.value = "";
+    showMessage(imageUploadMessage, "Image must be smaller than 5 MB.", "error");
+    imagePreview.classList.add("hidden");
+    return;
+  }
+
+  previewImage.src = URL.createObjectURL(file);
+  imagePreview.classList.remove("hidden");
+  showMessage(imageUploadMessage, "Image selected successfully.", "success");
+});
+
+uploadImageBtn.addEventListener("click", async () => {
+  const file = imageFileInput.files[0];
+
+  clearMessage(imageUploadMessage);
+
+  if (!currentUser) {
+    showMessage(imageUploadMessage, "Please log in again.", "error");
+    return;
+  }
+
+  if (!file) {
+    showMessage(imageUploadMessage, "Please select an image first.", "error");
+    return;
+  }
+
+  if (!allowedImageTypes.includes(file.type) || file.size > 5 * 1024 * 1024) {
+    showMessage(imageUploadMessage, "Select a valid image up to 5 MB.", "error");
+    return;
+  }
+
+  uploadImageBtn.disabled = true;
+  uploadImageBtn.textContent = "Uploading...";
+
+  try {
+    const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, "_");
+    const filePath = `${currentUser.id}/${crypto.randomUUID()}-${safeName}`;
+
+    const { error } = await client.storage
+      .from("deal-images")
+      .upload(filePath, file, {
+        cacheControl: "3600",
+        upsert: false,
+        contentType: file.type
+      });
+
+    if (error) throw error;
+
+    const { data } = client.storage
+      .from("deal-images")
+      .getPublicUrl(filePath);
+
+    imageUrlInput.value = data.publicUrl;
+
+    previewImage.src = data.publicUrl;
+    imagePreview.classList.remove("hidden");
+
+    showMessage(imageUploadMessage, "Image uploaded successfully!", "success");
+
+  } catch (error) {
+    showMessage(imageUploadMessage, "Upload failed: " + error.message, "error");
+  } finally {
+    uploadImageBtn.disabled = false;
+    uploadImageBtn.textContent = "Upload Image";
+  }
+});
 
     function getFormValues() {
       const currentPriceValue = document.getElementById("currentPrice").value;
