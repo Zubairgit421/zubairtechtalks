@@ -326,6 +326,43 @@
       grid-template-columns: repeat(3, 1fr);
       gap: 21px;
     }
+    .deal-filters {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.deal-filters input,
+.deal-filters select {
+  width: 100%;
+  min-width: 0;
+  padding: 14px 15px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: white;
+  color: var(--ink);
+  font: inherit;
+  outline: none;
+}
+
+.deal-filters input:focus,
+.deal-filters select:focus {
+  border-color: var(--blue);
+  box-shadow: 0 0 0 3px rgba(23,105,255,.10);
+}
+
+.deal-count {
+  color: var(--muted);
+  font-size: 13px;
+  margin-bottom: 18px;
+}
+
+@media(max-width:600px) {
+  .deal-filters {
+    grid-template-columns: 1fr;
+  }
+}
 
     .content-card {
       background: white;
@@ -732,9 +769,24 @@
           </div>
           <a href="#deals" class="text-link" id="showDeals" data-en="View deals" data-te="డీల్స్ చూడండి">View deals →</a>
         </div>
-        <div class="content-grid" id="dealsGrid">
-          <div class="loading">Loading deals...</div>
-        </div>
+        <div class="deal-filters">
+  <input
+    type="search"
+    id="dealSearch"
+    placeholder="Search deals by product name..."
+    aria-label="Search deals"
+  >
+
+  <select id="dealCategory" aria-label="Filter deals by category">
+    <option value="all">All categories</option>
+  </select>
+</div>
+
+<p class="deal-count" id="dealCount" aria-live="polite"></p>
+
+<div class="content-grid" id="dealsGrid">
+  <div class="loading">Loading deals...</div>
+</div>
       </div>
     </section>
 
