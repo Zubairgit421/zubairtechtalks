@@ -942,8 +942,7 @@ const dealCount = document.getElementById("dealCount");
       `;
     }
 
-    function renderContent() {
-      function renderDealCategories() {
+function renderDealCategories() {
   const selectedCategory = dealCategory.value;
 
   const categories = [
@@ -965,63 +964,107 @@ const dealCount = document.getElementById("dealCount");
     ? selectedCategory
     : "all";
 }
-      const latestItems = activeFilter === "all"
-        ? allContent.filter(item => item.content_type !== "deal")
-        : allContent.filter(item => item.content_type === activeFilter && item.content_type !== "deal");
 
-      const dealItems = allContent.filter(item => item.content_type === "deal");
+function renderContent() {
+  const latestItems = activeFilter === "all"
+    ? allContent.filter(item => item.content_type !== "deal")
+    : allContent.filter(item =>
+        item.content_type === activeFilter &&
+        item.content_type !== "deal"
+      );
 
-      latestGrid.innerHTML = latestItems.length
-        ? latestItems.map(createCard).join("")
-        : `<div class="empty-message">${currentLanguage === "te" ? "ఇంకా కంటెంట్ అందుబాటులో లేదు. త్వరలో కొత్త అప్‌డేట్స్ వస్తాయి!" : "No updates published yet. Check back soon!"}</div>`;
+  const searchTerm = dealSearch.value.trim().toLowerCase();
+  const selectedCategory = dealCategory.value;
 
-      dealsGrid.innerHTML = dealItems.length
-        ? dealItems.map(createCard).join("")
-        : `<div class="empty-message">${currentLanguage === "te" ? "ఇంకా డీల్స్ ప్రచురించలేదు. త్వరలో కొత్త డీల్స్ వస్తాయి!" : "No deals published yet. Check back soon!"}</div>`;
-    }
+  const allDeals = allContent.filter(
+    item => item.content_type === "deal"
+  );
 
-    document.querySelectorAll("[data-filter]").forEach(card => {
-      card.addEventListener("click", () => {
-        activeFilter = card.dataset.filter;
-        renderContent();
-      });
-    });
+  const filteredDeals = allDeals.filter(item => {
+    const searchableText = [
+      item.title_en,
+      item.title_te,
+      item.description_en,
+      item.description_te,
+      item.category
+    ].join(" ").toLowerCase();
 
-    document.getElementById("showAll").addEventListener("click", () => {
-      activeFilter = "all";
-      renderContent();
-    });
+    const matchesSearch = searchableText.includes(searchTerm);
 
-    document.getElementById("showDeals").addEventListener("click", () => {
-      activeFilter = "all";
-      renderContent();
-    });
+    const matchesCategory =
+      selectedCategory === "all" ||
+      item.category?.trim() === selectedCategory;
 
-    async function loadContent() {
-      try {
-        if (!window.supabaseClient) {
-          throw new Error("Supabase client not found. Check supabase-config.js.");
-        }
+    return matchesSearch && matchesCategory;
+  });
 
-        const { data, error } = await window.supabaseClient
-          .from("site_content")
-          .select("id,title_en,title_te,description_en,description_te,content_type,image_url,external_url,current_price,original_price,category,status,created_at")
-          .eq("status", "published")
-          .order("created_at", { ascending: false });
+  latestGrid.innerHTML = latestItems.length
+    ? latestItems.map(createCard).join("")
+    : `<div class="empty-message">${
+        currentLanguage === "te"
+          ? "ఇంకా కంటెంట్ అందుబాటులో లేదు."
+          : "No updates published yet. Check back soon!"
+      }</div>`;
 
-        if (error) throw error;
+  dealsGrid.innerHTML = filteredDeals.length
+    ? filteredDeals.map(createCard).join("")
+    : `<div class="empty-message">${
+        currentLanguage === "te"
+          ? "మీ సెర్చ్‌కు సరిపోయే డీల్స్ లేవు."
+          : "No matching deals found."
+      }</div>`;
 
-        allContent = data || [];
-        renderContent();
-      } catch (error) {
-        console.error("Content loading error:", error);
-        const message = "Unable to load content right now. Please check back soon.";
-        latestGrid.innerHTML = `<div class="empty-message">${message}</div>`;
-        dealsGrid.innerHTML = `<div class="empty-message">${message}</div>`;
-      }
-    }
+  dealCount.textContent = currentLanguage === "te"
+    ? `మొత్తం ${filteredDeals.length} డీల్స్`
+    : `Showing ${filteredDeals.length} of ${allDeals.length} deals`;
+}
 
-    loadContent();
+// Search and category filter events
+dealSearch.addEventListener("input", renderContent);
+dealCategory.addEventListener("change", renderContent);
+
+// Latest content filters
+document.querySelectorAll("[data-filter]").forEach(card => {
+  card.addEventListener("click", () => {
+    activeFilter = card.dataset.filter;
+    renderContent();
+  });
+});
+
+document.getElementById("showAll").addEventListener("click", () => {
+  activeFilter = "all";
+  renderContent();
+});
+
+document.getElementById("showDeals").addEventListener("click", () => {
+  dealSearch.value = "";
+  dealCategory.value = "all";
+  renderContent();
+});
+
+// Load published content from Supabase
+async function loadContent() {
+  const { data, error } = await window.supabaseClient
+    .from("site_content")
+    .select("*")
+    .eq("status", "published")
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    console.error("Error loading content:", error);
+    latestGrid.innerHTML =
+      '<div class="empty-message">Unable to load content. Please try again later.</div>';
+    dealsGrid.innerHTML =
+      '<div class="empty-message">Unable to load deals. Please try again later.</div>';
+    return;
+  }
+
+  allContent = data || [];
+  renderDealCategories();
+  renderContent();
+}
+
+loadContent();
   </script>
 </body>
 </html>
