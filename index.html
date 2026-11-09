@@ -918,35 +918,66 @@ const dealsPerPage = 6;
         ? item.description_te : item.description_en;
     }
 
-    function createCard(item) {
-      const title = escapeHTML(getTitle(item));
-      const description = escapeHTML(getDescription(item));
-      const type = escapeHTML(item.content_type);
-      const image = item.image_url
-        ? `<img class="card-image" src="${escapeHTML(item.image_url)}" alt="${title}" loading="lazy">`
-        : `<div class="card-placeholder">✦</div>`;
+    
+function createCard(item) {
+  const title = escapeHTML(getTitle(item));
+  const description = escapeHTML(getDescription(item));
+  const type = escapeHTML(item.content_type);
 
-      const price = item.current_price !== null && item.current_price !== ""
-        ? `<div class="price">₹${Number(item.current_price).toLocaleString("en-IN")}${item.original_price ? `<span class="old-price">₹${Number(item.original_price).toLocaleString("en-IN")}</span>` : ""}</div>`
-        : "";
+  const image = item.image_url
+    ? `<img class="card-image" src="${escapeHTML(item.image_url)}" alt="${title}" loading="lazy">`
+    : `<div class="card-placeholder">✦</div>`;
 
-      const action = item.external_url
-        ? `<a class="card-action" href="${escapeHTML(item.external_url)}" target="_blank" rel="noopener noreferrer">${item.content_type === "deal" ? "View deal →" : "Explore →"}</a>`
-        : "";
+  let price = "";
+  let discount = "";
 
-      return `
-        <article class="content-card">
-          ${image}
-          <div class="card-body">
-            <span class="card-tag">${type}</span>
-            <h3>${title}</h3>
-            <p>${description}</p>
-            ${price}
-            ${action}
-          </div>
-        </article>
-      `;
+  if (item.current_price !== null && item.current_price !== "") {
+    const currentPrice = Number(item.current_price);
+    const originalPrice = Number(item.original_price);
+
+    if (item.original_price && originalPrice > currentPrice) {
+      const percentage = Math.round(
+        ((originalPrice - currentPrice) / originalPrice) * 100
+      );
+
+      discount = `<span class="discount-badge">${percentage}% OFF</span>`;
     }
+
+    price = `
+      <div class="price">
+        ₹${currentPrice.toLocaleString("en-IN")}
+        ${
+          item.original_price && originalPrice > currentPrice
+            ? `<span class="old-price">₹${originalPrice.toLocaleString("en-IN")}</span>`
+            : ""
+        }
+      </div>
+    `;
+  }
+
+  const action = item.external_url
+    ? `<a class="card-action" href="${escapeHTML(item.external_url)}" target="_blank" rel="noopener noreferrer">
+        ${item.content_type === "deal" ? "Buy Now →" : "Explore →"}
+      </a>`
+    : "";
+
+  return `
+    <article class="content-card">
+      <div class="card-image-wrap">
+        ${image}
+        ${item.content_type === "deal" ? discount : ""}
+      </div>
+      <div class="card-body">
+        <span class="card-tag">${type}</span>
+        <h3>${title}</h3>
+        <p>${description}</p>
+        ${price}
+        ${action}
+      </div>
+    </article>
+  `;
+}
+
 
 function renderDealCategories() {
   const selectedCategory = dealCategory.value;
