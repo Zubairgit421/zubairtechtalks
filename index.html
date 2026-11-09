@@ -1081,6 +1081,15 @@ function renderDealCategories() {
 }
 
 function renderContent() {
+    const featuredDealsGrid = document.getElementById("featuredDealsGrid");
+
+  const featuredDeals = allContent
+    .filter(item => item.content_type === "deal")
+    .slice(0, 3);
+
+  featuredDealsGrid.innerHTML = featuredDeals.length
+    ? featuredDeals.map(createCard).join("")
+    : '<p class="loading">No featured deals available yet.</p>';
   const latestItems = activeFilter === "all"
     ? allContent.filter(item => item.content_type !== "deal")
     : allContent.filter(item =>
