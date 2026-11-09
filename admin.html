@@ -1,0 +1,804 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#ffffff">
+  <title>Admin Dashboard | zubairtechtalks</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --blue: #1769ff;
+      --ink: #101828;
+      --muted: #667085;
+      --line: #e5eaf2;
+      --bg: #f6f8fc;
+      --white: #fff;
+      --green: #138a54;
+      --red: #d92d20;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: "DM Sans", sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.5;
+    }
+
+    button, input, textarea, select { font: inherit; }
+
+    button { cursor: pointer; }
+
+    .topbar {
+      background: white;
+      border-bottom: 1px solid var(--line);
+      padding: 16px 0;
+    }
+
+    .container {
+      width: min(1150px, 94%);
+      margin: auto;
+    }
+
+    .topbar-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+    }
+
+    .brand {
+      font-family: "Space Grotesk", sans-serif;
+      font-size: 23px;
+      font-weight: 700;
+      letter-spacing: -1px;
+    }
+
+    .brand span { color: var(--blue); }
+
+    .top-actions {
+      display: flex;
+      gap: 9px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      border: 0;
+      border-radius: 9px;
+      padding: 10px 16px;
+      font-weight: 700;
+      font-size: 13px;
+      text-decoration: none;
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .btn-primary { background: var(--blue); color: white; }
+    .btn-primary:hover { background: #0752dc; }
+    .btn-light { background: #edf3ff; color: var(--blue); }
+    .btn-danger { background: #fff0ef; color: var(--red); }
+    .btn:disabled { opacity: .5; cursor: not-allowed; }
+
+    main { padding: 35px 0 60px; }
+
+    .page-heading {
+      margin-bottom: 25px;
+    }
+
+    .page-heading h1 {
+      font-family: "Space Grotesk", sans-serif;
+      font-size: 30px;
+      letter-spacing: -1px;
+    }
+
+    .page-heading p {
+      color: var(--muted);
+      font-size: 14px;
+      margin-top: 5px;
+    }
+
+    .panel {
+      background: white;
+      border: 1px solid var(--line);
+      border-radius: 15px;
+      padding: 24px;
+      margin-bottom: 22px;
+      box-shadow: 0 3px 12px rgba(16,24,40,.025);
+    }
+
+    .panel h2 {
+      font-size: 18px;
+      margin-bottom: 18px;
+    }
+
+    .login-panel {
+      max-width: 430px;
+      margin: 60px auto;
+    }
+
+    .field-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0,1fr));
+      gap: 16px;
+    }
+
+    .field { margin-bottom: 16px; }
+
+    .field label {
+      display: block;
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 7px;
+    }
+
+    .field input, .field textarea, .field select {
+      width: 100%;
+      padding: 11px 12px;
+      border: 1px solid #d7deea;
+      border-radius: 9px;
+      background: white;
+      color: var(--ink);
+      outline: none;
+      font-size: 14px;
+    }
+
+    .field input:focus, .field textarea:focus, .field select:focus {
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px rgba(23,105,255,.1);
+    }
+
+    .field textarea {
+      min-height: 95px;
+      resize: vertical;
+    }
+
+    .field small {
+      display: block;
+      margin-top: 5px;
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .form-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 5px;
+    }
+
+    .message {
+      display: none;
+      margin: 14px 0;
+      padding: 11px 13px;
+      border-radius: 9px;
+      font-size: 13px;
+      overflow-wrap: anywhere;
+    }
+
+    .message.show { display: block; }
+    .message.success { background: #eaf8f0; color: #126b42; }
+    .message.error { background: #fff0ef; color: #b42318; }
+    .message.info { background: #edf3ff; color: #174ea6; }
+
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 17px;
+    }
+
+    .toolbar select {
+      padding: 10px;
+      border: 1px solid var(--line);
+      border-radius: 9px;
+      background: white;
+    }
+
+    .table-wrap { overflow-x: auto; }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 650px;
+    }
+
+    th, td {
+      text-align: left;
+      padding: 13px 11px;
+      border-bottom: 1px solid var(--line);
+      font-size: 13px;
+      vertical-align: middle;
+    }
+
+    th {
+      color: var(--muted);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+    }
+
+    .status {
+      display: inline-block;
+      padding: 4px 8px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .published { background: #eaf8f0; color: #138a54; }
+    .draft { background: #fff5e5; color: #a15c00; }
+
+    .table-actions {
+      display: flex;
+      gap: 7px;
+    }
+
+    .table-actions button {
+      border: 0;
+      padding: 7px 10px;
+      border-radius: 7px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .hidden { display: none !important; }
+
+    .muted { color: var(--muted); font-size: 13px; }
+
+    @media(max-width: 650px) {
+      .field-grid { grid-template-columns: 1fr; gap: 0; }
+      .panel { padding: 17px; }
+      .page-heading h1 { font-size: 25px; }
+      .brand { font-size: 19px; }
+      .topbar-inner { align-items: flex-start; }
+      .top-actions { justify-content: flex-end; }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <a class="brand" href="index.html">zubair<span>techtalks</span></a>
+
+      <div class="top-actions">
+        <a class="btn btn-light" href="index.html">View website ↗</a>
+        <button class="btn btn-danger hidden" id="logoutBtn" type="button">Log out</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section id="loginSection" class="panel login-panel">
+      <h2>Admin login</h2>
+      <p class="muted">Sign in with your authorized administrator account.</p>
+
+      <div style="margin-top:22px">
+        <div class="field">
+          <label for="email">Email address</label>
+          <input id="email" type="email" autocomplete="username" placeholder="Enter your email" required>
+        </div>
+
+        <div class="field">
+          <label for="password">Password</label>
+          <input id="password" type="password" autocomplete="current-password" placeholder="Enter your password" required>
+        </div>
+
+        <button class="btn btn-primary" id="loginBtn" type="button" style="width:100%">Log in</button>
+        <div class="message" id="loginMessage" role="status"></div>
+      </div>
+    </section>
+
+    <section id="dashboardSection" class="hidden">
+      <div class="page-heading">
+        <h1>Admin Dashboard</h1>
+        <p>Manage your tech news, videos, deals and guides.</p>
+      </div>
+
+      <section class="panel" id="editorPanel">
+        <h2 id="formTitle">Add new content</h2>
+
+        <form id="contentForm">
+          <input type="hidden" id="contentId">
+
+          <div class="field-grid">
+            <div class="field">
+              <label for="contentType">Content type *</label>
+              <select id="contentType" required>
+                <option value="news">Tech News</option>
+                <option value="video">Video</option>
+                <option value="deal">Deal</option>
+                <option value="guide">Guide</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label for="category">Category</label>
+              <input id="category" type="text" placeholder="Mobiles, AI, Accessories...">
+            </div>
+          </div>
+
+          <div class="field-grid">
+            <div class="field">
+              <label for="titleEn">Title (English) *</label>
+              <input id="titleEn" type="text" required placeholder="Enter English title">
+            </div>
+
+            <div class="field">
+              <label for="titleTe">Title (Telugu)</label>
+              <input id="titleTe" type="text" placeholder="తెలుగు టైటిల్">
+            </div>
+          </div>
+
+          <div class="field-grid">
+            <div class="field">
+              <label for="descriptionEn">Description (English)</label>
+              <textarea id="descriptionEn" placeholder="Enter English description"></textarea>
+            </div>
+
+            <div class="field">
+              <label for="descriptionTe">Description (Telugu)</label>
+              <textarea id="descriptionTe" placeholder="తెలుగులో వివరణ"></textarea>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="imageUrl">Image URL</label>
+            <input id="imageUrl" type="url" placeholder="https://example.com/image.jpg">
+            <small>Paste a publicly accessible image URL. Image upload can be added after Storage is configured.</small>
+          </div>
+
+          <div class="field">
+            <label for="externalUrl">External link</label>
+            <input id="externalUrl" type="url" placeholder="https://...">
+            <small>For deals, paste your affiliate product link. For videos or guides, paste the relevant link.</small>
+          </div>
+
+          <div class="field-grid">
+            <div class="field">
+              <label for="currentPrice">Current price (₹)</label>
+              <input id="currentPrice" type="number" min="0" step="0.01" placeholder="999">
+            </div>
+
+            <div class="field">
+              <label for="originalPrice">Original price (₹)</label>
+              <input id="originalPrice" type="number" min="0" step="0.01" placeholder="1499">
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="contentStatus">Publication status</label>
+            <select id="contentStatus">
+              <option value="draft">Save as draft</option>
+              <option value="published">Publish on website</option>
+            </select>
+          </div>
+
+          <div class="form-actions">
+            <button class="btn btn-primary" id="saveBtn" type="submit">Save content</button>
+            <button class="btn btn-light" id="resetBtn" type="button">Clear form</button>
+          </div>
+
+          <div class="message" id="formMessage" role="status"></div>
+        </form>
+      </section>
+
+      <section class="panel">
+        <h2>Manage content</h2>
+
+        <div class="toolbar">
+          <select id="filterType" aria-label="Filter by content type">
+            <option value="all">All types</option>
+            <option value="news">Tech News</option>
+            <option value="video">Videos</option>
+            <option value="deal">Deals</option>
+            <option value="guide">Guides</option>
+          </select>
+
+          <select id="filterStatus" aria-label="Filter by status">
+            <option value="all">All statuses</option>
+            <option value="published">Published</option>
+            <option value="draft">Drafts</option>
+          </select>
+
+          <button class="btn btn-light" id="refreshBtn" type="button">↻ Refresh</button>
+        </div>
+
+        <div class="message" id="listMessage" role="status"></div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Title</th>
+                <th>Type</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="contentTable">
+              <tr><td colspan="4" class="muted">Loading content...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js"></script>
+
+  <script>
+    const client = window.supabaseClient;
+
+    const loginSection = document.getElementById("loginSection");
+    const dashboardSection = document.getElementById("dashboardSection");
+    const loginBtn = document.getElementById("loginBtn");
+    const logoutBtn = document.getElementById("logoutBtn");
+    const loginMessage = document.getElementById("loginMessage");
+    const formMessage = document.getElementById("formMessage");
+    const listMessage = document.getElementById("listMessage");
+    const contentForm = document.getElementById("contentForm");
+    const contentTable = document.getElementById("contentTable");
+    const saveBtn = document.getElementById("saveBtn");
+
+    let currentUser = null;
+    let contentItems = [];
+
+    function showMessage(element, message, type = "info") {
+      element.textContent = message;
+      element.className = "message show " + type;
+    }
+
+    function clearMessage(element) {
+      element.textContent = "";
+      element.className = "message";
+    }
+
+    function escapeHTML(value) {
+      return String(value ?? "").replace(/[&<>"']/g, char => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;"
+      })[char]);
+    }
+
+    function showLogin() {
+      loginSection.classList.remove("hidden");
+      dashboardSection.classList.add("hidden");
+      logoutBtn.classList.add("hidden");
+    }
+
+    function showDashboard() {
+      loginSection.classList.add("hidden");
+      dashboardSection.classList.remove("hidden");
+      logoutBtn.classList.remove("hidden");
+    }
+
+    async function checkAdmin(user) {
+      const { data, error } = await client
+        .from("admin_users")
+        .select("user_id")
+        .eq("user_id", user.id)
+        .maybeSingle();
+
+      if (error) throw error;
+      return Boolean(data);
+    }
+
+    async function verifySession() {
+      if (!client) {
+        showMessage(loginMessage, "Supabase client not found. Check supabase-config.js.", "error");
+        return;
+      }
+
+      const { data, error } = await client.auth.getSession();
+
+      if (error) {
+        showMessage(loginMessage, error.message, "error");
+        return;
+      }
+
+      if (!data.session) {
+        showLogin();
+        return;
+      }
+
+      try {
+        const user = data.session.user;
+        const authorized = await checkAdmin(user);
+
+        if (!authorized) {
+          await client.auth.signOut();
+          showLogin();
+          showMessage(loginMessage, "This account is not authorized as an admin.", "error");
+          return;
+        }
+
+        currentUser = user;
+        showDashboard();
+        await loadContent();
+      } catch (error) {
+        showLogin();
+        showMessage(loginMessage, "Admin verification failed: " + error.message, "error");
+      }
+    }
+
+    loginBtn.addEventListener("click", async () => {
+      clearMessage(loginMessage);
+
+      if (!client) {
+        showMessage(loginMessage, "Supabase client not found. Check supabase-config.js.", "error");
+        return;
+      }
+
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value;
+
+      if (!email || !password) {
+        showMessage(loginMessage, "Enter your email and password.", "error");
+        return;
+      }
+
+      loginBtn.disabled = true;
+      loginBtn.textContent = "Logging in...";
+
+      try {
+        const { data, error } = await client.auth.signInWithPassword({ email, password });
+        if (error) throw error;
+
+        const authorized = await checkAdmin(data.user);
+
+        if (!authorized) {
+          await client.auth.signOut();
+          throw new Error("This account is not authorized as an admin.");
+        }
+
+        currentUser = data.user;
+        showDashboard();
+        await loadContent();
+      } catch (error) {
+        showMessage(loginMessage, error.message, "error");
+      } finally {
+        loginBtn.disabled = false;
+        loginBtn.textContent = "Log in";
+      }
+    });
+
+    logoutBtn.addEventListener("click", async () => {
+      const { error } = await client.auth.signOut();
+
+      if (error) {
+        showMessage(listMessage, error.message, "error");
+        return;
+      }
+
+      currentUser = null;
+      contentItems = [];
+      contentForm.reset();
+      resetEditor();
+      showLogin();
+      clearMessage(loginMessage);
+    });
+
+    function resetEditor() {
+      contentForm.reset();
+      document.getElementById("contentId").value = "";
+      document.getElementById("formTitle").textContent = "Add new content";
+      saveBtn.textContent = "Save content";
+      clearMessage(formMessage);
+    }
+
+    document.getElementById("resetBtn").addEventListener("click", resetEditor);
+
+    function getFormValues() {
+      const currentPriceValue = document.getElementById("currentPrice").value;
+      const originalPriceValue = document.getElementById("originalPrice").value;
+
+      return {
+        title_en: document.getElementById("titleEn").value.trim(),
+        title_te: document.getElementById("titleTe").value.trim() || null,
+        description_en: document.getElementById("descriptionEn").value.trim() || null,
+        description_te: document.getElementById("descriptionTe").value.trim() || null,
+        content_type: document.getElementById("contentType").value,
+        image_url: document.getElementById("imageUrl").value.trim() || null,
+        external_url: document.getElementById("externalUrl").value.trim() || null,
+        current_price: currentPriceValue === "" ? null : Number(currentPriceValue),
+        original_price: originalPriceValue === "" ? null : Number(originalPriceValue),
+        category: document.getElementById("category").value.trim() || null,
+        status: document.getElementById("contentStatus").value
+      };
+    }
+
+    contentForm.addEventListener("submit", async event => {
+      event.preventDefault();
+      clearMessage(formMessage);
+
+      if (!currentUser) {
+        showMessage(formMessage, "Please log in again.", "error");
+        return;
+      }
+
+      const values = getFormValues();
+
+      if (!values.title_en) {
+        showMessage(formMessage, "English title is required.", "error");
+        return;
+      }
+
+      if (
+        (values.current_price !== null && (!Number.isFinite(values.current_price) || values.current_price < 0)) ||
+        (values.original_price !== null && (!Number.isFinite(values.original_price) || values.original_price < 0))
+      ) {
+        showMessage(formMessage, "Enter valid non-negative prices.", "error");
+        return;
+      }
+
+      const id = document.getElementById("contentId").value;
+      saveBtn.disabled = true;
+      saveBtn.textContent = id ? "Updating..." : "Saving...";
+
+      try {
+        let result;
+
+        if (id) {
+          result = await client
+            .from("site_content")
+            .update(values)
+            .eq("id", Number(id))
+            .select("id")
+            .single();
+        } else {
+          result = await client
+            .from("site_content")
+            .insert(values)
+            .select("id")
+            .single();
+        }
+
+        if (result.error) throw result.error;
+
+        showMessage(formMessage, id ? "Content updated successfully." : "Content saved successfully.", "success");
+        resetEditor();
+        await loadContent();
+      } catch (error) {
+        showMessage(formMessage, "Could not save content: " + error.message, "error");
+      } finally {
+        saveBtn.disabled = false;
+        saveBtn.textContent = document.getElementById("contentId").value
+          ? "Update content" : "Save content";
+      }
+    });
+
+    async function loadContent() {
+      contentTable.innerHTML = '<tr><td colspan="4" class="muted">Loading...</td></tr>';
+      clearMessage(listMessage);
+
+      try {
+        const { data, error } = await client
+          .from("site_content")
+          .select("*")
+          .order("created_at", { ascending: false });
+
+        if (error) throw error;
+
+        contentItems = data || [];
+        renderTable();
+      } catch (error) {
+        contentTable.innerHTML = '<tr><td colspan="4">Unable to load content.</td></tr>';
+        showMessage(listMessage, error.message, "error");
+      }
+    }
+
+    function renderTable() {
+      const typeFilter = document.getElementById("filterType").value;
+      const statusFilter = document.getElementById("filterStatus").value;
+
+      const filtered = contentItems.filter(item => {
+        const typeMatch = typeFilter === "all" || item.content_type === typeFilter;
+        const statusMatch = statusFilter === "all" || item.status === statusFilter;
+        return typeMatch && statusMatch;
+      });
+
+      if (!filtered.length) {
+        contentTable.innerHTML = '<tr><td colspan="4" class="muted">No content found.</td></tr>';
+        return;
+      }
+
+      contentTable.innerHTML = filtered.map(item => `
+        <tr>
+          <td><strong>${escapeHTML(item.title_en)}</strong></td>
+          <td>${escapeHTML(item.content_type)}</td>
+          <td><span class="status ${item.status === "published" ? "published" : "draft"}">${escapeHTML(item.status)}</span></td>
+          <td>
+            <div class="table-actions">
+              <button class="btn-light" type="button" data-edit="${item.id}">Edit</button>
+              <button class="btn-danger" type="button" data-delete="${item.id}">Delete</button>
+            </div>
+          </td>
+        </tr>
+      `).join("");
+    }
+
+    function editContent(id) {
+      const item = contentItems.find(entry => String(entry.id) === String(id));
+      if (!item) return;
+
+      document.getElementById("contentId").value = item.id;
+      document.getElementById("contentType").value = item.content_type;
+      document.getElementById("category").value = item.category || "";
+      document.getElementById("titleEn").value = item.title_en || "";
+      document.getElementById("titleTe").value = item.title_te || "";
+      document.getElementById("descriptionEn").value = item.description_en || "";
+      document.getElementById("descriptionTe").value = item.description_te || "";
+      document.getElementById("imageUrl").value = item.image_url || "";
+      document.getElementById("externalUrl").value = item.external_url || "";
+      document.getElementById("currentPrice").value = item.current_price ?? "";
+      document.getElementById("originalPrice").value = item.original_price ?? "";
+      document.getElementById("contentStatus").value = item.status;
+
+      document.getElementById("formTitle").textContent = "Edit content";
+      saveBtn.textContent = "Update content";
+      clearMessage(formMessage);
+
+      document.getElementById("editorPanel").scrollIntoView({ behavior: "smooth" });
+    }
+
+    async function deleteContent(id) {
+      const item = contentItems.find(entry => String(entry.id) === String(id));
+      if (!item) return;
+
+      if (!confirm(`Delete "${item.title_en}" permanently?`)) return;
+
+      try {
+        const { error } = await client
+          .from("site_content")
+          .delete()
+          .eq("id", Number(id));
+
+        if (error) throw error;
+
+        showMessage(listMessage, "Content deleted successfully.", "success");
+        await loadContent();
+      } catch (error) {
+        showMessage(listMessage, "Delete failed: " + error.message, "error");
+      }
+    }
+
+    contentTable.addEventListener("click", event => {
+      const editButton = event.target.closest("[data-edit]");
+      const deleteButton = event.target.closest("[data-delete]");
+
+      if (editButton) editContent(editButton.dataset.edit);
+      if (deleteButton) deleteContent(deleteButton.dataset.delete);
+    });
+
+    document.getElementById("filterType").addEventListener("change", renderTable);
+    document.getElementById("filterStatus").addEventListener("change", renderTable);
+    document.getElementById("refreshBtn").addEventListener("click", loadContent);
+
+    if (client) {
+      verifySession();
+      client.auth.onAuthStateChange((event, session) => {
+        if (event === "SIGNED_OUT") {
+          currentUser = null;
+          showLogin();
+        }
+      });
+    } else {
+      showLogin();
+      showMessage(loginMessage, "Supabase client not found. Check supabase-config.js.", "error");
+    }
+  </script>
+</body>
+</html>
