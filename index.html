@@ -581,117 +581,58 @@
 
 </footer>
 
+
 <script>
-  // YouTube API will be connected in the next step.
-  const YOUTUBE_API_KEY = "ADD_YOUR_API_KEY_HERE";
-  const CHANNEL_HANDLE = "@zubairtechtalks";
+async function loadLatestVideos() {
+  const videoGrid = document.getElementById("videoGrid");
+  const channelId = "UCxvhyYARWKIg0HRX5z10_hQ";
 
-  document.getElementById("year").textContent =
-    new Date().getFullYear();
+  try {
+    const rssUrl = `https://www.youtube.com/feeds/videos.xml?channel_id=${channelId}`;
+    const apiUrl = "https://api.rss2json.com/v1/api.json?rss_url=" + encodeURIComponent(rssUrl);
 
-  async function loadYouTube() {
-    if (!YOUTUBE_API_KEY ||
-        YOUTUBE_API_KEY === "ADD_YOUR_API_KEY_HERE") {
-      return;
+    const response = await fetch(apiUrl);
+    if (!response.ok) throw new Error("Unable to fetch videos");
+
+    const data = await response.json();
+    if (data.status !== "ok" || !data.items.length) {
+      throw new Error("No videos found");
     }
 
-    const base = "https://www.googleapis.com/youtube/v3/";
+    videoGrid.innerHTML = "";
 
-    try {
-      const channelURL = new URL(base + "channels");
-      channelURL.search = new URLSearchParams({
-        part: "snippet,statistics,contentDetails",
-        forHandle: CHANNEL_HANDLE,
-        key: YOUTUBE_API_KEY
-      });
+    data.items.slice(0, 3).forEach(video => {
+      const videoId = video.guid.split(":").pop();
+      const card = document.createElement("a");
 
-      const channelResponse = await fetch(channelURL);
-      const channelData = await channelResponse.json();
+      card.className = "video-card";
+      card.href = `https://www.youtube.com/watch?v=${videoId}`;
+      card.target = "_blank";
+      card.rel = "noopener noreferrer";
 
-      if (!channelResponse.ok) {
-        throw new Error(channelData.error?.message || "YouTube API error");
-      }
+      const image = document.createElement("img");
+      image.src = `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`;
+      image.alt = video.title;
+      image.loading = "lazy";
 
-      const channel = channelData.items?.[0];
+      const title = document.createElement("h3");
+      title.textContent = video.title;
 
-      if (!channel) {
-        throw new Error("YouTube channel not found");
-      }
+      const label = document.createElement("p");
+      label.textContent = "Watch on YouTube ▶";
 
-      const stats = channel.statistics;
+      card.append(image, title, label);
+      videoGrid.appendChild(card);
+    });
 
-      document.getElementById("subscriberCount").textContent =
-        stats.hiddenSubscriberCount
-          ? "Hidden"
-          : Number(stats.subscriberCount).toLocaleString("en-IN") + "+";
-
-      document.getElementById("videoCount").textContent =
-        Number(stats.videoCount).toLocaleString("en-IN");
-
-      const uploadsPlaylist =
-        channel.contentDetails.relatedPlaylists.uploads;
-
-      const playlistURL = new URL(base + "playlistItems");
-      playlistURL.search = new URLSearchParams({
-        part: "snippet",
-        playlistId: uploadsPlaylist,
-        maxResults: "3",
-        key: YOUTUBE_API_KEY
-      });
-
-      const playlistResponse = await fetch(playlistURL);
-      const playlistData = await playlistResponse.json();
-
-      if (!playlistResponse.ok) {
-        throw new Error("Could not load latest videos");
-      }
-
-      const videos = playlistData.items || [];
-      const grid = document.getElementById("videoGrid");
-
-      if (!videos.length) {
-        grid.innerHTML = '<div class="loading">No videos found.</div>';
-        return;
-      }
-
-      grid.innerHTML = videos.map(item => {
-        const video = item.snippet;
-        const videoId = video.resourceId.videoId;
-        const title = video.title.replace(/[&<>"']/g, char => ({
-          "&": "&amp;", "<": "&lt;", ">": "&gt;",
-          '"': "&quot;", "'": "&#39;"
-        })[char]);
-
-        const thumbnail =
-          video.thumbnails.maxres?.url ||
-          video.thumbnails.high?.url ||
-          video.thumbnails.medium?.url;
-
-        return `
-          <a class="video-card"
-             href="https://www.youtube.com/watch?v=${encodeURIComponent(videoId)}"
-             target="_blank" rel="noopener">
-            <div class="video-thumb">
-              <img src="${thumbnail}" alt="${title}" loading="lazy">
-            </div>
-            <div class="video-info">
-              <h3>${title}</h3>
-              <span class="watch-link">WATCH VIDEO →</span>
-            </div>
-          </a>
-        `;
-      }).join("");
-
-    } catch (error) {
-      console.error("YouTube error:", error);
-      document.getElementById("subscriberCount").textContent = "Unavailable";
-      document.getElementById("videoGrid").innerHTML =
-        '<div class="loading">YouTube videos could not load. Please check the API configuration.</div>';
-    }
+  } catch (error) {
+    videoGrid.textContent = "Videos could not be loaded. Please visit our YouTube channel.";
   }
+}
 
-  loadYouTube();
+loadLatestVideos();
 </script>
+
 
 </body>
 </html>
