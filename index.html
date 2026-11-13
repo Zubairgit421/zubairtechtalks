@@ -475,27 +475,45 @@
     </div>
   </section>
 
-  <section id="deals">
-    <div class="container">
-      <div class="telegram-section">
-        <div class="telegram-icon">✈</div>
-        <div class="eyebrow">Exclusive Shopping Deals</div>
+  
+<section id="deals">
+  <div class="container">
+    <div class="telegram-section">
 
-        <h2>Don't Miss the <span class="blue-text">Best Deals!</span></h2>
+      <div class="eyebrow">🔥 EXCLUSIVE SHOPPING DEALS</div>
 
-        <p>
-          Find handpicked Amazon and Flipkart offers, smartphone deals,
-          accessories and exciting discounts through our Telegram channel.
-        </p>
+      <div class="telegram-icon">✈</div>
 
-        <a class="btn btn-blue"
-           href="https://t.me/zubairtechdeals"
-           target="_blank" rel="noopener">
-          ✈ Join Our Telegram Channel
-        </a>
+      <h2>
+        Discover the <span class="blue-text">Best Deals!</span>
+      </h2>
+
+      <p>
+        Don't pay more! Get handpicked Amazon and Flipkart deals,
+        smartphone offers, gadgets, accessories and limited-time
+        discounts — all in one place.
+      </p>
+
+      <div class="deal-platforms">
+        <span>🛒 Amazon Deals</span>
+        <span>⚡ Flipkart Offers</span>
+        <span>📱 Tech Deals</span>
       </div>
+
+      <a class="btn btn-blue"
+         href="https://t.me/zubairtechdeals"
+         target="_blank"
+         rel="noopener noreferrer">
+        ✈ JOIN TELEGRAM CHANNEL →
+      </a>
+
+      <div class="telegram-note">
+        Free to join • Handpicked deals • Daily updates
+      </div>
+
     </div>
-  </section>
+  </div>
+</section>
 
   <section id="connect">
     <div class="container">
@@ -575,6 +593,83 @@
     box-sizing: border-box;
     border: 2px solid #168cff;
     display: block;
+}
+
+.telegram-section {
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+    padding: 55px 25px;
+    border-radius: 22px;
+    background: linear-gradient(135deg, #071a38, #0b2d60, #061329);
+    border: 1px solid rgba(30, 136, 255, 0.35);
+    box-shadow: 0 12px 35px rgba(0, 80, 180, 0.15);
+}
+
+.telegram-icon {
+    width: 65px;
+    height: 65px;
+    margin: 18px auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: #168cff;
+    color: white;
+    font-size: 30px;
+}
+
+.telegram-section h2 {
+    font-size: clamp(27px, 5vw, 42px);
+    margin: 15px 0;
+}
+
+.telegram-section p {
+    max-width: 650px;
+    margin: 0 auto 24px;
+    color: #c5d4e8;
+    line-height: 1.8;
+}
+
+.deal-platforms {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin: 25px 0;
+}
+
+.deal-platforms span {
+    padding: 10px 15px;
+    border: 1px solid #24538b;
+    border-radius: 30px;
+    background: rgba(255,255,255,0.06);
+    color: #ffffff;
+    font-size: 14px;
+}
+
+.telegram-section .btn {
+    display: inline-block;
+    padding: 15px 25px;
+    border-radius: 30px;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.telegram-note {
+    margin-top: 18px;
+    color: #9eb9d9;
+    font-size: 13px;
+}
+
+@media (max-width: 600px) {
+    .telegram-section {
+        padding: 35px 18px;
+    }
+
+    .deal-platforms {
+        gap: 8px;
+    }
 }
 
 </style>
