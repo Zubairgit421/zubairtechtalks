@@ -4,194 +4,80 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#ffffff">
-  <meta name="description" content="zubairtechtalks - Latest tech news, unboxings, useful guides and best deals. Stay updated. Stay ahead.">
-  <title>zubairtechtalks | Tech News, Unboxing & Deals</title>
+  <meta name="theme-color" content="#071426">
+  <meta name="description" content="zubairtechtalks – Technology news, smartphone updates, useful apps, tutorials and exclusive Amazon and Flipkart deals.">
+  <title>zubairtechtalks | Technology. Deals. Updates.</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
   <style>
     :root {
-      --blue: #1769ff;
-      --blue-dark: #0752dc;
-      --ink: #101828;
-      --muted: #667085;
-      --line: #e8edf5;
-      --light: #f5f8ff;
+      --bg: #071426;
+      --surface: #0d1e35;
+      --surface2: #102743;
+      --blue: #0756d8;
+      --bright: #398bff;
       --white: #ffffff;
-      --radius: 20px;
+      --muted: #a7b7cb;
+      --border: rgba(255,255,255,.09);
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
-    html {
-      scroll-behavior: smooth;
-    }
+    html { scroll-behavior: smooth; }
 
     body {
-      font-family: "DM Sans", sans-serif;
-      color: var(--ink);
-      background: var(--white);
+      background: var(--bg);
+      color: var(--white);
+      font-family: Inter, sans-serif;
       line-height: 1.6;
+      overflow-x: hidden;
     }
 
-    a {
-      color: inherit;
-      text-decoration: none;
-    }
-
-    button {
-      font: inherit;
-      cursor: pointer;
-    }
+    a { color: inherit; text-decoration: none; }
 
     .container {
-      width: min(1160px, 92%);
+      width: min(1160px, 90%);
       margin: auto;
     }
 
     header {
       position: sticky;
       top: 0;
-      z-index: 20;
-      background: rgba(255,255,255,.94);
-      backdrop-filter: blur(14px);
-      border-bottom: 1px solid var(--line);
+      z-index: 100;
+      background: rgba(7,20,38,.92);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
     }
 
-    .navbar {
-      min-height: 76px;
+    nav {
+      min-height: 78px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 20px;
     }
 
-    .brand {
-      font-family: "Space Grotesk", sans-serif;
-      font-size: 25px;
-      font-weight: 700;
-      letter-spacing: -1.3px;
-      white-space: nowrap;
-    }
-
-    .brand span {
-      color: var(--blue);
+    .brand img {
+      width: 180px;
+      height: 65px;
+      object-fit: contain;
+      display: block;
+      border-radius: 8px;
     }
 
     .nav-links {
       display: flex;
-      align-items: center;
       gap: 27px;
-      font-size: 14px;
+      align-items: center;
+      font-size: 13px;
       font-weight: 600;
-    }
-
-    .nav-links a:hover {
-      color: var(--blue);
-    }
-
-    .nav-actions {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .language-btn, .menu-btn {
-      border: 1px solid var(--line);
-      background: white;
-      padding: 9px 13px;
-      border-radius: 10px;
-      font-weight: 700;
-      color: var(--ink);
-    }
-
-    .menu-btn {
-      display: none;
-    }
-
-    .hero {
-      position: relative;
-      overflow: hidden;
-      padding: 100px 0 90px;
-      background:
-        radial-gradient(circle at 85% 20%, rgba(23,105,255,.12), transparent 28%),
-        radial-gradient(circle at 10% 90%, rgba(23,105,255,.07), transparent 30%),
-        #f8faff;
-    }
-
-    .hero::after {
-      content: "";
-      position: absolute;
-      right: -90px;
-      top: -100px;
-      width: 360px;
-      height: 360px;
-      border: 45px solid rgba(23,105,255,.055);
-      transform: rotate(35deg);
-      pointer-events: none;
-    }
-
-    .hero-content {
-      position: relative;
-      z-index: 1;
-      max-width: 760px;
-    }
-
-    .eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 9px;
-      padding: 8px 13px;
-      border: 1px solid #dce8ff;
-      border-radius: 30px;
-      background: white;
-      color: var(--blue);
-      font-size: 12px;
-      font-weight: 800;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-    }
-
-    .eyebrow::before {
-      content: "";
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background: var(--blue);
-    }
-
-    h1 {
-      font-family: "Space Grotesk", sans-serif;
-      font-size: clamp(42px, 7vw, 76px);
-      line-height: 1.08;
-      letter-spacing: -3px;
-      margin: 25px 0 20px;
-    }
-
-    h1 span {
-      color: var(--blue);
-    }
-
-    .hero-description {
-      max-width: 580px;
       color: var(--muted);
-      font-size: 17px;
-      line-height: 1.8;
     }
 
-    .hero-buttons {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 13px;
-      margin-top: 30px;
-    }
+    .nav-links a:hover { color: var(--bright); }
 
     .btn {
       display: inline-flex;
@@ -199,1018 +85,595 @@
       justify-content: center;
       gap: 9px;
       padding: 13px 21px;
-      border-radius: 11px;
+      border-radius: 9px;
+      font-size: 13px;
       font-weight: 700;
-      font-size: 14px;
-      transition: .2s;
+      transition: .25s;
+      border: 1px solid transparent;
     }
 
-    .btn-primary {
+    .btn:hover { transform: translateY(-3px); }
+
+    .btn-blue {
       background: var(--blue);
       color: white;
-      box-shadow: 0 8px 22px rgba(23,105,255,.2);
-    }
-
-    .btn-primary:hover {
-      background: var(--blue-dark);
-      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(7,86,216,.25);
     }
 
     .btn-outline {
-      border: 1px solid #d9e1ed;
-      background: white;
+      border-color: rgba(255,255,255,.2);
+      color: white;
     }
 
-    .btn-outline:hover {
-      border-color: var(--blue);
-      color: var(--blue);
+    .hero {
+      position: relative;
+      padding: 105px 0 85px;
+      text-align: center;
+      overflow: hidden;
+      background:
+        radial-gradient(ellipse at 50% 0%, rgba(7,86,216,.24), transparent 65%);
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      width: 400px;
+      height: 400px;
+      border-radius: 50%;
+      border: 1px solid rgba(57,139,255,.10);
+      top: 30px;
+      left: -250px;
+    }
+
+    .eyebrow {
+      display: inline-block;
+      padding: 8px 15px;
+      border: 1px solid rgba(57,139,255,.35);
+      border-radius: 30px;
+      color: #77b3ff;
+      background: rgba(7,86,216,.10);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 25px;
+    }
+
+    .hero h1 {
+      font-size: clamp(38px, 7vw, 76px);
+      line-height: 1.12;
+      letter-spacing: -3px;
+      font-weight: 900;
+      max-width: 850px;
+      margin: 0 auto 22px;
+    }
+
+    .hero h1 span {
+      background: linear-gradient(90deg, #398bff, #80baff);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+
+    .hero p {
+      max-width: 620px;
+      margin: 0 auto 30px;
+      color: var(--muted);
+      font-size: 16px;
+    }
+
+    .hero-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 13px;
+      flex-wrap: wrap;
     }
 
     .stats {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 35px;
-      margin-top: 43px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+      margin-top: 65px;
+      text-align: center;
     }
 
-    .stat strong {
+    .stat-card {
+      background: rgba(13,30,53,.8);
+      border: 1px solid var(--border);
+      padding: 23px 12px;
+      border-radius: 14px;
+    }
+
+    .stat-card strong {
       display: block;
-      font-family: "Space Grotesk", sans-serif;
-      font-size: 19px;
+      font-size: 27px;
+      color: var(--bright);
+      font-weight: 800;
     }
 
-    .stat small {
-      color: var(--muted);
+    .stat-card span {
       font-size: 12px;
+      color: var(--muted);
     }
 
-    section {
-      padding: 75px 0;
-      scroll-margin-top: 80px;
-    }
+    section { padding: 75px 0; }
 
     .section-heading {
       display: flex;
-      align-items: end;
       justify-content: space-between;
+      align-items: end;
       gap: 20px;
-      margin-bottom: 28px;
+      margin-bottom: 30px;
     }
 
     .section-heading h2 {
-      font-family: "Space Grotesk", sans-serif;
-      font-size: clamp(27px, 4vw, 36px);
-      letter-spacing: -1.3px;
+      font-size: clamp(25px, 4vw, 36px);
+      letter-spacing: -1px;
     }
 
     .section-heading p {
       color: var(--muted);
-      margin-top: 5px;
-      font-size: 14px;
-    }
-
-    .text-link {
-      color: var(--blue);
-      font-size: 14px;
-      font-weight: 700;
-    }
-
-    .category-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 17px;
-    }
-
-    .category-card {
-      padding: 25px 20px;
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      background: white;
-      transition: .2s;
-    }
-
-    .category-card:hover {
-      transform: translateY(-4px);
-      border-color: #a9c6ff;
-      box-shadow: 0 12px 30px rgba(16,24,40,.06);
-    }
-
-    .category-icon {
-      width: 47px;
-      height: 47px;
-      display: grid;
-      place-items: center;
-      border-radius: 14px;
-      background: #edf3ff;
-      color: var(--blue);
-      font-size: 22px;
-      margin-bottom: 17px;
-    }
-
-    .category-card h3 {
-      font-size: 17px;
-      margin-bottom: 5px;
-    }
-
-    .category-card p {
-      color: var(--muted);
       font-size: 13px;
+      margin-top: 6px;
     }
 
-    .content-section {
-      background: #f8faff;
-    }
+    .blue-text { color: var(--bright); }
 
-    .content-grid {
+    .video-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 21px;
+      gap: 22px;
     }
-    .deal-filters {
-  display: grid;
-  grid-template-columns: 2fr 1fr;
-  gap: 12px;
-  margin-bottom: 12px;
-}
 
-.deal-filters input,
-.deal-filters select {
-  width: 100%;
-  min-width: 0;
-  padding: 14px 15px;
-  border: 1px solid var(--line);
-  border-radius: 12px;
-  background: white;
-  color: var(--ink);
-  font: inherit;
-  outline: none;
-}
-
-.deal-filters input:focus,
-.deal-filters select:focus {
-  border-color: var(--blue);
-  box-shadow: 0 0 0 3px rgba(23,105,255,.10);
-}
-
-.deal-count {
-  color: var(--muted);
-  font-size: 13px;
-  margin-bottom: 18px;
-}
-
-@media(max-width:600px) {
-  .deal-filters {
-    grid-template-columns: 1fr;
-  }
-}
-
-    .content-card {
-      background: white;
-      border: 1px solid var(--line);
-      border-radius: 17px;
+    .video-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 13px;
       overflow: hidden;
-      transition: .2s;
+      transition: .25s;
     }
 
-    .content-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 12px 30px rgba(16,24,40,.07);
+    .video-card:hover {
+      transform: translateY(-5px);
+      border-color: rgba(57,139,255,.55);
     }
 
-    .card-image {
+    .video-thumb {
+      position: relative;
+      aspect-ratio: 16/9;
+      background: var(--surface2);
+    }
+
+    .video-thumb img {
       width: 100%;
-      height: 205px;
+      height: 100%;
       object-fit: cover;
-      background: #edf2fa;
       display: block;
     }
-    
-.card-image-wrap {
-  position: relative;
-  overflow: hidden;
-  background: #f5f7fb;
-}
 
-.card-image-wrap .card-image {
-  display: block;
-}
+    .video-info { padding: 17px; }
 
-.discount-badge {
-  position: absolute;
-  top: 12px;
-  left: 12px;
-  background: #e53935;
-  color: #fff;
-  padding: 6px 10px;
-  border-radius: 6px;
-  font-size: 12px;
-  font-weight: 800;
-  letter-spacing: .3px;
-  box-shadow: 0 3px 10px rgba(0,0,0,.12);
-}
+    .video-info h3 {
+      font-size: 14px;
+      line-height: 1.5;
+      margin-bottom: 13px;
+    }
 
-.price {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 9px;
-  margin: 14px 0;
-  color: #111827;
-  font-size: 22px;
-  font-weight: 800;
-}
+    .watch-link {
+      font-size: 12px;
+      font-weight: 700;
+      color: #69aaff;
+    }
 
-.old-price {
-  color: #9299a6;
-  font-size: 14px;
-  font-weight: 500;
-  text-decoration: line-through;
-}
+    .loading {
+      color: var(--muted);
+      padding: 30px;
+      text-align: center;
+      background: var(--surface);
+      border-radius: 12px;
+      grid-column: 1/-1;
+    }
 
-.card-action {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  padding: 12px 16px;
-  margin-top: 8px;
-  border-radius: 10px;
-  background: #1769ff;
-  color: #fff;
-  font-weight: 700;
-  text-decoration: none;
-  transition: background .2s ease, transform .2s ease;
-}
+    .telegram-section {
+      background:
+        radial-gradient(ellipse at 100% 50%, rgba(7,86,216,.22), transparent 60%),
+        var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 55px 30px;
+      text-align: center;
+    }
 
-.card-action:hover {
-  background: #0754df;
-  transform: translateY(-2px);
-}
-
-
-    .card-placeholder {
-      height: 205px;
+    .telegram-icon {
+      width: 65px;
+      height: 65px;
+      margin: 0 auto 20px;
+      border-radius: 18px;
       display: grid;
       place-items: center;
-      background: linear-gradient(135deg,#eaf1ff,#f7f9ff);
-      color: var(--blue);
-      font-size: 38px;
+      background: #0756d8;
+      font-size: 29px;
     }
 
-    .card-body {
-      padding: 19px;
+    .telegram-section h2 {
+      font-size: clamp(27px, 5vw, 40px);
+      margin-bottom: 12px;
     }
 
-    .card-tag {
-      display: inline-block;
-      padding: 5px 9px;
-      background: #edf3ff;
-      color: var(--blue);
-      border-radius: 20px;
-      font-size: 11px;
-      font-weight: 800;
-      text-transform: uppercase;
-    }
-
-    .card-body h3 {
-      font-size: 17px;
-      line-height: 1.4;
-      margin: 12px 0 7px;
-    }
-
-    .card-body p {
+    .telegram-section p {
       color: var(--muted);
-      font-size: 13px;
-      line-height: 1.7;
-    }
-
-    .price {
-      margin-top: 12px;
-      font-weight: 800;
-      color: var(--blue);
-    }
-
-    .old-price {
-      color: #98a2b3;
-      text-decoration: line-through;
-      font-size: 12px;
-      margin-left: 7px;
-      font-weight: 500;
-    }
-
-    .card-action {
-      display: inline-block;
-      margin-top: 15px;
-      color: var(--blue);
-      font-size: 13px;
-      font-weight: 800;
-    }
-
-    .empty-message {
-      grid-column: 1 / -1;
-      padding: 35px 20px;
-      text-align: center;
-      border: 1px dashed #cbd7eb;
-      border-radius: 16px;
-      color: var(--muted);
-      background: white;
-    }
-
-    .youtube-section {
-      padding: 70px 0;
-    }
-
-    .youtube-box {
-      padding: 48px;
-      border-radius: 25px;
-      color: white;
-      background: linear-gradient(115deg,#101828,#152c55 65%,#1769ff);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 25px;
-    }
-
-    .youtube-box h2 {
-      font-family: "Space Grotesk", sans-serif;
-      font-size: clamp(27px,4vw,39px);
-      line-height: 1.2;
-    }
-
-    .youtube-box p {
-      color: #d0dcf1;
-      margin-top: 10px;
       max-width: 570px;
+      margin: 0 auto 25px;
       font-size: 14px;
-    }
-
-    .youtube-box .btn {
-      background: white;
-      color: #111827;
-      white-space: nowrap;
     }
 
     .social-grid {
       display: grid;
-      grid-template-columns: repeat(3,1fr);
-      gap: 17px;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 18px;
     }
 
     .social-card {
-      border: 1px solid var(--line);
-      border-radius: 16px;
-      padding: 22px;
       display: flex;
       align-items: center;
-      gap: 15px;
-      transition: .2s;
+      gap: 17px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 23px;
+      border-radius: 13px;
+      transition: .25s;
     }
 
-    .social-card:hover {
-      border-color: #a9c6ff;
-      transform: translateY(-3px);
-    }
+    .social-card:hover { border-color: var(--bright); }
 
-    .social-icon {
+    .social-symbol {
       width: 45px;
       height: 45px;
-      flex-shrink: 0;
       display: grid;
       place-items: center;
-      background: #edf3ff;
-      color: var(--blue);
-      border-radius: 13px;
+      border-radius: 12px;
+      background: var(--surface2);
       font-size: 21px;
-      font-weight: 800;
     }
 
-    .social-card strong {
-      display: block;
-      font-size: 14px;
-    }
-
-    .social-card small {
-      color: var(--muted);
-      font-size: 12px;
-    }
+    .social-card h3 { font-size: 14px; }
+    .social-card p { color: var(--muted); font-size: 12px; }
 
     footer {
-      background: #101828;
-      color: white;
-      padding: 35px 0;
-    }
-
-    .footer-content {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 20px;
-    }
-
-    footer p {
-      color: #aab6c8;
-      font-size: 12px;
-    }
-
-    .footer-links {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 18px;
-      font-size: 12px;
-      color: #d0dcf1;
-    }
-
-    .footer-links a:hover {
-      color: white;
-    }
-
-    .loading {
+      padding: 30px 0;
+      border-top: 1px solid var(--border);
       text-align: center;
-      padding: 25px;
       color: var(--muted);
-      grid-column: 1 / -1;
+      font-size: 12px;
     }
 
-    @media(max-width: 850px) {
-      .nav-links {
-        display: none;
-        position: absolute;
-        top: 76px;
-        left: 0;
-        right: 0;
-        padding: 20px 5%;
-        background: white;
-        border-bottom: 1px solid var(--line);
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 18px;
-      }
-
-      .nav-links.open {
-        display: flex;
-      }
-
-      .menu-btn {
-        display: inline-block;
-      }
-
-      .category-grid {
-        grid-template-columns: repeat(2,1fr);
-      }
-
-      .content-grid {
-        grid-template-columns: repeat(2,1fr);
-      }
+    footer img {
+      width: 130px;
+      height: 65px;
+      object-fit: contain;
+      border-radius: 6px;
+      margin-bottom: 10px;
     }
 
-    @media(max-width: 600px) {
-      .brand {
-        font-size: 21px;
-      }
+    .disclosure {
+      margin-top: 12px;
+      font-size: 11px;
+      opacity: .7;
+    }
 
-      .hero {
-        padding: 72px 0 65px;
-      }
-
-      h1 {
-        letter-spacing: -2px;
-      }
-
-      .hero-description {
-        font-size: 15px;
-      }
-
-      section {
-        padding: 55px 0;
-      }
-
-      .category-grid, .content-grid, .social-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .youtube-box {
-        padding: 30px 23px;
-        align-items: flex-start;
-        flex-direction: column;
-      }
-
-      .stats {
-        gap: 23px;
-      }
-
-      .section-heading {
-        align-items: flex-start;
-        flex-direction: column;
-      }
-
-      .footer-content {
-        flex-direction: column;
-        align-items: flex-start;
-      }
+    @media(max-width: 760px) {
+      .nav-links { display: none; }
+      nav { min-height: 70px; }
+      .brand img { width: 145px; height: 58px; }
+      .hero { padding: 75px 0 55px; }
+      .hero h1 { letter-spacing: -1.5px; }
+      .stats { gap: 9px; margin-top: 45px; }
+      .stat-card { padding: 17px 5px; }
+      .stat-card strong { font-size: 20px; }
+      .stat-card span { font-size: 10px; }
+      section { padding: 55px 0; }
+      .video-grid { grid-template-columns: 1fr; }
+      .section-heading { align-items: start; flex-direction: column; }
+      .social-grid { grid-template-columns: 1fr; }
+      .telegram-section { padding: 40px 18px; }
     }
   </style>
 </head>
 
 <body>
-  <header>
-    <div class="container navbar">
-      <a class="brand" href="#">zubair<span>techtalks</span></a>
 
-      <nav class="nav-links" id="navLinks">
-        <a href="#home" data-en="Home" data-te="హోమ్">Home</a>
-        <a href="#categories" data-en="Explore" data-te="విభాగాలు">Explore</a>
-        <a href="#latest" data-en="Latest" data-te="తాజా అప్‌డేట్స్">Latest</a>
-        <a href="#deals" data-en="Deals" data-te="డీల్స్">Deals</a>
-        <a href="#about" data-en="About" data-te="మా గురించి">About</a>
-      </nav>
-
-      <div class="nav-actions">
-        <button class="language-btn" id="languageBtn" type="button">తెలుగు</button>
-        <button class="menu-btn" id="menuBtn" type="button" aria-label="Toggle menu">☰</button>
-      </div>
-    </div>
-  </header>
-
-  <main>
-    <section class="hero" id="home">
-      <div class="container">
-        <div class="hero-content">
-          <div class="eyebrow" data-en="Your daily tech destination" data-te="మీ రోజువారీ టెక్ ప్రపంచం">Your daily tech destination</div>
-
-          <h1 data-en-html="Technology made <span>simple.</span>" data-te-html="టెక్నాలజీని <span>సులభంగా.</span>">
-            Technology made <span>simple.</span>
-          </h1>
-
-          <p class="hero-description"
-             data-en="Discover the latest technology news, honest unboxings, useful guides and handpicked deals — all in one place."
-             data-te="లేటెస్ట్ టెక్ న్యూస్, అన్‌బాక్సింగ్స్, ఉపయోగకరమైన గైడ్స్ మరియు బెస్ట్ డీల్స్ — అన్నీ ఒకే చోట తెలుసుకోండి.">
-            Discover the latest technology news, honest unboxings, useful guides and handpicked deals — all in one place.
-          </p>
-
-          <div class="hero-buttons">
-            <a class="btn btn-primary" href="#latest" data-en="Explore latest →" data-te="తాజా అప్‌డేట్స్ చూడండి →">Explore latest →</a>
-            <a class="btn btn-outline" href="https://www.youtube.com/@zubairtechtalks" target="_blank" rel="noopener noreferrer">▶ YouTube Channel</a>
-          </div>
-
-          <div class="stats">
-            <div class="stat">
-              <strong>Tech News</strong>
-              <small data-en="Stay informed" data-te="అప్‌డేటెడ్‌గా ఉండండి">Stay informed</small>
-            </div>
-            <div class="stat">
-              <strong>Unboxing</strong>
-              <small data-en="Explore gadgets" data-te="గాడ్జెట్స్ తెలుసుకోండి">Explore gadgets</small>
-            </div>
-            <div class="stat">
-              <strong>Best Deals</strong>
-              <small data-en="Shop smarter" data-te="తెలివిగా కొనండి">Shop smarter</small>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section id="categories">
-      <div class="container">
-        <div class="section-heading">
-          <div>
-            <h2 data-en="Explore our world" data-te="మా టెక్ ప్రపంచాన్ని చూడండి">Explore our world</h2>
-            <p data-en="Everything tech, organised for you." data-te="మీ కోసం అన్ని టెక్ విషయాలు ఒకే చోట.">Everything tech, organised for you.</p>
-          </div>
-        </div>
-
-        <div class="category-grid">
-          <a class="category-card" href="#latest" data-filter="news">
-            <div class="category-icon">◈</div>
-            <h3 data-en="Tech News" data-te="టెక్ న్యూస్">Tech News</h3>
-            <p data-en="Latest updates from the tech world." data-te="టెక్ ప్రపంచంలోని తాజా వార్తలు.">Latest updates from the tech world.</p>
-          </a>
-
-          <a class="category-card" href="#latest" data-filter="video">
-            <div class="category-icon">▶</div>
-            <h3 data-en="Videos" data-te="వీడియోలు">Videos</h3>
-            <p data-en="Unboxings, reviews and Shorts." data-te="అన్‌బాక్సింగ్స్, రివ్యూలు మరియు షార్ట్స్.">Unboxings, reviews and Shorts.</p>
-          </a>
-
-          <a class="category-card" href="#deals" data-filter="deal">
-            <div class="category-icon">%</div>
-            <h3 data-en="Best Deals" data-te="బెస్ట్ డీల్స్">Best Deals</h3>
-            <p data-en="Handpicked offers and savings." data-te="మంచి ఆఫర్లు మరియు పొదుపు.">Handpicked offers and savings.</p>
-          </a>
-
-          <a class="category-card" href="#latest" data-filter="guide">
-            <div class="category-icon">✦</div>
-            <h3 data-en="Guides" data-te="గైడ్స్">Guides</h3>
-            <p data-en="Simple tips, tricks and tutorials." data-te="సులభమైన టిప్స్, ట్రిక్స్ మరియు ట్యుటోరియల్స్.">Simple tips, tricks and tutorials.</p>
-          </a>
-        </div>
-      </div>
-    </section>
-
-    <section class="content-section" id="featured-deals">
+<header>
   <div class="container">
-    <div class="section-heading">
-      <div>
-        <span class="eyebrow">HANDPICKED OFFERS</span>
-        <h2>Featured Deals</h2>
-        <p>Top deals you shouldn't miss.</p>
-      </div>
-    </div>
+    <nav>
+      <a class="brand" href="#">
+        <img src="logo.png" alt="zubairtechtalks logo">
+      </a>
 
-    <div class="content-grid" id="featuredDealsGrid">
-      <div class="loading">Loading featured deals...</div>
-    </div>
-
-    <div class="featured-view-all">
-      <a href="#deals">View All Deals →</a>
-    </div>
-  </div>
-</section>
-
-<section class="content-section" id="latest">
-  <div class="container">
-        <div class="section-heading">
-          <div>
-            <h2 data-en="Latest updates" data-te="తాజా అప్‌డేట్స్">Latest updates</h2>
-            <p data-en="Fresh content from zubairtechtalks." data-te="zubairtechtalks నుంచి తాజా కంటెంట్.">Fresh content from zubairtechtalks.</p>
-          </div>
-          <a href="#latest" class="text-link" id="showAll" data-en="Show all" data-te="అన్నీ చూడండి">Show all →</a>
-        </div>
-        <div class="content-grid" id="latestGrid">
-  <div class="loading">Loading latest content...</div>
-</div>
-      </div>
-    </section>
-
-    <section id="deals">
-      <div class="container">
-        <div class="section-heading">
-          <div>
-            <h2 data-en="Handpicked deals" data-te="ఎంచుకున్న బెస్ట్ డీల్స్">Handpicked deals</h2>
-            <p data-en="Useful products at prices worth checking." data-te="మంచి ధరల్లో ఉపయోగకరమైన ప్రొడక్ట్స్.">Useful products at prices worth checking.</p>
-          </div>
-          <a href="#deals" class="text-link" id="showDeals" data-en="View deals" data-te="డీల్స్ చూడండి">View deals →</a>
-        </div>
-        <div class="deal-filters">
-  <input
-    type="search"
-    id="dealSearch"
-    placeholder="Search deals by product name..."
-    aria-label="Search deals"
-  >
-
-  <select id="dealCategory" aria-label="Filter deals by category">
-    <option value="all">All categories</option>
-  </select>
-</div>
-
-<p class="deal-count" id="dealCount" aria-live="polite"></p>
-
-<div class="content-grid" id="dealsGrid">
-  <div class="loading">Loading deals...</div>
-</div>
-        <button id="loadMoreDeals" class="load-more-btn" hidden>
-  Load More Deals
-</button>
-      </div>
-    </section>
-
-    <section class="youtube-section">
-      <div class="container">
-        <div class="youtube-box">
-          <div>
-            <h2 data-en="Love technology? Let's stay updated." data-te="టెక్నాలజీ ఇష్టమా? అప్‌డేటెడ్‌గా ఉందాం.">Love technology? Let's stay updated.</h2>
-            <p data-en="Watch tech videos, tips, unboxings and useful smartphone tricks on our YouTube channel."
-               data-te="మా YouTube ఛానెల్‌లో టెక్ వీడియోలు, టిప్స్, అన్‌బాక్సింగ్స్ మరియు స్మార్ట్‌ఫోన్ ట్రిక్స్ చూడండి.">
-              Watch tech videos, tips, unboxings and useful smartphone tricks on our YouTube channel.
-            </p>
-          </div>
-          <a class="btn" href="https://www.youtube.com/@zubairtechtalks" target="_blank" rel="noopener noreferrer">▶ Subscribe on YouTube</a>
-        </div>
-      </div>
-    </section>
-
-    <section id="about">
-      <div class="container">
-        <div class="section-heading">
-          <div>
-            <h2 data-en="Connect with us" data-te="మాతో కనెక్ట్ అవ్వండి">Connect with us</h2>
-            <p data-en="Follow our channels for updates and exclusive deals." data-te="అప్‌డేట్స్ మరియు ప్రత్యేక డీల్స్ కోసం మా ఛానెల్స్‌ను ఫాలో అవ్వండి.">Follow our channels for updates and exclusive deals.</p>
-          </div>
-        </div>
-
-        <div class="social-grid">
-          <a class="social-card" href="https://www.youtube.com/@zubairtechtalks" target="_blank" rel="noopener noreferrer">
-            <div class="social-icon">▶</div>
-            <div><strong>YouTube</strong><small>Videos & tech updates</small></div>
-          </a>
-
-          <a class="social-card" href="https://www.instagram.com/zubairtechtalks/" target="_blank" rel="noopener noreferrer">
-            <div class="social-icon">◎</div>
-            <div><strong>Instagram</strong><small>Reels & updates</small></div>
-          </a>
-
-          <a class="social-card" href="https://t.me/zubairtechdeals/" target="_blank" rel="noopener noreferrer">
-            <div class="social-icon">➤</div>
-            <div><strong>Telegram</strong><small>Deals & offers</small></div>
-          </a>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <footer>
-    <div class="container footer-content">
-      <div>
-        <a class="brand" href="#" style="color:white">zubair<span>techtalks</span></a>
-        <p style="margin-top:8px">Stay updated. Stay ahead.</p>
-        <p style="margin-top:8px">© <span id="year"></span> zubairtechtalks. All rights reserved.</p>
-      </div>
-      <div class="footer-links">
+      <div class="nav-links">
         <a href="#home">Home</a>
-        <a href="#latest">Latest</a>
+        <a href="#videos">Videos</a>
         <a href="#deals">Deals</a>
-        <a href="#about">Contact</a>
-        <a href="admin.html">Admin</a>
+        <a href="#connect">Connect</a>
+      </div>
+
+      <a class="btn btn-blue"
+         href="https://www.youtube.com/@zubairtechtalks"
+         target="_blank" rel="noopener">
+        ▶ Subscribe
+      </a>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+  <section class="hero" id="home">
+    <div class="container">
+      <div class="eyebrow">Your Technology Destination</div>
+
+      <h1>
+        Technology.<br>
+        <span>Deals. Updates.</span>
+      </h1>
+
+      <p>
+        Discover the latest tech news, smartphone updates, useful apps,
+        digital tricks and handpicked online deals — all in one place.
+      </p>
+
+      <div class="hero-buttons">
+        <a class="btn btn-blue"
+           href="https://www.youtube.com/@zubairtechtalks"
+           target="_blank" rel="noopener">
+          ▶ Explore YouTube
+        </a>
+
+        <a class="btn btn-outline"
+           href="https://t.me/zubairtechdeals"
+           target="_blank" rel="noopener">
+          ✈ Join Telegram
+        </a>
+      </div>
+
+      <div class="stats">
+        <div class="stat-card">
+          <strong id="subscriberCount">Loading...</strong>
+          <span>YouTube Subscribers</span>
+        </div>
+
+        <div class="stat-card">
+          <strong id="videoCount">---</strong>
+          <span>Videos Published</span>
+        </div>
+
+        <div class="stat-card">
+          <strong>24/7</strong>
+          <span>Tech Updates</span>
+        </div>
       </div>
     </div>
-  </footer>
+  </section>
 
-  <!-- Supabase library must load before supabase-config.js -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="supabase-config.js"></script>
+  <section id="videos">
+    <div class="container">
+      <div class="section-heading">
+        <div>
+          <h2>Latest <span class="blue-text">Videos</span></h2>
+          <p>Watch the latest uploads from our YouTube channel.</p>
+        </div>
 
-  <script>
-    const latestGrid = document.getElementById("latestGrid");
-    const dealsGrid = document.getElementById("dealsGrid");
-    const languageBtn = document.getElementById("languageBtn");
-    const menuBtn = document.getElementById("menuBtn");
-    const navLinks = document.getElementById("navLinks");
-    const dealSearch = document.getElementById("dealSearch");
-const dealCategory = document.getElementById("dealCategory");
-const dealCount = document.getElementById("dealCount");
-    const loadMoreDeals = document.getElementById("loadMoreDeals");
-let visibleDeals = 6;
-const dealsPerPage = 6;
+        <a class="btn btn-outline"
+           href="https://www.youtube.com/@zubairtechtalks/videos"
+           target="_blank" rel="noopener">
+          View All Videos →
+        </a>
+      </div>
 
-    let currentLanguage = "en";
-    let allContent = [];
-    let activeFilter = "all";
+      <div class="video-grid" id="videoGrid">
+        <div class="loading">Latest videos will appear here once YouTube is connected.</div>
+      </div>
+    </div>
+  </section>
 
-    document.getElementById("year").textContent = new Date().getFullYear();
+  <section id="deals">
+    <div class="container">
+      <div class="telegram-section">
+        <div class="telegram-icon">✈</div>
+        <div class="eyebrow">Exclusive Shopping Deals</div>
 
-    menuBtn.addEventListener("click", () => {
-      navLinks.classList.toggle("open");
-    });
+        <h2>Don't Miss the <span class="blue-text">Best Deals!</span></h2>
 
-    navLinks.querySelectorAll("a").forEach(link => {
-      link.addEventListener("click", () => navLinks.classList.remove("open"));
-    });
+        <p>
+          Find handpicked Amazon and Flipkart offers, smartphone deals,
+          accessories and exciting discounts through our Telegram channel.
+        </p>
 
-    languageBtn.addEventListener("click", () => {
-      currentLanguage = currentLanguage === "en" ? "te" : "en";
-      languageBtn.textContent = currentLanguage === "en" ? "తెలుగు" : "English";
+        <a class="btn btn-blue"
+           href="https://t.me/zubairtechdeals"
+           target="_blank" rel="noopener">
+          ✈ Join Our Telegram Channel
+        </a>
+      </div>
+    </div>
+  </section>
 
-      document.querySelectorAll("[data-en]").forEach(element => {
-        element.textContent = element.dataset[currentLanguage];
+  <section id="connect">
+    <div class="container">
+      <div class="section-heading">
+        <div>
+          <h2>Connect <span class="blue-text">With Us</span></h2>
+          <p>Follow zubairtechtalks on social media.</p>
+        </div>
+      </div>
+
+      <div class="social-grid">
+        <a class="social-card"
+           href="https://www.youtube.com/@zubairtechtalks"
+           target="_blank" rel="noopener">
+          <div class="social-symbol">▶</div>
+          <div>
+            <h3>YouTube</h3>
+            <p>Tech videos, reviews and tutorials</p>
+          </div>
+        </a>
+
+        <a class="social-card"
+           href="https://www.instagram.com/zubairtechtalks/"
+           target="_blank" rel="noopener">
+          <div class="social-symbol">◎</div>
+          <div>
+            <h3>Instagram</h3>
+            <p>Reels, updates and tech tips</p>
+          </div>
+        </a>
+
+        <a class="social-card"
+           href="https://t.me/zubairtechdeals"
+           target="_blank" rel="noopener">
+          <div class="social-symbol">✈</div>
+          <div>
+            <h3>Telegram</h3>
+            <p>Exclusive shopping deals</p>
+          </div>
+        </a>
+
+        <a class="social-card"
+           href="https://www.youtube.com/@zubairtechtalks"
+           target="_blank" rel="noopener">
+          <div class="social-symbol">ZT</div>
+          <div>
+            <h3>zubairtechtalks</h3>
+            <p>Your daily dose of technology</p>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="container">
+    <img src="logo.png" alt="zubairtechtalks">
+    <p>© <span id="year"></span> zubairtechtalks. All rights reserved.</p>
+    <p class="disclosure">
+      Some links may be affiliate links. We may earn a commission
+      when you purchase through these links, at no extra cost to you.
+    </p>
+  </div>
+</footer>
+
+<script>
+  // YouTube API will be connected in the next step.
+  const YOUTUBE_API_KEY = "ADD_YOUR_API_KEY_HERE";
+  const CHANNEL_HANDLE = "@zubairtechtalks";
+
+  document.getElementById("year").textContent =
+    new Date().getFullYear();
+
+  async function loadYouTube() {
+    if (!YOUTUBE_API_KEY ||
+        YOUTUBE_API_KEY === "ADD_YOUR_API_KEY_HERE") {
+      return;
+    }
+
+    const base = "https://www.googleapis.com/youtube/v3/";
+
+    try {
+      const channelURL = new URL(base + "channels");
+      channelURL.search = new URLSearchParams({
+        part: "snippet,statistics,contentDetails",
+        forHandle: CHANNEL_HANDLE,
+        key: YOUTUBE_API_KEY
       });
 
-      document.querySelectorAll("[data-en-html]").forEach(element => {
-        element.innerHTML = element.dataset[currentLanguage + "Html"];
+      const channelResponse = await fetch(channelURL);
+      const channelData = await channelResponse.json();
+
+      if (!channelResponse.ok) {
+        throw new Error(channelData.error?.message || "YouTube API error");
+      }
+
+      const channel = channelData.items?.[0];
+
+      if (!channel) {
+        throw new Error("YouTube channel not found");
+      }
+
+      const stats = channel.statistics;
+
+      document.getElementById("subscriberCount").textContent =
+        stats.hiddenSubscriberCount
+          ? "Hidden"
+          : Number(stats.subscriberCount).toLocaleString("en-IN") + "+";
+
+      document.getElementById("videoCount").textContent =
+        Number(stats.videoCount).toLocaleString("en-IN");
+
+      const uploadsPlaylist =
+        channel.contentDetails.relatedPlaylists.uploads;
+
+      const playlistURL = new URL(base + "playlistItems");
+      playlistURL.search = new URLSearchParams({
+        part: "snippet",
+        playlistId: uploadsPlaylist,
+        maxResults: "3",
+        key: YOUTUBE_API_KEY
       });
-    });
 
-    function escapeHTML(value) {
-      return String(value ?? "").replace(/[&<>"']/g, character => ({
-        "&": "&amp;",
-        "<": "&lt;",
-        ">": "&gt;",
-        '"': "&quot;",
-        "'": "&#39;"
-      })[character]);
+      const playlistResponse = await fetch(playlistURL);
+      const playlistData = await playlistResponse.json();
+
+      if (!playlistResponse.ok) {
+        throw new Error("Could not load latest videos");
+      }
+
+      const videos = playlistData.items || [];
+      const grid = document.getElementById("videoGrid");
+
+      if (!videos.length) {
+        grid.innerHTML = '<div class="loading">No videos found.</div>';
+        return;
+      }
+
+      grid.innerHTML = videos.map(item => {
+        const video = item.snippet;
+        const videoId = video.resourceId.videoId;
+        const title = video.title.replace(/[&<>"']/g, char => ({
+          "&": "&amp;", "<": "&lt;", ">": "&gt;",
+          '"': "&quot;", "'": "&#39;"
+        })[char]);
+
+        const thumbnail =
+          video.thumbnails.maxres?.url ||
+          video.thumbnails.high?.url ||
+          video.thumbnails.medium?.url;
+
+        return `
+          <a class="video-card"
+             href="https://www.youtube.com/watch?v=${encodeURIComponent(videoId)}"
+             target="_blank" rel="noopener">
+            <div class="video-thumb">
+              <img src="${thumbnail}" alt="${title}" loading="lazy">
+            </div>
+            <div class="video-info">
+              <h3>${title}</h3>
+              <span class="watch-link">WATCH VIDEO →</span>
+            </div>
+          </a>
+        `;
+      }).join("");
+
+    } catch (error) {
+      console.error("YouTube error:", error);
+      document.getElementById("subscriberCount").textContent = "Unavailable";
+      document.getElementById("videoGrid").innerHTML =
+        '<div class="loading">YouTube videos could not load. Please check the API configuration.</div>';
     }
-
-    function getTitle(item) {
-      return currentLanguage === "te" && item.title_te
-        ? item.title_te : item.title_en;
-    }
-
-    function getDescription(item) {
-      return currentLanguage === "te" && item.description_te
-        ? item.description_te : item.description_en;
-    }
-
-    
-function createCard(item) {
-  const title = escapeHTML(getTitle(item));
-  const description = escapeHTML(getDescription(item));
-  const type = escapeHTML(item.content_type);
-
-  const image = item.image_url
-    ? `<img class="card-image" src="${escapeHTML(item.image_url)}" alt="${title}" loading="lazy">`
-    : `<div class="card-placeholder">✦</div>`;
-
-  let price = "";
-  let discount = "";
-
-  if (item.current_price !== null && item.current_price !== "") {
-    const currentPrice = Number(item.current_price);
-    const originalPrice = Number(item.original_price);
-
-    if (item.original_price && originalPrice > currentPrice) {
-      const percentage = Math.round(
-        ((originalPrice - currentPrice) / originalPrice) * 100
-      );
-
-      discount = `<span class="discount-badge">${percentage}% OFF</span>`;
-    }
-
-    price = `
-      <div class="price">
-        ₹${currentPrice.toLocaleString("en-IN")}
-        ${
-          item.original_price && originalPrice > currentPrice
-            ? `<span class="old-price">₹${originalPrice.toLocaleString("en-IN")}</span>`
-            : ""
-        }
-      </div>
-    `;
   }
 
-  const action = item.external_url
-    ? `<a class="card-action" href="${escapeHTML(item.external_url)}" target="_blank" rel="noopener noreferrer">
-        ${item.content_type === "deal" ? "Buy Now →" : "Explore →"}
-      </a>`
-    : "";
+  loadYouTube();
+</script>
 
-  return `
-    <article class="content-card">
-      <div class="card-image-wrap">
-        ${image}
-        ${item.content_type === "deal" ? discount : ""}
-      </div>
-      <div class="card-body">
-        <span class="card-tag">${type}</span>
-        <h3>${title}</h3>
-        <p>${description}</p>
-        ${price}
-        ${action}
-      </div>
-    </article>
-  `;
-}
-
-
-function renderDealCategories() {
-  const selectedCategory = dealCategory.value;
-
-  const categories = [
-    ...new Set(
-      allContent
-        .filter(item => item.content_type === "deal")
-        .map(item => item.category?.trim())
-        .filter(Boolean)
-    )
-  ].sort();
-
-  dealCategory.innerHTML =
-    '<option value="all">All categories</option>' +
-    categories.map(category =>
-      `<option value="${escapeHTML(category)}">${escapeHTML(category)}</option>`
-    ).join("");
-
-  dealCategory.value = categories.includes(selectedCategory)
-    ? selectedCategory
-    : "all";
-}
-
-function renderContent() {
-    const featuredDealsGrid = document.getElementById("featuredDealsGrid");
-
-  const featuredDeals = allContent
-    .filter(item => item.content_type === "deal")
-    .slice(0, 3);
-
-  featuredDealsGrid.innerHTML = featuredDeals.length
-    ? featuredDeals.map(createCard).join("")
-    : '<p class="loading">No featured deals available yet.</p>';
-  const latestItems = activeFilter === "all"
-    ? allContent.filter(item => item.content_type !== "deal")
-    : allContent.filter(item =>
-        item.content_type === activeFilter &&
-        item.content_type !== "deal"
-      );
-
-  const searchTerm = dealSearch.value.trim().toLowerCase();
-  const selectedCategory = dealCategory.value;
-
-  const allDeals = allContent.filter(
-    item => item.content_type === "deal"
-  );
-
-  const filteredDeals = allDeals.filter(item => {
-    const searchableText = [
-      item.title_en,
-      item.title_te,
-      item.description_en,
-      item.description_te,
-      item.category
-    ].join(" ").toLowerCase();
-
-    const matchesSearch = searchableText.includes(searchTerm);
-
-    const matchesCategory =
-      selectedCategory === "all" ||
-      item.category?.trim() === selectedCategory;
-
-    return matchesSearch && matchesCategory;
-  });
-
-  latestGrid.innerHTML = latestItems.length
-    ? latestItems.map(createCard).join("")
-    : `<div class="empty-message">${
-        currentLanguage === "te"
-          ? "ఇంకా కంటెంట్ అందుబాటులో లేదు."
-          : "No updates published yet. Check back soon!"
-      }</div>`;
-
-  const displayedDeals = filteredDeals.slice(0, visibleDeals);
-
-dealsGrid.innerHTML = filteredDeals.length
-  ? displayedDeals.map(createCard).join("")
-  : `<div class="empty-message">${
-      currentLanguage === "te"
-        ? "మీ సెర్చ్‌కు సరిపోయే డీల్స్ లేవు."
-        : "No matching deals found."
-    }</div>`;
-
-loadMoreDeals.hidden = filteredDeals.length <= visibleDeals;
-
-  dealCount.textContent = currentLanguage === "te"
-    ? `మొత్తం ${filteredDeals.length} డీల్స్`
-    : `Showing ${filteredDeals.length} of ${allDeals.length} deals`;
-}
-
-// Search and category filter events
-dealSearch.addEventListener("input", () => {
-  visibleDeals = 6;
-  renderContent();
-});
-
-dealCategory.addEventListener("change", () => {
-  visibleDeals = 6;
-  renderContent();
-});
-
-loadMoreDeals.addEventListener("click", () => {
-  visibleDeals += dealsPerPage;
-  renderContent();
-});
-
-// Latest content filters
-document.querySelectorAll("[data-filter]").forEach(card => {
-  card.addEventListener("click", () => {
-    activeFilter = card.dataset.filter;
-    renderContent();
-  });
-});
-
-document.getElementById("showAll").addEventListener("click", () => {
-  activeFilter = "all";
-  renderContent();
-});
-
-document.getElementById("showDeals").addEventListener("click", () => {
-  dealSearch.value = "";
-  dealCategory.value = "all";
-   visibleDeals = 6;
-  renderContent();
-});
-
-// Load published content from Supabase
-async function loadContent() {
-  const { data, error } = await window.supabaseClient
-    .from("site_content")
-    .select("*")
-    .eq("status", "published")
-    .order("created_at", { ascending: false });
-
-  if (error) {
-    console.error("Error loading content:", error);
-    latestGrid.innerHTML =
-      '<div class="empty-message">Unable to load content. Please try again later.</div>';
-    dealsGrid.innerHTML =
-      '<div class="empty-message">Unable to load deals. Please try again later.</div>';
-    return;
-  }
-
-  allContent = data || [];
-  renderDealCategories();
-  renderContent();
-}
-
-loadContent();
-  </script>
 </body>
 </html>
