@@ -607,7 +607,79 @@
   display: inline-block;
   margin-top: 5px;
 }
+/* Supabase deals section */
+.deals-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 22px;
+  margin-top: 35px;
+}
 
+.deal-card {
+  background: #0d1e35;
+  border: 1px solid rgba(255,255,255,.09);
+  border-radius: 14px;
+  overflow: hidden;
+  transition: .25s;
+}
+
+.deal-card:hover {
+  transform: translateY(-5px);
+  border-color: #398bff;
+}
+
+.deal-image {
+  width: 100%;
+  height: 220px;
+  object-fit: contain;
+  background: #ffffff;
+  padding: 12px;
+}
+
+.deal-info {
+  padding: 18px;
+}
+
+.deal-info h3 {
+  font-size: 15px;
+  margin-bottom: 10px;
+}
+
+.deal-platform {
+  color: #80baff;
+  font-size: 12px;
+  margin-bottom: 10px;
+}
+
+.deal-price {
+  font-size: 20px;
+  font-weight: 800;
+  color: #ffffff;
+}
+
+.deal-original {
+  color: #a7b7cb;
+  text-decoration: line-through;
+  font-size: 13px;
+  margin-left: 8px;
+}
+
+.deal-buy {
+  display: block;
+  text-align: center;
+  background: #0756d8;
+  color: white;
+  padding: 12px;
+  border-radius: 8px;
+  margin-top: 15px;
+  font-weight: 700;
+}
+
+@media(max-width: 760px) {
+  .deals-grid {
+    grid-template-columns: 1fr;
+  }
+}
   </style>
 </head>
 
@@ -756,9 +828,19 @@
 
       <div class="telegram-note">
         Free to join • Handpicked deals • Daily updates
-      </div>
+         </div>
 
+    <div class="section-heading" style="margin-top:45px;">
+      <div>
+        <h2>Latest <span class="blue-text">Deals</span></h2>
+        <p>Handpicked offers from Amazon and Flipkart.</p>
+      </div>
     </div>
+
+    <div class="deals-grid" id="dealsGrid">
+      <div class="loading">Loading latest deals...</div>
+    </div>
+
   </div>
 </section>
 <section id="instagram">
@@ -876,9 +958,92 @@
   </div>
 </footer>
 
-
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js"></script>
 <script>
+async function loadPublishedDeals() {
+  const dealsGrid = document.getElementById("dealsGrid");
 
+  try {
+    const client = window.supabaseClient;
+
+    if (!client) {
+      throw new Error("Supabase client not initialized.");
+    }
+
+    const { data: deals, error } = await client
+      .from("deals")
+      .select("*")
+      .eq("status", "published")
+      .order("created_at", { ascending: false });
+
+    if (error) throw error;
+
+    dealsGrid.innerHTML = "";
+
+    if (!deals || deals.length === 0) {
+      dealsGrid.innerHTML =
+        '<div class="loading">No deals available right now. Please check again soon.</div>';
+      return;
+    }
+
+    deals.forEach(deal => {
+      const card = document.createElement("div");
+      card.className = "deal-card";
+
+      if (deal.image_url) {
+        const image = document.createElement("img");
+        image.className = "deal-image";
+        image.src = deal.image_url;
+        image.alt = deal.title || "Product image";
+        image.loading = "lazy";
+        card.appendChild(image);
+      }
+
+      const info = document.createElement("div");
+      info.className = "deal-info";
+
+      const platform = document.createElement("div");
+      platform.className = "deal-platform";
+      platform.textContent = deal.platform || "Online Deal";
+
+      const title = document.createElement("h3");
+      title.textContent = deal.title || "Product";
+
+      const price = document.createElement("div");
+      price.className = "deal-price";
+      price.textContent = deal.current_price != null
+        ? "₹" + Number(deal.current_price).toLocaleString("en-IN")
+        : "Check price";
+
+      info.append(platform, title, price);
+
+      if (deal.original_price != null) {
+        const original = document.createElement("span");
+        original.className = "deal-original";
+        original.textContent =
+          "₹" + Number(deal.original_price).toLocaleString("en-IN");
+        price.appendChild(original);
+      }
+
+      const buy = document.createElement("a");
+      buy.className = "deal-buy";
+      buy.textContent = "VIEW DEAL →";
+      buy.href = deal.product_url;
+      buy.target = "_blank";
+      buy.rel = "noopener noreferrer";
+
+      info.appendChild(buy);
+      card.appendChild(info);
+      dealsGrid.appendChild(card);
+    });
+
+  } catch (error) {
+    console.error("Deals loading error:", error);
+    dealsGrid.innerHTML =
+      '<div class="loading">Unable to load deals. Please try again later.</div>';
+  }
+}
 async function loadLatestVideos() {
   const videoGrid = document.getElementById("videoGrid");
   const channelId = "UCxvhyYARWKIg0HRX5z10_hQ";
@@ -954,7 +1119,7 @@ async function loadLatestVideos() {
 
 
 loadLatestVideos();
-  
+  loadPublishedDeals();
 const menuToggle = document.getElementById("menuToggle");
 const navLinks = document.getElementById("navLinks");
 
