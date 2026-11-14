@@ -238,7 +238,7 @@
     const email = document.getElementById("email").value.trim();
     const password = document.getElementById("password").value;
 
-    const { error } = await supabaseClient.auth.signInWithPassword()({ email, password });
+    const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
 
     if (error) {
       loginMessage.textContent = error.message;
