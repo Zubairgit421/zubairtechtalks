@@ -173,6 +173,7 @@
 <script src="supabase-config.js"></script>
 
 <script>
+  const supabaseClient = window.supabaseClient;
   const loginPanel = document.getElementById("loginPanel");
   const dashboard = document.getElementById("dashboard");
   const logoutBtn = document.getElementById("logoutBtn");
@@ -203,7 +204,7 @@
   }
 
   async function checkAdmin() {
-    const { data: { session }, error } = await supabase.auth.getSession();
+    const { data: { session }, error } = await supabaseClient.auth.getSession();
 
     if (error || !session) {
       currentUser = null;
@@ -220,7 +221,7 @@
       .maybeSingle();
 
     if (adminError || !data) {
-      await supabase.auth.signOut();
+      await supabaseClient.auth.signOut();
       currentUser = null;
       showLogin("This account is not authorized as an admin.");
       return;
@@ -237,7 +238,7 @@
     const email = document.getElementById("email").value.trim();
     const password = document.getElementById("password").value;
 
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    const { error } = await supabaseClient.auth.signInWithPassword()({ email, password });
 
     if (error) {
       loginMessage.textContent = error.message;
@@ -248,7 +249,7 @@
   });
 
   logoutBtn.addEventListener("click", async () => {
-    await supabase.auth.signOut();
+    await 	supabaseClient.auth.signOut();
     currentUser = null;
     showLogin("You have logged out.");
   });
@@ -486,7 +487,7 @@
 
   checkAdmin();
 
-  supabase.auth.onAuthStateChange((event, session) => {
+ supabaseClient.auth.onAuthStateChange((event, session) => {
     if (event === "SIGNED_OUT") {
       currentUser = null;
       showLogin();
