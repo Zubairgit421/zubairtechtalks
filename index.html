@@ -680,6 +680,95 @@
     grid-template-columns: 1fr;
   }
 }
+    /* Telegram live deals feed */
+.telegram-live {
+  margin-top: 35px;
+  text-align: left;
+}
+
+.telegram-live-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.telegram-live-heading h3 {
+  font-size: 21px;
+}
+
+.telegram-live-badge {
+  color: #54d995;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1px;
+}
+
+.telegram-posts {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.telegram-post {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 17px;
+  background: #071a30;
+  border: 1px solid rgba(255,255,255,.10);
+  border-radius: 13px;
+  text-align: left;
+  transition: .25s;
+}
+
+.telegram-post:hover {
+  border-color: #229ed9;
+  transform: translateY(-3px);
+}
+
+.telegram-post img {
+  width: 100%;
+  max-height: 190px;
+  object-fit: contain;
+  border-radius: 9px;
+  background: #102743;
+}
+
+.telegram-post-text {
+  color: #e4edf9;
+  font-size: 13px;
+  line-height: 1.65;
+  overflow-wrap: anywhere;
+}
+
+.telegram-post-date {
+  color: #91a8c4;
+  font-size: 11px;
+}
+
+.telegram-post-link {
+  color: #50aaff;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.telegram-feed-status {
+  color: #a7b7cb;
+  font-size: 12px;
+  text-align: center;
+  padding: 18px;
+  background: #071a30;
+  border-radius: 10px;
+  grid-column: 1 / -1;
+}
+
+@media(max-width: 760px) {
+  .telegram-posts {
+    grid-template-columns: 1fr;
+  }
+}
   </style>
 </head>
 
@@ -775,6 +864,28 @@
 
   <section id="videos">
     <div class="container">
+      <div class="telegram-live">
+
+  <div class="telegram-live-heading">
+    <h3>✈ Telegram <span class="blue-text">Live Deals</span></h3>
+    <span class="telegram-live-badge">● LATEST 5 POSTS</span>
+  </div>
+
+  <div class="telegram-posts" id="telegramPosts">
+    <div class="telegram-feed-status">
+      Loading latest Telegram posts...
+    </div>
+  </div>
+
+  <a class="btn btn-blue"
+     href="https://t.me/zubairtechdeals"
+     target="_blank"
+     rel="noopener noreferrer"
+     style="margin-top:20px;">
+    VIEW ALL TELEGRAM DEALS →
+  </a>
+
+</div>
       <div class="section-heading">
         <div>
           <h2>Latest <span class="blue-text">Videos</span></h2>
@@ -961,6 +1072,99 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase-config.js"></script>
 <script>
+  async function loadTelegramPosts() {
+  const postsContainer = document.getElementById("telegramPosts");
+
+  try {
+    const feedUrl =
+      "https://rsshub.app/telegram/channel/zubairtechdeals";
+
+    const apiUrl =
+      "https://api.rss2json.com/v1/api.json?rss_url=" +
+      encodeURIComponent(feedUrl);
+
+    const response = await fetch(apiUrl);
+
+    if (!response.ok) {
+      throw new Error("Telegram feed request failed");
+    }
+
+    const data = await response.json();
+
+    if (data.status !== "ok" || !data.items || !data.items.length) {
+      throw new Error("No Telegram posts found");
+    }
+
+    postsContainer.innerHTML = "";
+
+    data.items.slice(0, 5).forEach(post => {
+      const card = document.createElement("a");
+      card.className = "telegram-post";
+      card.href = post.link || "https://t.me/zubairtechdeals";
+      card.target = "_blank";
+      card.rel = "noopener noreferrer";
+
+      // Extract safe plain text from the feed description
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(
+        post.description || post.content || "",
+        "text/html"
+      );
+
+      const postText =
+        (post.title || doc.body.textContent || "View latest deal")
+          .trim();
+
+      // Find a post image if available
+      const imageUrl =
+        post.thumbnail ||
+        post.enclosure?.link ||
+        doc.querySelector("img")?.getAttribute("src");
+
+      if (imageUrl) {
+        const image = document.createElement("img");
+        image.src = imageUrl;
+        image.alt = "Telegram deal";
+        image.loading = "lazy";
+        card.appendChild(image);
+      }
+
+      const text = document.createElement("div");
+      text.className = "telegram-post-text";
+      text.textContent = postText;
+      card.appendChild(text);
+
+      if (post.pubDate) {
+        const date = document.createElement("div");
+        date.className = "telegram-post-date";
+        date.textContent = new Date(post.pubDate).toLocaleString(
+          "en-IN",
+          { dateStyle: "medium", timeStyle: "short" }
+        );
+        card.appendChild(date);
+      }
+
+      const link = document.createElement("div");
+      link.className = "telegram-post-link";
+      link.textContent = "VIEW TELEGRAM POST →";
+      card.appendChild(link);
+
+      postsContainer.appendChild(card);
+    });
+
+  } catch (error) {
+    console.error("Telegram feed error:", error);
+
+    postsContainer.innerHTML = "";
+
+    const message = document.createElement("div");
+    message.className = "telegram-feed-status";
+    message.textContent =
+      "Latest posts are temporarily unavailable. Visit our Telegram channel for new deals.";
+
+    postsContainer.appendChild(message);
+  }
+}
 async function loadPublishedDeals() {
   const dealsGrid = document.getElementById("dealsGrid");
 
@@ -1119,7 +1323,11 @@ async function loadLatestVideos() {
 
 
 loadLatestVideos();
-  loadPublishedDeals();
+loadPublishedDeals();
+loadTelegramPosts();
+
+// Refresh Telegram posts every 5 minutes
+setInterval(loadTelegramPosts, 5 * 60 * 1000);
 const menuToggle = document.getElementById("menuToggle");
 const navLinks = document.getElementById("navLinks");
 
