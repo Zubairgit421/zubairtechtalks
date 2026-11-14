@@ -1237,17 +1237,9 @@ async function loadTelegramPosts() {
   const postsContainer = document.getElementById("telegramPosts");
 
   try {
-    const feedUrl =
-      "https://rsshub.rss3.workers.dev/telegram/channel/zubairtechdeals";
+    const workerUrl = "https://zubair-telegram-feed.jubair-mohd9522.workers.dev/";
 
-    const proxyUrl =
-      "https://api.allorigins.win/raw?url=" +
-      encodeURIComponent(feedUrl) +
-      "&t=" + Date.now();
-
-    const response = await fetch(proxyUrl, {
-      cache: "no-store"
-    });
+const response = await fetch(workerUrl, {cache: "no-store"});
 
     if (!response.ok) {
       throw new Error("Live RSS request failed: " + response.status);
