@@ -1,0 +1,497 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Deals Admin | zubairtechtalks</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 25px 16px;
+      background: #071426;
+      color: #fff;
+      font-family: Arial, sans-serif;
+    }
+    .container { max-width: 950px; margin: auto; }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 25px;
+      flex-wrap: wrap;
+    }
+    h1 { font-size: 23px; margin: 0; }
+    h2 { font-size: 19px; margin-top: 0; }
+    .blue { color: #398bff; }
+    .panel {
+      background: #0d1e35;
+      border: 1px solid #203956;
+      border-radius: 13px;
+      padding: 22px;
+      margin-bottom: 20px;
+    }
+    label {
+      display: block;
+      font-size: 14px;
+      margin: 14px 0 7px;
+      color: #cbd5e1;
+    }
+    input, textarea, select {
+      width: 100%;
+      padding: 12px;
+      border-radius: 7px;
+      border: 1px solid #344b68;
+      background: #071426;
+      color: #fff;
+      font-size: 15px;
+    }
+    textarea { min-height: 85px; resize: vertical; }
+    button {
+      border: 0;
+      border-radius: 7px;
+      padding: 11px 16px;
+      font-size: 14px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .primary { background: #1769e0; color: white; }
+    .secondary { background: #263c56; color: white; }
+    .danger { background: #b83232; color: white; }
+    .actions { display: flex; gap: 9px; flex-wrap: wrap; margin-top: 18px; }
+    .hidden { display: none !important; }
+    .message { margin-top: 12px; font-size: 14px; color: #9cc5ff; }
+    .deal {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      border-top: 1px solid #263c56;
+      padding: 15px 0;
+    }
+    .deal img {
+      width: 75px;
+      height: 75px;
+      object-fit: cover;
+      border-radius: 8px;
+      background: #263c56;
+    }
+    .deal-info { flex: 1; min-width: 0; }
+    .deal-info h3 { font-size: 15px; margin: 0 0 7px; overflow-wrap: anywhere; }
+    .deal-info p { font-size: 13px; color: #aabbd0; margin: 4px 0; }
+    .deal-actions { display: flex; gap: 7px; flex-wrap: wrap; }
+    .status { color: #77c5ff !important; }
+    .preview { max-width: 140px; max-height: 120px; margin-top: 10px; border-radius: 8px; }
+    .note { color: #9fb0c5; font-size: 13px; line-height: 1.5; }
+    @media(max-width: 600px) {
+      .panel { padding: 16px; }
+      .deal { align-items: flex-start; flex-wrap: wrap; }
+      .deal-actions { width: 100%; padding-left: 90px; }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <h1><span class="blue">zubairtechtalks</span> / Admin</h1>
+    <button id="logoutBtn" class="secondary hidden">Log out</button>
+  </header>
+
+  <section id="loginPanel" class="panel">
+    <h2>Admin Login</h2>
+    <form id="loginForm">
+      <label for="email">Email address</label>
+      <input id="email" type="email" required autocomplete="username">
+
+      <label for="password">Password</label>
+      <input id="password" type="password" required autocomplete="current-password">
+
+      <div class="actions">
+        <button class="primary" type="submit">Login</button>
+      </div>
+    </form>
+    <p id="loginMessage" class="message"></p>
+  </section>
+
+  <main id="dashboard" class="hidden">
+    <section class="panel">
+      <h2 id="formHeading">Add New Deal</h2>
+      <form id="dealForm">
+        <label for="title">Product name *</label>
+        <input id="title" required maxlength="200" placeholder="Example: Wireless Headphones">
+
+        <label for="description">Description</label>
+        <textarea id="description" placeholder="Short product description"></textarea>
+
+        <label for="platform">Shopping platform *</label>
+        <select id="platform" required>
+          <option value="Amazon">Amazon</option>
+          <option value="Flipkart">Flipkart</option>
+          <option value="Other">Other</option>
+        </select>
+
+        <label for="category">Category</label>
+        <input id="category" placeholder="Mobiles, Accessories, Audio...">
+
+        <label for="originalPrice">Original price (₹)</label>
+        <input id="originalPrice" type="number" min="0" step="0.01" placeholder="4999">
+
+        <label for="currentPrice">Offer price (₹)</label>
+        <input id="currentPrice" type="number" min="0" step="0.01" placeholder="2999">
+
+        <label for="productUrl">Affiliate / Product link *</label>
+        <input id="productUrl" type="url" required placeholder="https://...">
+
+        <label for="imageFile">Product image (JPG, PNG, WEBP or GIF; max 5 MB)</label>
+        <input id="imageFile" type="file" accept="image/jpeg,image/png,image/webp,image/gif">
+        <img id="imagePreview" class="preview hidden" alt="Product image preview">
+
+        <label for="status">Publishing status</label>
+        <select id="status">
+          <option value="draft">Draft</option>
+          <option value="published">Published</option>
+        </select>
+
+        <div class="actions">
+          <button class="primary" id="saveBtn" type="submit">Save Deal</button>
+          <button class="secondary hidden" id="cancelBtn" type="button">Cancel Edit</button>
+        </div>
+      </form>
+      <p id="formMessage" class="message"></p>
+      <p class="note">Published deals can be displayed on your public website. Draft deals remain hidden from visitors.</p>
+    </section>
+
+    <section class="panel">
+      <h2>Your Deals</h2>
+      <div id="dealList">Loading deals...</div>
+    </section>
+  </main>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js"></script>
+
+<script>
+  const loginPanel = document.getElementById("loginPanel");
+  const dashboard = document.getElementById("dashboard");
+  const logoutBtn = document.getElementById("logoutBtn");
+  const loginMessage = document.getElementById("loginMessage");
+  const formMessage = document.getElementById("formMessage");
+  const dealForm = document.getElementById("dealForm");
+  const dealList = document.getElementById("dealList");
+  const saveBtn = document.getElementById("saveBtn");
+  const cancelBtn = document.getElementById("cancelBtn");
+  const imageFile = document.getElementById("imageFile");
+  const imagePreview = document.getElementById("imagePreview");
+
+  let currentUser = null;
+  let editingDealId = null;
+  let existingImageUrl = "";
+
+  function showLogin(message = "") {
+    loginPanel.classList.remove("hidden");
+    dashboard.classList.add("hidden");
+    logoutBtn.classList.add("hidden");
+    loginMessage.textContent = message;
+  }
+
+  function showDashboard() {
+    loginPanel.classList.add("hidden");
+    dashboard.classList.remove("hidden");
+    logoutBtn.classList.remove("hidden");
+  }
+
+  async function checkAdmin() {
+    const { data: { session }, error } = await supabase.auth.getSession();
+
+    if (error || !session) {
+      currentUser = null;
+      showLogin();
+      return;
+    }
+
+    currentUser = session.user;
+
+    const { data, error: adminError } = await supabase
+      .from("admin_users")
+      .select("user_id")
+      .eq("user_id", currentUser.id)
+      .maybeSingle();
+
+    if (adminError || !data) {
+      await supabase.auth.signOut();
+      currentUser = null;
+      showLogin("This account is not authorized as an admin.");
+      return;
+    }
+
+    showDashboard();
+    await loadDeals();
+  }
+
+  document.getElementById("loginForm").addEventListener("submit", async (event) => {
+    event.preventDefault();
+    loginMessage.textContent = "Signing in...";
+
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value;
+
+    const { error } = await supabase.auth.signInWithPassword({ email, password });
+
+    if (error) {
+      loginMessage.textContent = error.message;
+      return;
+    }
+
+    await checkAdmin();
+  });
+
+  logoutBtn.addEventListener("click", async () => {
+    await supabase.auth.signOut();
+    currentUser = null;
+    showLogin("You have logged out.");
+  });
+
+  imageFile.addEventListener("change", () => {
+    const file = imageFile.files[0];
+
+    if (!file) {
+      imagePreview.classList.add("hidden");
+      return;
+    }
+
+    const allowedTypes = ["image/jpeg", "image/png", "image/webp", "image/gif"];
+
+    if (!allowedTypes.includes(file.type) || file.size > 5 * 1024 * 1024) {
+      alert("Choose a JPG, PNG, WEBP or GIF image up to 5 MB.");
+      imageFile.value = "";
+      imagePreview.classList.add("hidden");
+      return;
+    }
+
+    imagePreview.src = URL.createObjectURL(file);
+    imagePreview.classList.remove("hidden");
+  });
+
+  async function uploadProductImage(file) {
+    const extension = file.name.split(".").pop().toLowerCase();
+    const path = `${currentUser.id}/${crypto.randomUUID()}.${extension}`;
+
+    const { error } = await supabase.storage
+      .from("deal-images")
+      .upload(path, file, {
+        cacheControl: "3600",
+        upsert: false,
+        contentType: file.type
+      });
+
+    if (error) throw error;
+
+    const { data } = supabase.storage
+      .from("deal-images")
+      .getPublicUrl(path);
+
+    return data.publicUrl;
+  }
+
+  dealForm.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    if (!currentUser) {
+      formMessage.textContent = "Please log in again.";
+      return;
+    }
+
+    saveBtn.disabled = true;
+    formMessage.textContent = "Saving deal...";
+
+    try {
+      let imageUrl = existingImageUrl;
+      const file = imageFile.files[0];
+
+      if (file) {
+        const allowedTypes = ["image/jpeg", "image/png", "image/webp", "image/gif"];
+        if (!allowedTypes.includes(file.type) || file.size > 5 * 1024 * 1024) {
+          throw new Error("Invalid image. Use JPG, PNG, WEBP or GIF up to 5 MB.");
+        }
+        imageUrl = await uploadProductImage(file);
+      }
+
+      const deal = {
+        title: document.getElementById("title").value.trim(),
+        description: document.getElementById("description").value.trim(),
+        image_url: imageUrl || null,
+        product_url: document.getElementById("productUrl").value.trim(),
+        platform: document.getElementById("platform").value,
+        category: document.getElementById("category").value.trim(),
+        original_price: document.getElementById("originalPrice").value || null,
+        current_price: document.getElementById("currentPrice").value || null,
+        status: document.getElementById("status").value
+      };
+
+      const parsedUrl = new URL(deal.product_url);
+      if (!["http:", "https:"].includes(parsedUrl.protocol)) {
+        throw new Error("Please enter a valid HTTP or HTTPS product link.");
+      }
+
+      let result;
+
+      if (editingDealId) {
+        result = await supabase
+          .from("deals")
+          .update(deal)
+          .eq("id", editingDealId);
+      } else {
+        result = await supabase.from("deals").insert(deal);
+      }
+
+      if (result.error) throw result.error;
+
+      formMessage.textContent = editingDealId ? "Deal updated successfully!" : "Deal added successfully!";
+      resetForm();
+      await loadDeals();
+
+    } catch (error) {
+      formMessage.textContent = "Error: " + error.message;
+    } finally {
+      saveBtn.disabled = false;
+    }
+  });
+
+  function resetForm() {
+    dealForm.reset();
+    editingDealId = null;
+    existingImageUrl = "";
+    imagePreview.src = "";
+    imagePreview.classList.add("hidden");
+    document.getElementById("formHeading").textContent = "Add New Deal";
+    saveBtn.textContent = "Save Deal";
+    cancelBtn.classList.add("hidden");
+  }
+
+  cancelBtn.addEventListener("click", () => {
+    resetForm();
+    formMessage.textContent = "";
+  });
+
+  async function loadDeals() {
+    dealList.textContent = "Loading deals...";
+
+    const { data, error } = await supabase
+      .from("deals")
+      .select("*")
+      .order("created_at", { ascending: false });
+
+    if (error) {
+      dealList.textContent = "Could not load deals: " + error.message;
+      return;
+    }
+
+    if (!data || data.length === 0) {
+      dealList.textContent = "No deals added yet.";
+      return;
+    }
+
+    dealList.innerHTML = "";
+
+    data.forEach((deal) => {
+      const item = document.createElement("div");
+      item.className = "deal";
+
+      const img = document.createElement("img");
+      img.alt = deal.title;
+      img.src = deal.image_url || "";
+      if (!deal.image_url) img.style.visibility = "hidden";
+
+      const info = document.createElement("div");
+      info.className = "deal-info";
+
+      const title = document.createElement("h3");
+      title.textContent = deal.title;
+
+      const price = document.createElement("p");
+      price.textContent = deal.current_price
+        ? "Offer price: ₹" + deal.current_price
+        : deal.platform;
+
+      const status = document.createElement("p");
+      status.className = "status";
+      status.textContent = deal.status.toUpperCase();
+
+      info.append(title, price, status);
+
+      const actions = document.createElement("div");
+      actions.className = "deal-actions";
+
+      const editButton = document.createElement("button");
+      editButton.className = "secondary";
+      editButton.textContent = "Edit";
+      editButton.addEventListener("click", () => editDeal(deal));
+
+      const deleteButton = document.createElement("button");
+      deleteButton.className = "danger";
+      deleteButton.textContent = "Delete";
+      deleteButton.addEventListener("click", () => deleteDeal(deal.id));
+
+      actions.append(editButton, deleteButton);
+      item.append(img, info, actions);
+      dealList.appendChild(item);
+    });
+  }
+
+  function editDeal(deal) {
+    editingDealId = deal.id;
+    existingImageUrl = deal.image_url || "";
+
+    document.getElementById("title").value = deal.title || "";
+    document.getElementById("description").value = deal.description || "";
+    document.getElementById("platform").value = deal.platform || "Amazon";
+    document.getElementById("category").value = deal.category || "";
+    document.getElementById("originalPrice").value = deal.original_price || "";
+    document.getElementById("currentPrice").value = deal.current_price || "";
+    document.getElementById("productUrl").value = deal.product_url || "";
+    document.getElementById("status").value = deal.status || "draft";
+
+    imageFile.value = "";
+
+    if (existingImageUrl) {
+      imagePreview.src = existingImageUrl;
+      imagePreview.classList.remove("hidden");
+    } else {
+      imagePreview.classList.add("hidden");
+    }
+
+    document.getElementById("formHeading").textContent = "Edit Deal";
+    saveBtn.textContent = "Update Deal";
+    cancelBtn.classList.remove("hidden");
+    formMessage.textContent = "Editing: " + deal.title;
+
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  async function deleteDeal(id) {
+    if (!confirm("Are you sure you want to delete this deal?")) return;
+
+    const { error } = await supabase.from("deals").delete().eq("id", id);
+
+    if (error) {
+      alert("Could not delete deal: " + error.message);
+      return;
+    }
+
+    formMessage.textContent = "Deal deleted.";
+    await loadDeals();
+  }
+
+  checkAdmin();
+
+  supabase.auth.onAuthStateChange((event, session) => {
+    if (event === "SIGNED_OUT") {
+      currentUser = null;
+      showLogin();
+    }
+  });
+</script>
+</body>
+</html>
