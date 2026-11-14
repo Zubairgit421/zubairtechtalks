@@ -1395,11 +1395,15 @@ card.href = buyingLink || post.link || "https://t.me/zubairtechdeals";
   }
 }
 
+// Load deals when the website opens
 loadPublishedDeals();
 loadTelegramPosts();
 
-// Refresh Telegram posts every 5 minutes
-setInterval(loadTelegramPosts, 5 * 60 * 1000);
+// Automatically refresh Telegram deals every 5 minutes
+setInterval(() => {
+  console.log("Refreshing Telegram deals...");
+  loadTelegramPosts();
+}, 5 * 60 * 1000);
 const menuToggle = document.getElementById("menuToggle");
 const navLinks = document.getElementById("navLinks");
 
