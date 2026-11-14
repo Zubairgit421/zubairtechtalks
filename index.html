@@ -1283,8 +1283,16 @@ const response = await fetch(workerUrl, {cache: "no-store"});
         .trim();
 
       const buyingLink = [...doc.querySelectorAll("a[href]")]
-        .map(a => a.href)
-        .find(url => /^https?:\/\//i.test(url));
+  .map(a => a.href)
+  .find(url => /^https?:\/\//i.test(url));
+
+const telegramPostLink = (
+  post.querySelector("link")?.textContent || ""
+).trim();
+
+const cardLink = /^https?:\/\/(www\.)?(t\.me|telegram\.me)\//i.test(telegramPostLink)
+  ? telegramPostLink
+  : buyingLink;
 
       const cleanText = rawText
         .replace(/https?:\/\/\S+/gi, "")
@@ -1322,11 +1330,11 @@ const response = await fetch(workerUrl, {cache: "no-store"});
         ? amount(regularMatch[1])
         : null;
 
-      const card = document.createElement("a");
-      card.className = "telegram-post";
-      card.href = buyingLink;
-      card.target = "_blank";
-      card.rel = "noopener noreferrer";
+     const card = document.createElement("a");
+card.className = "telegram-post";
+card.href = cardLink;
+card.target = "_blank";
+card.rel = "noopener noreferrer";
 
       if (imageUrl) {
         const img = document.createElement("img");
@@ -1370,7 +1378,9 @@ const response = await fetch(workerUrl, {cache: "no-store"});
 
       const link = document.createElement("div");
       link.className = "telegram-post-link";
-      link.textContent = "BUY NOW →";
+      link.textContent = cardLink === telegramPostLink
+  ? "VIEW TELEGRAM POST →"
+  : "BUY NOW →";
       content.appendChild(link);
 
       card.appendChild(content);
