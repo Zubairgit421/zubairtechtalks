@@ -13,6 +13,116 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
   <style>
+
+    
+/* Premium responsive header */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: rgba(5, 15, 32, 0.96);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid #18365c;
+}
+
+.main-nav {
+  min-height: 82px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.header-logo {
+  width: 150px;
+  height: 65px;
+  object-fit: contain;
+  display: block;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+
+.nav-links a {
+  color: #dce8f8;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 600;
+  transition: color 0.2s;
+}
+
+.nav-links a:hover {
+  color: #42a5ff;
+}
+
+.nav-links .nav-subscribe {
+  background: #1688ed;
+  color: white;
+  padding: 11px 19px;
+  border-radius: 8px;
+}
+
+.menu-toggle {
+  display: none;
+  background: transparent;
+  border: 0;
+  padding: 8px;
+  cursor: pointer;
+}
+
+.menu-toggle span {
+  display: block;
+  width: 25px;
+  height: 2px;
+  background: white;
+  margin: 6px 0;
+}
+
+@media (max-width: 768px) {
+  .main-nav {
+    min-height: 72px;
+  }
+
+  .header-logo {
+    width: 125px;
+    height: 58px;
+  }
+
+  .menu-toggle {
+    display: block;
+  }
+
+  .nav-links {
+    display: none;
+    position: absolute;
+    top: 72px;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    padding: 12px 20px 20px;
+    background: #07152b;
+    border-bottom: 1px solid #18365c;
+  }
+
+  .nav-links.active {
+    display: flex;
+  }
+
+  .nav-links a {
+    padding: 14px 10px;
+  }
+
+  .nav-links .nav-subscribe {
+    text-align: center;
+    margin-top: 8px;
+  }
+}
+
     :root {
       --bg: #071426;
       --surface: #0d1e35;
@@ -42,42 +152,6 @@
       width: min(1160px, 90%);
       margin: auto;
     }
-
-    header {
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      background: rgba(7,20,38,.92);
-      backdrop-filter: blur(16px);
-      border-bottom: 1px solid var(--border);
-    }
-
-    nav {
-      min-height: 78px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 20px;
-    }
-
-    .brand img {
-      width: 180px;
-      height: 65px;
-      object-fit: contain;
-      display: block;
-      border-radius: 8px;
-    }
-
-    .nav-links {
-      display: flex;
-      gap: 27px;
-      align-items: center;
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--muted);
-    }
-
-    .nav-links a:hover { color: var(--bright); }
 
     .btn {
       display: inline-flex;
@@ -362,9 +436,7 @@
     }
 
     @media(max-width: 760px) {
-      .nav-links { display: none; }
       nav { min-height: 70px; }
-      .brand img { width: 145px; height: 58px; }
       .hero { padding: 75px 0 55px; }
       .hero h1 { letter-spacing: -1.5px; }
       .stats { gap: 9px; margin-top: 45px; }
@@ -491,25 +563,44 @@
 
 <body>
 
-<header>
+
+<header class="site-header">
   <div class="container">
-    <nav>
-      <a class="brand" href="#">
-        <img src="logo.png" alt="zubairtechtalks logo" class="header-logo">
+    <nav class="main-nav">
+
+      <a class="brand" href="#home">
+        <img src="logo.png"
+             alt="zubairtechtalks logo"
+             class="header-logo">
       </a>
 
-      <div class="nav-links">
+      <button class="menu-toggle"
+              id="menuToggle"
+              aria-label="Open navigation menu"
+              aria-expanded="false">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <div class="nav-links" id="navLinks">
         <a href="#home">Home</a>
         <a href="#videos">Videos</a>
         <a href="#deals">Deals</a>
+        <a href="#instagram">Instagram</a>
         <a href="#connect">Connect</a>
+        <a class="nav-subscribe"
+           href="https://www.youtube.com/@zubairtechtalks"
+           target="_blank"
+           rel="noopener noreferrer">
+          Subscribe
+        </a>
       </div>
 
-    
-      </a>
     </nav>
   </div>
 </header>
+
 
 <main>
 
@@ -785,6 +876,22 @@ async function loadLatestVideos() {
 }
 
 loadLatestVideos();
+  
+const menuToggle = document.getElementById("menuToggle");
+const navLinks = document.getElementById("navLinks");
+
+menuToggle.addEventListener("click", () => {
+  const isOpen = navLinks.classList.toggle("active");
+  menuToggle.setAttribute("aria-expanded", isOpen);
+});
+
+navLinks.querySelectorAll("a").forEach(link => {
+  link.addEventListener("click", () => {
+    navLinks.classList.remove("active");
+    menuToggle.setAttribute("aria-expanded", "false");
+  });
+});
+
 </script>
 </body>
 </html>
