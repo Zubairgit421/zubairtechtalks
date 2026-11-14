@@ -13,7 +13,30 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
   <style>
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+}
 
+.brand-name {
+  color: #ffffff;
+  font-size: 21px;
+  font-weight: 800;
+  letter-spacing: -0.7px;
+  white-space: nowrap;
+}
+
+@media (max-width: 480px) {
+  .brand-name {
+    font-size: 16px;
+  }
+
+  .header-logo {
+    width: 90px;
+  }
+}
     
 /* Premium responsive header */
 .site-header {
@@ -853,11 +876,13 @@
   <div class="container">
     <nav class="main-nav">
 
-      <a class="brand" href="#home">
-        <img src="logo.png"
-             alt="zubairtechtalks logo"
-             class="header-logo">
-      </a>
+      <<a class="brand" href="#home">
+  <img src="logo.png"
+       alt="zubairtechtalks logo"
+       class="header-logo">
+
+  <span class="brand-name">zubairtechtalks</span>
+</a>
 
       <button class="menu-toggle"
               id="menuToggle"
