@@ -217,11 +217,11 @@
 
     currentUser = session.user;
 
-    const { data, error: adminError } = await supabase
-      .from("admin_users")
-      .select("user_id")
-      .eq("user_id", currentUser.id)
-      .maybeSingle();
+    const { data, error: adminError } = await supabaseClient
+  .from("admin_users")
+  .select("user_id")
+  .eq("user_id", currentUser.id)
+  .maybeSingle();
 
     if (adminError || !data) {
       await supabaseClient.auth.signOut();
