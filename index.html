@@ -1292,7 +1292,7 @@ const response = await fetch(workerUrl, {cache: "no-store"});
     let count = 0;
 
     for (const post of items) {
-      if (count >= 5) break;
+      if (count >= 4) break;
 
       const parser = new DOMParser();
       const description =
