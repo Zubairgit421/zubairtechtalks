@@ -207,8 +207,7 @@
   }
 
   async function checkAdmin() {
-    const { data: { session }, error } = await supabaseClient.auth.getSession();
-
+    const { data, error: adminError } = await supabaseClient
     if (error || !session) {
       currentUser = null;
       showLogin();
@@ -342,7 +341,7 @@
       let result;
 
       if (editingDealId) {
-        result = await supabase
+       result = await supabaseClient
           .from("deals")
           .update(deal)
           .eq("id", editingDealId);
@@ -382,7 +381,7 @@
   async function loadDeals() {
     dealList.textContent = "Loading deals...";
 
-    const { data, error } = await supabase
+  const { data, error } = await supabaseClient
       .from("deals")
       .select("*")
       .order("created_at", { ascending: false });
