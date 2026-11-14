@@ -1242,8 +1242,9 @@ async function loadTelegramPosts() {
       "https://api.rss2json.com/v1/api.json?rss_url=" +
       encodeURIComponent(feedUrl);
 
-    const response = await fetch(apiUrl);
-
+    const response = await fetch(apiUrl + "&t=" + Date.now(), {
+  cache: "no-store"
+});
     if (!response.ok) throw new Error("Telegram feed request failed");
 
     const data = await response.json();
@@ -1254,13 +1255,10 @@ async function loadTelegramPosts() {
 
     postsContainer.innerHTML = "";
 
-    data.items
-      .filter(post => {
-        const text = post.title || post.description || "";
-        return !/^https?:\/\/\S+$/i.test(text.trim());
-      })
-      .slice(0, 5)
-      .forEach(post => {
+   data.items
+  .sort((a, b) => new Date(b.pubDate) - new Date(a.pubDate))
+  .slice(0, 5)
+  .forEach(post => {
         const parser = new DOMParser();
         const doc = parser.parseFromString(
           post.description || post.content || "",
