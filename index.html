@@ -769,6 +769,80 @@
     grid-template-columns: 1fr;
   }
 }
+    /* Premium Telegram shopping deal cards */
+.telegram-post {
+  padding: 0;
+  overflow: hidden;
+  gap: 0;
+  background: linear-gradient(145deg, #102743, #071a30);
+}
+
+.telegram-post img {
+  width: 100%;
+  height: 210px;
+  max-height: 210px;
+  object-fit: contain;
+  background: #ffffff;
+  border-radius: 0;
+  padding: 12px;
+}
+
+.telegram-post-content {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex: 1;
+}
+
+.telegram-post-text {
+  font-size: 14px;
+  font-weight: 600;
+  color: #ffffff;
+  line-height: 1.6;
+  white-space: pre-line;
+}
+
+.telegram-price-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 9px;
+}
+
+.telegram-current-price {
+  color: #54d995;
+  font-size: 21px;
+  font-weight: 900;
+}
+
+.telegram-original-price {
+  color: #a7b7cb;
+  text-decoration: line-through;
+  font-size: 13px;
+}
+
+.telegram-discount {
+  background: rgba(35, 190, 115, .15);
+  color: #54d995;
+  padding: 4px 8px;
+  border-radius: 5px;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.telegram-post-date {
+  margin-top: auto;
+}
+
+.telegram-post-link {
+  background: #0756d8;
+  color: #ffffff;
+  text-align: center;
+  padding: 11px;
+  border-radius: 7px;
+  margin-top: 4px;
+}
   </style>
 </head>
 
@@ -1066,12 +1140,14 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase-config.js"></script>
 <script>
-  async function loadTelegramPosts() {
+  
+async function loadTelegramPosts() {
   const postsContainer = document.getElementById("telegramPosts");
 
   try {
     const feedUrl =
       "https://rsshub.rss3.workers.dev/telegram/channel/zubairtechdeals";
+
     const apiUrl =
       "https://api.rss2json.com/v1/api.json?rss_url=" +
       encodeURIComponent(feedUrl);
@@ -1091,24 +1167,24 @@
     postsContainer.innerHTML = "";
 
     data.items.slice(0, 5).forEach(post => {
+      const parser = new DOMParser();
+
+      const doc = parser.parseFromString(
+        post.description || post.content || "",
+        "text/html"
+      );
+
+      const rawText = (
+        post.title || doc.body.textContent || "Latest deal"
+      ).trim();
+
       const card = document.createElement("a");
       card.className = "telegram-post";
       card.href = post.link || "https://t.me/zubairtechdeals";
       card.target = "_blank";
       card.rel = "noopener noreferrer";
 
-      // Extract safe plain text from the feed description
-      const parser = new DOMParser();
-      const doc = parser.parseFromString(
-        post.description || post.content || "",
-        "text/html"
-      );
-
-      const postText =
-        (post.title || doc.body.textContent || "View latest deal")
-          .trim();
-
-      // Find a post image if available
+      // Extract product image
       const imageUrl =
         post.thumbnail ||
         post.enclosure?.link ||
@@ -1117,31 +1193,101 @@
       if (imageUrl) {
         const image = document.createElement("img");
         image.src = imageUrl;
-        image.alt = "Telegram deal";
+        image.alt = "Telegram shopping deal";
         image.loading = "lazy";
+
+        image.onerror = () => image.remove();
+
         card.appendChild(image);
       }
 
+      const content = document.createElement("div");
+      content.className = "telegram-post-content";
+
+      // Clean post text
       const text = document.createElement("div");
       text.className = "telegram-post-text";
-      text.textContent = postText;
-      card.appendChild(text);
+      text.textContent = rawText;
 
+      content.appendChild(text);
+
+      // Extract Indian currency prices
+      const priceMatches = [
+        ...rawText.matchAll(/(?:₹|Rs\.?|INR)\s*([\d,]+(?:\.\d{1,2})?)/gi)
+      ];
+
+      const prices = priceMatches.map(match =>
+        Number(match[1].replace(/,/g, ""))
+      ).filter(price => Number.isFinite(price) && price > 0);
+
+      // Check whether the post explicitly marks an original price
+      const hasOriginalPrice =
+        /\b(MRP|original price|old price|was|before)\b/i.test(rawText) ||
+        doc.querySelector("del, s, strike") !== null;
+
+      if (prices.length > 0) {
+        const priceRow = document.createElement("div");
+        priceRow.className = "telegram-price-row";
+
+        const currentPrice = prices[0];
+
+        const current = document.createElement("span");
+        current.className = "telegram-current-price";
+        current.textContent =
+          "₹" + currentPrice.toLocaleString("en-IN");
+
+        priceRow.appendChild(current);
+
+        if (
+          hasOriginalPrice &&
+          prices.length > 1 &&
+          prices[1] > currentPrice
+        ) {
+          const originalPrice = prices[1];
+
+          const original = document.createElement("span");
+          original.className = "telegram-original-price";
+          original.textContent =
+            "₹" + originalPrice.toLocaleString("en-IN");
+
+          priceRow.appendChild(original);
+
+          const discount = Math.round(
+            ((originalPrice - currentPrice) / originalPrice) * 100
+          );
+
+          if (discount > 0 && discount <= 99) {
+            const badge = document.createElement("span");
+            badge.className = "telegram-discount";
+            badge.textContent = discount + "% OFF";
+
+            priceRow.appendChild(badge);
+          }
+        }
+
+        content.appendChild(priceRow);
+      }
+
+      // Post date
       if (post.pubDate) {
         const date = document.createElement("div");
         date.className = "telegram-post-date";
+
         date.textContent = new Date(post.pubDate).toLocaleString(
           "en-IN",
           { dateStyle: "medium", timeStyle: "short" }
         );
-        card.appendChild(date);
+
+        content.appendChild(date);
       }
 
+      // Telegram link
       const link = document.createElement("div");
       link.className = "telegram-post-link";
-      link.textContent = "VIEW TELEGRAM POST →";
-      card.appendChild(link);
+      link.textContent = "VIEW DEAL ON TELEGRAM →";
 
+      content.appendChild(link);
+      card.appendChild(content);
       postsContainer.appendChild(card);
     });
 
@@ -1158,161 +1304,7 @@
     postsContainer.appendChild(message);
   }
 }
-async function loadPublishedDeals() {
-  const dealsGrid = document.getElementById("dealsGrid");
 
-  try {
-    const client = window.supabaseClient;
-
-    if (!client) {
-      throw new Error("Supabase client not initialized.");
-    }
-
-    const { data: deals, error } = await client
-      .from("deals")
-      .select("*")
-      .eq("status", "published")
-      .order("created_at", { ascending: false });
-
-    if (error) throw error;
-
-    dealsGrid.innerHTML = "";
-
-    if (!deals || deals.length === 0) {
-      dealsGrid.innerHTML =
-        '<div class="loading">No deals available right now. Please check again soon.</div>';
-      return;
-    }
-
-    deals.forEach(deal => {
-      const card = document.createElement("div");
-      card.className = "deal-card";
-
-      if (deal.image_url) {
-        const image = document.createElement("img");
-        image.className = "deal-image";
-        image.src = deal.image_url;
-        image.alt = deal.title || "Product image";
-        image.loading = "lazy";
-        card.appendChild(image);
-      }
-
-      const info = document.createElement("div");
-      info.className = "deal-info";
-
-      const platform = document.createElement("div");
-      platform.className = "deal-platform";
-      platform.textContent = deal.platform || "Online Deal";
-
-      const title = document.createElement("h3");
-      title.textContent = deal.title || "Product";
-
-      const price = document.createElement("div");
-      price.className = "deal-price";
-      price.textContent = deal.current_price != null
-        ? "₹" + Number(deal.current_price).toLocaleString("en-IN")
-        : "Check price";
-
-      info.append(platform, title, price);
-
-      if (deal.original_price != null) {
-        const original = document.createElement("span");
-        original.className = "deal-original";
-        original.textContent =
-          "₹" + Number(deal.original_price).toLocaleString("en-IN");
-        price.appendChild(original);
-      }
-
-      const buy = document.createElement("a");
-      buy.className = "deal-buy";
-      buy.textContent = "VIEW DEAL →";
-      buy.href = deal.product_url;
-      buy.target = "_blank";
-      buy.rel = "noopener noreferrer";
-
-      info.appendChild(buy);
-      card.appendChild(info);
-      dealsGrid.appendChild(card);
-    });
-
-  } catch (error) {
-    console.error("Deals loading error:", error);
-    dealsGrid.innerHTML =
-      '<div class="loading">Unable to load deals. Please try again later.</div>';
-  }
-}
-async function loadLatestVideos() {
-  const videoGrid = document.getElementById("videoGrid");
-  const channelId = "UCxvhyYARWKIg0HRX5z10_hQ";
-
-  try {
-    const rssUrl =
-      `https://www.youtube.com/feeds/videos.xml?channel_id=${channelId}`;
-
-    const apiUrl =
-      "https://api.rss2json.com/v1/api.json?rss_url=" +
-      encodeURIComponent(rssUrl);
-
-    const response = await fetch(apiUrl);
-
-    if (!response.ok) {
-      throw new Error("Unable to fetch videos");
-    }
-
-    const data = await response.json();
-
-    if (data.status !== "ok" || !data.items.length) {
-      throw new Error("No videos found");
-    }
-
-    videoGrid.innerHTML = "";
-
-    data.items.slice(0, 3).forEach(video => {
-      const videoId = video.guid.split(":").pop();
-
-      // Main video card
-      const card = document.createElement("a");
-      card.className = "video-card";
-      card.href = `https://www.youtube.com/watch?v=${videoId}`;
-      card.target = "_blank";
-      card.rel = "noopener noreferrer";
-
-      // Thumbnail
-      const thumbnail = document.createElement("div");
-      thumbnail.className = "video-thumb";
-
-      const image = document.createElement("img");
-      image.src = `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`;
-      image.alt = video.title;
-      image.loading = "lazy";
-
-      thumbnail.appendChild(image);
-
-      // Video information
-      const info = document.createElement("div");
-      info.className = "video-info";
-
-      const title = document.createElement("h3");
-      title.textContent = video.title;
-
-      const watchLink = document.createElement("span");
-      watchLink.className = "watch-link";
-      watchLink.textContent = "▶ Watch on YouTube";
-
-      info.append(title, watchLink);
-      card.append(thumbnail, info);
-
-      videoGrid.appendChild(card);
-    });
-
-    document.getElementById("videoCount").textContent =
-      data.items.length + "+";
-
-  } catch (error) {
-    videoGrid.textContent =
-      "Videos could not be loaded. Please visit our YouTube channel.";
-  }
-}
 
 
 loadLatestVideos();
