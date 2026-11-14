@@ -1274,7 +1274,7 @@ async function loadTelegramPosts() {
         const card = document.createElement("a");
         card.className = "telegram-post";
         const descriptionHtml = post.description || post.content || "";
-const doc = new DOMParser().parseFromString(descriptionHtml, "text/html");
+
 
 const buyingLink = [...doc.querySelectorAll("a[href]")]
   .map(a => a.href)
