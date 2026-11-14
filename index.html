@@ -1232,6 +1232,7 @@
 }
 
 
+
 async function loadTelegramPosts() {
   const postsContainer = document.getElementById("telegramPosts");
 
@@ -1239,190 +1240,140 @@ async function loadTelegramPosts() {
     const feedUrl =
       "https://rsshub.rss3.workers.dev/telegram/channel/zubairtechdeals";
 
-    const apiUrl =
-      "https://api.rss2json.com/v1/api.json?rss_url=" +
+    const proxyUrl =
+      "https://api.allorigins.win/raw?url=" +
       encodeURIComponent(feedUrl) +
       "&t=" + Date.now();
 
-    const response = await fetch(apiUrl, { cache: "no-store" });
+    const response = await fetch(proxyUrl, {
+      cache: "no-store"
+    });
 
     if (!response.ok) {
-      throw new Error("Telegram feed request failed");
+      throw new Error("Live RSS request failed: " + response.status);
     }
 
-    const data = await response.json();
-
-    if (data.status !== "ok" || !data.items?.length) {
-      throw new Error("No Telegram posts found");
-    }
-
-    // Sort newest first and inspect more than five messages.
-    const sortedPosts = [...data.items].sort(
-      (a, b) => new Date(b.pubDate) - new Date(a.pubDate)
+    const xmlText = await response.text();
+    const xml = new DOMParser().parseFromString(
+      xmlText,
+      "application/xml"
     );
 
-    const deals = [];
-
-    for (const post of sortedPosts) {
-      const html = post.description || post.content || "";
-      const doc = new DOMParser().parseFromString(html, "text/html");
-
-      const titleText = (post.title || "").trim();
-      const descriptionText = (doc.body.textContent || "")
-        .replace(/\s+/g, " ")
-        .trim();
-
-      const rawText = descriptionText || titleText;
-
-      // Find shopping links, including shortened affiliate links.
-      const links = [...doc.querySelectorAll("a[href]")]
-        .map(a => a.href)
-        .filter(url => /^https?:\/\//i.test(url));
-
-      const buyingLink = links.find(url =>
-        !/t\.me\/|telegram\.me\//i.test(url)
-      );
-
-      // Skip link-only messages without product information.
-      const isOnlyLink =
-        !rawText.replace(/https?:\/\/\S+/gi, " ").trim() ||
-        /^https?:\/\/\S+$/i.test(titleText);
-
-      if (!buyingLink || isOnlyLink) continue;
-
-      // Extract image.
-      const imageUrl =
-        doc.querySelector("img")?.getAttribute("src") ||
-        post.thumbnail ||
-        post.enclosure?.link ||
-        post.enclosure?.url ||
-        null;
-
-      // Convert values such as 40k into 40000.
-      function amount(value) {
-        if (!value) return null;
-
-        const match = value.replace(/,/g, "").match(/^(\d+(?:\.\d+)?)\s*(k)?$/i);
-        if (!match) return null;
-
-        return Math.round(
-          Number(match[1]) * (match[2] ? 1000 : 1)
-        );
-      }
-
-      const dealMatch = rawText.match(
-        /Deal\s*Price\s*:\s*(?:₹|Rs\.?|INR)?\s*([\d,.]+\s*k?)/i
-      );
-
-      const regularMatch = rawText.match(
-        /Regular\s*Price\s*:\s*(?:₹|Rs\.?|INR)?\s*([\d,.]+\s*k?)/i
-      );
-
-      let currentPrice = amount(dealMatch?.[1]);
-      let originalPrice = amount(regularMatch?.[1]);
-
-      // Other formats: @349, 395/-, ₹399.
-      if (!currentPrice) {
-        const cleanText = rawText.replace(/https?:\/\/\S+/gi, " ");
-
-        const fallback = cleanText.match(
-          /@\s*([\d,]+(?:\.\d{1,2})?)|\b([\d,]+)\s*\/-|₹\s*([\d,]+(?:\.\d{1,2})?)/i
-        );
-
-        if (fallback) {
-          currentPrice = amount(
-            fallback[1] || fallback[2] || fallback[3]
-          );
-        }
-      }
-
-      deals.push({
-        post,
-        rawText,
-        buyingLink,
-        imageUrl,
-        currentPrice,
-        originalPrice
-      });
-
-      if (deals.length >= 5) break;
+    if (xml.querySelector("parsererror")) {
+      throw new Error("Invalid RSS XML");
     }
+
+    const items = [...xml.querySelectorAll("channel > item")];
+
+    items.sort((a, b) =>
+      new Date(b.querySelector("pubDate")?.textContent || 0) -
+      new Date(a.querySelector("pubDate")?.textContent || 0)
+    );
 
     postsContainer.innerHTML = "";
 
-    if (!deals.length) {
-      postsContainer.innerHTML =
-        '<div class="telegram-feed-status">No product deals available right now.</div>';
-      return;
-    }
+    let count = 0;
 
-    deals.forEach(deal => {
+    for (const post of items) {
+      if (count >= 5) break;
+
+      const parser = new DOMParser();
+      const description =
+        post.querySelector("description")?.textContent || "";
+
+      const doc = parser.parseFromString(description, "text/html");
+
+      const title =
+        post.querySelector("title")?.textContent || "";
+
+      const rawText = (doc.body.textContent || title)
+        .replace(/\s+/g, " ")
+        .trim();
+
+      const buyingLink = [...doc.querySelectorAll("a[href]")]
+        .map(a => a.href)
+        .find(url => /^https?:\/\//i.test(url));
+
+      const cleanText = rawText
+        .replace(/https?:\/\/\S+/gi, "")
+        .replace(/[💥🎉💰🏷️🔗✅👀🖼]/gu, "")
+        .replace(/[^\p{L}\p{N}₹@.]/gu, " ")
+        .replace(/\s+/g, " ")
+        .trim();
+
+      if (!buyingLink || cleanText.length < 5) continue;
+
+      const imageUrl =
+        doc.querySelector("img")?.getAttribute("src");
+
+      const priceMatch =
+        rawText.match(/(?:Deal Price\s*:\s*)?₹\s*([\d,]+)/i) ||
+        rawText.match(/@\s*([\d,]+)/) ||
+        rawText.match(/([\d,]+)\s*\/-/);
+
+      const regularMatch =
+        rawText.match(/Regular(?:\s+Price)?\s*:\s*₹?\s*([\d,]+(?:\s*k)?)/i);
+
+      function amount(value) {
+        if (!value) return null;
+        const cleaned = value.replace(/,/g, "").trim().toLowerCase();
+        return cleaned.endsWith("k")
+          ? Number(cleaned.slice(0, -1)) * 1000
+          : Number(cleaned);
+      }
+
+      const currentPrice = priceMatch
+        ? amount(priceMatch[1])
+        : null;
+
+      const originalPrice = regularMatch
+        ? amount(regularMatch[1])
+        : null;
+
       const card = document.createElement("a");
       card.className = "telegram-post";
-      card.href = deal.buyingLink;
+      card.href = buyingLink;
       card.target = "_blank";
       card.rel = "noopener noreferrer";
 
-      if (deal.imageUrl) {
-        const image = document.createElement("img");
-        image.src = deal.imageUrl;
-        image.alt = "Product deal";
-        image.loading = "lazy";
-        image.onerror = () => image.remove();
-        card.appendChild(image);
+      if (imageUrl) {
+        const img = document.createElement("img");
+        img.src = imageUrl;
+        img.alt = cleanText;
+        img.loading = "lazy";
+        card.appendChild(img);
       }
 
       const content = document.createElement("div");
       content.className = "telegram-post-content";
 
-      const title = document.createElement("div");
-      title.className = "telegram-post-text";
-      title.textContent = deal.rawText;
-      content.appendChild(title);
+      const text = document.createElement("div");
+      text.className = "telegram-post-text";
+      text.textContent = cleanText;
+      content.appendChild(text);
 
-      if (deal.currentPrice) {
-        const priceRow = document.createElement("div");
-        priceRow.className = "telegram-price-row";
-
-        const current = document.createElement("span");
-        current.className = "telegram-current-price";
-        current.textContent =
-          "₹" + deal.currentPrice.toLocaleString("en-IN");
-
-        priceRow.appendChild(current);
-
-        if (
-          deal.originalPrice &&
-          deal.originalPrice > deal.currentPrice
-        ) {
-          const original = document.createElement("span");
-          original.className = "telegram-original-price";
-          original.textContent =
-            "₹" + deal.originalPrice.toLocaleString("en-IN");
-
-          priceRow.appendChild(original);
-
-          const discount = document.createElement("span");
-          discount.className = "telegram-discount";
-          discount.textContent =
-            Math.round(
-              (1 - deal.currentPrice / deal.originalPrice) * 100
-            ) + "% OFF";
-
-          priceRow.appendChild(discount);
-        }
-
-        content.appendChild(priceRow);
+      if (currentPrice !== null) {
+        const price = document.createElement("div");
+        price.className = "telegram-current-price";
+        price.textContent = "₹" + currentPrice.toLocaleString("en-IN");
+        content.appendChild(price);
       }
 
-      if (deal.post.pubDate) {
-        const date = document.createElement("div");
-        date.className = "telegram-post-date";
-        date.textContent = new Date(deal.post.pubDate).toLocaleString(
-          "en-IN",
-          { dateStyle: "medium", timeStyle: "short" }
-        );
-        content.appendChild(date);
+      if (originalPrice !== null) {
+        const oldPrice = document.createElement("div");
+        oldPrice.className = "telegram-original-price";
+        oldPrice.textContent =
+          "₹" + originalPrice.toLocaleString("en-IN");
+        content.appendChild(oldPrice);
+
+        if (currentPrice && originalPrice > currentPrice) {
+          const discount = document.createElement("div");
+          discount.className = "telegram-discount";
+          discount.textContent =
+            Math.round((1 - currentPrice / originalPrice) * 100) +
+            "% OFF";
+          content.appendChild(discount);
+        }
       }
 
       const link = document.createElement("div");
@@ -1432,15 +1383,20 @@ async function loadTelegramPosts() {
 
       card.appendChild(content);
       postsContainer.appendChild(card);
-    });
 
-    console.log("Telegram deals updated:", deals.length);
+      count++;
+    }
+
+    if (count === 0) {
+      postsContainer.textContent = "No product deals available right now.";
+    }
+
+    console.log("Live Telegram deals loaded:", count);
 
   } catch (error) {
     console.error("Telegram feed error:", error);
-
-    postsContainer.innerHTML =
-      '<div class="telegram-feed-status">Unable to load latest deals. Please try again later.</div>';
+    postsContainer.textContent =
+      "Unable to load live deals. Please try again later.";
   }
 }
 
