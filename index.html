@@ -1273,7 +1273,16 @@ async function loadTelegramPosts() {
 
         const card = document.createElement("a");
         card.className = "telegram-post";
-        card.href = post.link || "https://t.me/zubairtechdeals";
+        const descriptionHtml = post.description || post.content || "";
+const doc = new DOMParser().parseFromString(descriptionHtml, "text/html");
+
+const buyingLink = [...doc.querySelectorAll("a[href]")]
+  .map(a => a.href)
+  .find(url =>
+    /amazon\.|flipkart\.|myntra\.|meesho\.|croma\.|reliancedigital\./i.test(url)
+  );
+
+card.href = buyingLink || post.link || "https://t.me/zubairtechdeals";
         card.target = "_blank";
         card.rel = "noopener noreferrer";
 
