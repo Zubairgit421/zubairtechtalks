@@ -1381,6 +1381,80 @@ footer p {
   }
 }
 
+/* =================================
+   STEP 3 - TECHNOLOGY HUB
+================================= */
+
+.news-grid {
+  display: grid;
+  grid-template-columns: repeat(2,minmax(0,1fr));
+  gap: 20px;
+}
+
+.news-card {
+  display: block;
+  padding: 28px;
+  background: linear-gradient(145deg,#10233c,#091629);
+  border: 1px solid rgba(85,166,255,.16);
+  border-radius: 17px;
+  transition: all .3s ease;
+}
+
+.news-card:hover {
+  transform: translateY(-6px);
+  border-color: #398bff;
+  box-shadow: 0 15px 35px rgba(0,0,0,.22);
+}
+
+.news-icon {
+  width: 55px;
+  height: 55px;
+  display: grid;
+  place-items: center;
+  background: #142e4e;
+  border: 1px solid rgba(85,166,255,.2);
+  border-radius: 14px;
+  font-size: 26px;
+  margin-bottom: 20px;
+}
+
+.news-label {
+  color: #55a6ff;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  margin-bottom: 8px;
+}
+
+.news-card h3 {
+  color: #fff;
+  font-size: 20px;
+  margin-bottom: 9px;
+}
+
+.news-card p {
+  color: #a9bad0;
+  font-size: 13px;
+  line-height: 1.8;
+  margin-bottom: 17px;
+}
+
+.news-card span {
+  color: #62adff;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+@media(max-width:600px) {
+  .news-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .news-card {
+    padding: 23px;
+  }
+}
+
   </style>
 </head>
 
@@ -1411,6 +1485,7 @@ footer p {
       <div class="nav-links" id="navLinks">
         <a href="#home">Home</a>
         <a href="#videos">Videos</a>
+        <a href="#news">Tech Hub</a>
         <a href="#deals">Deals</a>
         <a href="#instagram">Instagram</a>
         <a href="#connect">Connect</a>
@@ -1509,6 +1584,56 @@ footer p {
 </div>
     </div>
   </section>
+
+<!-- TECH NEWS & GUIDES -->
+<section id="news">
+  <div class="container">
+
+    <div class="section-heading">
+      <div>
+        <div class="eyebrow">EXPLORE THE TECH WORLD</div>
+        <h2>Technology <span class="blue-text">Hub</span></h2>
+        <p>Explore useful technology topics, updates and tutorials.</p>
+      </div>
+    </div>
+
+    <div class="news-grid">
+
+      <a class="news-card" href="#videos">
+        <div class="news-icon">📰</div>
+        <div class="news-label">LATEST UPDATES</div>
+        <h3>Tech News</h3>
+        <p>Discover technology trends, industry updates and important announcements.</p>
+        <span>Explore Videos →</span>
+      </a>
+
+      <a class="news-card" href="#videos">
+        <div class="news-icon">📱</div>
+        <div class="news-label">SMARTPHONE WORLD</div>
+        <h3>Mobile Updates</h3>
+        <p>Explore smartphone features, launches, tips and useful settings.</p>
+        <span>Explore Videos →</span>
+      </a>
+
+      <a class="news-card" href="#videos">
+        <div class="news-icon">⚡</div>
+        <div class="news-label">USEFUL TECHNOLOGY</div>
+        <h3>Apps & Tricks</h3>
+        <p>Discover useful applications, hidden features and digital tricks.</p>
+        <span>Explore Videos →</span>
+      </a>
+
+      <a class="news-card" href="#videos">
+        <div class="news-icon">💡</div>
+        <div class="news-label">LEARN SOMETHING NEW</div>
+        <h3>Tech Guides</h3>
+        <p>Simple tutorials and practical technology explanations.</p>
+        <span>Explore Videos →</span>
+      </a>
+
+    </div>
+  </div>
+</section>
 
   
 <section id="deals">
