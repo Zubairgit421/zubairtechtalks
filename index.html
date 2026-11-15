@@ -1697,8 +1697,21 @@ footer p {
 
 .footer-links a i {
   color: #55a6ff;
-  font-size: 17px;
-  width: 20px;
+  font-size: 26px;
+  width: 32px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+    /* Bigger social icons */
+.footer-links a:has(i) {
+  gap: 14px;
+  min-height: 38px;
+}
+
+.footer-links a i:hover {
+  transform: scale(1.2);
 }
 
 .footer-bottom {
