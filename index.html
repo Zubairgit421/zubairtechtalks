@@ -1790,6 +1790,168 @@ footer p {
   }
 }
 
+    
+/* PREMIUM EXCLUSIVE DEALS SECTION */
+.exclusive-deals {
+  position: relative;
+  overflow: hidden;
+  padding: 75px 25px;
+  margin: 45px auto;
+  border: 1px solid rgba(65,153,255,.3);
+  border-radius: 22px;
+  background:
+    radial-gradient(ellipse at top, rgba(0,110,255,.2), transparent 60%),
+    linear-gradient(135deg,#102541,#06101f 65%,#081b34);
+  text-align: center;
+}
+
+.deals-content {
+  max-width: 850px;
+  margin: auto;
+  position: relative;
+  z-index: 1;
+}
+
+.deals-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 18px;
+  border: 1px solid rgba(85,166,255,.45);
+  border-radius: 30px;
+  background: rgba(20,65,110,.35);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 1.2px;
+}
+
+.live-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #4ade80;
+  font-size: 10px;
+}
+
+.exclusive-deals h2 {
+  color: #fff;
+  font-size: clamp(32px,5vw,52px);
+  font-weight: 900;
+  margin: 25px 0 15px;
+}
+
+.exclusive-deals h2 span {
+  color: #55a6ff;
+}
+
+.deals-description {
+  max-width: 690px;
+  margin: 0 auto;
+  color: #b4c5da;
+  font-size: 15px;
+  line-height: 1.9;
+}
+
+.deal-features {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin: 32px 0;
+}
+
+.deal-features div {
+  padding: 14px 20px;
+  background: rgba(30,75,125,.3);
+  border: 1px solid rgba(85,166,255,.25);
+  border-radius: 12px;
+  color: #fff;
+  font-size: 17px;
+}
+
+.deal-features span {
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.telegram-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 17px 30px;
+  border-radius: 50px;
+  background: linear-gradient(100deg,#087cf5,#1760d5);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 900;
+  box-shadow: 0 8px 28px rgba(0,115,255,.3);
+  transition: .3s ease;
+}
+
+.telegram-cta:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 35px rgba(0,115,255,.5);
+}
+
+.telegram-cta i {
+  font-size: 23px;
+}
+
+.deals-trust {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 25px;
+  margin-top: 25px;
+  color: #9eb4ce;
+  font-size: 12px;
+}
+
+.deals-trust span:first-child {
+  color: #4ade80;
+}
+
+@media(max-width:600px) {
+  .exclusive-deals {
+    padding: 45px 16px;
+    border-radius: 15px;
+  }
+
+  .deals-eyebrow {
+    font-size: 10px;
+    gap: 8px;
+  }
+
+  .deals-description {
+    font-size: 13px;
+  }
+
+  .deal-features {
+    gap: 9px;
+  }
+
+  .deal-features div {
+    padding: 11px;
+    font-size: 14px;
+  }
+
+  .deal-features span {
+    font-size: 11px;
+  }
+
+  .telegram-cta {
+    padding: 15px 19px;
+    font-size: 12px;
+  }
+
+  .deals-trust {
+    gap: 12px;
+    font-size: 10px;
+  }
+}
+
   </style>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 </head>
@@ -1906,41 +2068,51 @@ footer p {
   <div class="container">
     <div class="telegram-section">
 
-      <div class="eyebrow">🔥 EXCLUSIVE SHOPPING DEALS</div>
+<section class="exclusive-deals">
+  <div class="deals-content">
 
-      <div class="telegram-icon">✈</div>
+    <div class="deals-eyebrow">
+      🔥 EXCLUSIVE SHOPPING DEALS
+      <span class="live-badge">
+        <span class="live-dot"></span> LIVE
+      </span>
+    </div>
 
-      <h2>
-        Discover the <span class="blue-text">Best Deals!</span>
-      </h2>
+    <h2>Discover the <span>Best Deals!</span></h2>
 
-      <p>
-        Don't pay more! Get handpicked Amazon and Flipkart deals,
-        smartphone offers, gadgets, accessories and limited-time
-        discounts — all in one place.
-      </p>
+    <p class="deals-description">
+      Don't pay more! Get handpicked Amazon and Flipkart deals,
+      smartphone offers, gadgets, accessories and limited-time
+      discounts — all in one place.
+    </p>
 
-      <div class="deal-platforms">
-        <span>🛒 Amazon Deals</span>
-        <span>⚡ Flipkart Offers</span>
-        <span>📱 Tech Deals</span>
-      </div>
+    <div class="deal-features">
+      <div>🛒 <span>Amazon Deals</span></div>
+      <div>⚡ <span>Flipkart Offers</span></div>
+      <div>📱 <span>Tech Deals</span></div>
+    </div>
 
-      <a class="btn btn-blue"
-         href="https://t.me/zubairtechdeals"
-         target="_blank"
-         rel="noopener noreferrer">
-        ✈ JOIN TELEGRAM CHANNEL →
-      </a>
+    <a class="telegram-cta"
+       href="https://t.me/zubairtechdeals"
+       target="_blank" rel="noopener">
+      <i class="fa-brands fa-telegram"></i>
+      JOIN TELEGRAM CHANNEL
+      <span>→</span>
+    </a>
 
-      <div class="telegram-note">
-        Free to join • Handpicked deals • Daily updates
-         </div>
+    <div class="deals-trust">
+      <span>✓ Free to join</span>
+      <span>✓ Handpicked deals</span>
+      <span>✓ Daily updates</span>
+    </div>
+
+  </div>
+</section>
        <div class="telegram-live">
 
   <div class="telegram-live-heading">
     <h3> <span class="live-dot"></span>
-• Live Deals</h3>
+Live Deals</h3>
   </div>
 
   <div class="telegram-posts" id="telegramPosts">
