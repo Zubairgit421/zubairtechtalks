@@ -1057,6 +1057,330 @@ section {
   }
 }
 
+/* =====================================
+   STEP 2 - PREMIUM VIDEOS & DEALS DESIGN
+===================================== */
+
+/* Section spacing */
+#videos,
+#deals,
+#instagram,
+#connect {
+  position: relative;
+}
+
+.section-heading {
+  margin-bottom: 32px;
+}
+
+.section-heading h2,
+.instagram-section h2 {
+  font-size: clamp(27px,4vw,38px);
+  font-weight: 800;
+  letter-spacing: -1.2px;
+}
+
+.blue-text {
+  color: #55a6ff;
+}
+
+/* YouTube video cards */
+.video-grid {
+  gap: 24px;
+}
+
+.video-card {
+  background: linear-gradient(145deg,#10233c,#091629);
+  border: 1px solid rgba(85,166,255,.14);
+  border-radius: 16px;
+  overflow: hidden;
+  transition: all .3s ease;
+}
+
+.video-card:hover {
+  transform: translateY(-7px);
+  border-color: #398bff;
+  box-shadow: 0 15px 35px rgba(0,0,0,.25);
+}
+
+.video-thumb {
+  background: #10233c;
+  aspect-ratio: 16/9;
+}
+
+.video-thumb img {
+  transition: transform .4s ease;
+}
+
+.video-info {
+  padding: 20px;
+}
+
+.video-info h3 {
+  color: #f1f6ff;
+  font-size: 15px;
+  line-height: 1.65;
+}
+
+.watch-link {
+  color: #62adff;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+/* Supabase deals */
+.deals-grid {
+  grid-template-columns: repeat(3,minmax(0,1fr));
+  gap: 24px;
+}
+
+.deal-card {
+  background: linear-gradient(145deg,#10233c,#091629);
+  border: 1px solid rgba(85,166,255,.15);
+  border-radius: 16px;
+  overflow: hidden;
+  transition: all .3s ease;
+}
+
+.deal-card:hover {
+  transform: translateY(-7px);
+  border-color: #398bff;
+  box-shadow: 0 15px 35px rgba(0,0,0,.25);
+}
+
+.deal-image {
+  height: 230px;
+  background: #fff;
+  padding: 18px;
+}
+
+.deal-info {
+  padding: 20px;
+}
+
+.deal-info h3 {
+  font-size: 15px;
+  line-height: 1.6;
+  color: #f1f6ff;
+  min-height: 48px;
+}
+
+.deal-platform {
+  color: #70b4ff;
+  font-size: 12px;
+  margin: 10px 0;
+}
+
+.deal-price {
+  color: #55dfa0;
+  font-size: 23px;
+  font-weight: 900;
+}
+
+.deal-original {
+  font-size: 13px;
+  color: #9eafc4;
+}
+
+.deal-buy {
+  background: linear-gradient(135deg,#2689ff,#0756d8);
+  border-radius: 9px;
+  padding: 13px;
+  transition: .25s ease;
+}
+
+.deal-buy:hover {
+  background: #398bff;
+}
+
+/* Telegram deals section */
+.telegram-section {
+  background:
+    radial-gradient(ellipse at 50% 0%,rgba(22,119,245,.17),transparent 55%),
+    linear-gradient(145deg,#10233c,#091629);
+  border: 1px solid rgba(85,166,255,.18);
+  border-radius: 22px;
+  padding: 55px 35px;
+  box-shadow: 0 20px 60px rgba(0,0,0,.15);
+}
+
+.telegram-icon {
+  background: linear-gradient(135deg,#2689ff,#0756d8);
+  box-shadow: 0 8px 25px rgba(22,119,245,.3);
+}
+
+.telegram-section h2 {
+  font-weight: 800;
+  letter-spacing: -1px;
+}
+
+.telegram-section p {
+  line-height: 1.9;
+}
+
+.telegram-live {
+  margin-top: 45px;
+}
+
+.telegram-live-heading {
+  padding-bottom: 15px;
+  border-bottom: 1px solid rgba(255,255,255,.1);
+}
+
+.telegram-live-heading h3 {
+  font-size: 22px;
+  font-weight: 800;
+}
+
+.telegram-live-badge {
+  background: rgba(35,190,115,.12);
+  border: 1px solid rgba(35,190,115,.2);
+  padding: 6px 10px;
+  border-radius: 20px;
+  color: #54d995;
+}
+
+.telegram-posts {
+  grid-template-columns: repeat(2,minmax(0,1fr));
+  gap: 20px;
+}
+
+.telegram-post {
+  background: linear-gradient(145deg,#142a45,#0a192c);
+  border: 1px solid rgba(85,166,255,.17);
+  border-radius: 15px;
+  transition: all .3s ease;
+}
+
+.telegram-post:hover {
+  transform: translateY(-5px);
+  border-color: #398bff;
+  box-shadow: 0 12px 30px rgba(0,0,0,.2);
+}
+
+.telegram-post img {
+  height: 220px;
+  background: #fff;
+}
+
+.telegram-post-content {
+  padding: 18px;
+}
+
+.telegram-post-text {
+  color: #eef5ff;
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.telegram-current-price {
+  font-size: 23px;
+  color: #55dfa0;
+}
+
+.telegram-post-link {
+  background: linear-gradient(135deg,#2689ff,#0756d8);
+  border-radius: 9px;
+  padding: 13px;
+}
+
+.telegram-feed-status {
+  background: #10233c;
+  border: 1px solid rgba(85,166,255,.12);
+  border-radius: 12px;
+}
+
+/* Instagram cards */
+#instagram .instagram-card {
+  background: linear-gradient(145deg,#10233c,#091629) !important;
+  border: 1px solid rgba(85,166,255,.16);
+  border-radius: 16px;
+  transition: all .3s ease;
+}
+
+#instagram .instagram-card:hover {
+  transform: translateY(-6px);
+  border-color: #398bff;
+  box-shadow: 0 12px 30px rgba(0,0,0,.2);
+}
+
+#instagram .instagram-preview {
+  background: linear-gradient(135deg,#174b88,#0b1a30);
+  border: 1px solid rgba(85,166,255,.13);
+}
+
+/* Social media cards */
+.social-grid {
+  gap: 20px;
+}
+
+.social-card {
+  background: linear-gradient(145deg,#10233c,#091629);
+  border: 1px solid rgba(85,166,255,.15);
+  border-radius: 15px;
+  padding: 25px;
+  transition: all .3s ease;
+}
+
+.social-card:hover {
+  transform: translateY(-5px);
+  border-color: #398bff;
+  box-shadow: 0 12px 30px rgba(0,0,0,.2);
+}
+
+.social-symbol {
+  background: #142e4e;
+  color: #55a6ff;
+  font-weight: 800;
+}
+
+.social-card h3 {
+  color: #fff;
+  font-size: 15px;
+}
+
+.social-card p {
+  color: #a9bad0;
+  line-height: 1.6;
+}
+
+/* Footer */
+footer {
+  background: #050b15;
+  border-top: 1px solid rgba(85,166,255,.16);
+  padding: 38px 0;
+}
+
+footer p {
+  line-height: 1.8;
+}
+
+/* Responsive cards */
+@media(max-width:760px) {
+  .video-grid,
+  .deals-grid,
+  .telegram-posts {
+    grid-template-columns: 1fr;
+  }
+
+  .telegram-section {
+    padding: 38px 17px;
+  }
+
+  .telegram-live-heading {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .deal-image {
+    height: 245px;
+  }
+
+  .social-card {
+    padding: 20px;
+  }
+}
+
   </style>
 </head>
 
