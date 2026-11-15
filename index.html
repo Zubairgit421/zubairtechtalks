@@ -1762,6 +1762,33 @@ footer p {
     font-size: 20px;
   }
 }
+    /* LIVE DEALS BLINKING GREEN DOT */
+.live-deals-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.live-dot {
+  width: 10px;
+  height: 10px;
+  background: #22c55e;
+  border-radius: 50%;
+  display: inline-block;
+  box-shadow: 0 0 8px #22c55e;
+  animation: liveBlink 1.2s infinite;
+}
+
+@keyframes liveBlink {
+  0%, 100% {
+    opacity: 1;
+    box-shadow: 0 0 8px #22c55e;
+  }
+  50% {
+    opacity: .25;
+    box-shadow: 0 0 2px #22c55e;
+  }
+}
 
   </style>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
@@ -1912,7 +1939,8 @@ footer p {
        <div class="telegram-live">
 
   <div class="telegram-live-heading">
-    <h3> <span class="blue-text">• Live Deals</span></h3>
+    <h3> <span class="live-dot"></span>
+• Live Deals</h3>
   </div>
 
   <div class="telegram-posts" id="telegramPosts">
