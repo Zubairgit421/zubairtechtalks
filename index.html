@@ -2168,6 +2168,45 @@ footer p {
   }
 }
 
+/* INSTAGRAM REAL REEL EMBEDS */
+
+.instagram-embed-grid {
+  display: grid;
+  grid-template-columns: repeat(3,minmax(0,1fr));
+  gap: 22px;
+  align-items: start;
+}
+
+.instagram-embed-card {
+  min-width: 0;
+  overflow: hidden;
+  padding: 8px;
+  border: 1px solid rgba(85,166,255,.2);
+  border-radius: 16px;
+  background: #0b192c;
+}
+
+.instagram-embed-card .instagram-media {
+  margin: 0 auto !important;
+  min-width: 0 !important;
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+@media(max-width:900px) {
+  .instagram-embed-grid {
+    grid-template-columns: repeat(2,minmax(0,1fr));
+  }
+}
+
+@media(max-width:600px) {
+  .instagram-embed-grid {
+    grid-template-columns: 1fr;
+    max-width: 420px;
+    margin: auto;
+  }
+}
+
   </style>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 </head>
@@ -2355,6 +2394,7 @@ Live Deals</h3>
   </div>
 </section>
 
+
 <section id="instagram">
   <div class="container">
     <div class="instagram-section">
@@ -2366,56 +2406,31 @@ Live Deals</h3>
         </div>
 
         <h2>Tech is better <span>together.</span></h2>
-
-        <p>
-          Follow @zubairtechtalks for technology updates,
-          smartphone tips, useful apps and exciting tech reels.
-        </p>
+        <p>Follow @zubairtechtalks for technology updates, smartphone tips, useful apps and exciting tech reels.</p>
       </div>
 
-      <div class="instagram-grid">
+      <div class="instagram-embed-grid">
 
-        <a class="instagram-card"
-           href="https://www.instagram.com/reel/DepQH0FBzHo/"
-           target="_blank" rel="noopener noreferrer">
-          <div class="instagram-preview preview-one">
-            <i class="fa-solid fa-mobile-screen-button"></i>
-            <span>TECH TIPS</span>
-            <div class="reel-play">▶</div>
-          </div>
-          <div class="instagram-card-info">
-            <h3>Smartphone Tips</h3>
-            <span>Watch Reel <b>↗</b></span>
-          </div>
-        </a>
+        <div class="instagram-embed-card">
+          <blockquote class="instagram-media"
+            data-instgrm-permalink="https://www.instagram.com/reel/DepQH0FBzHo/"
+            data-instgrm-version="14">
+          </blockquote>
+        </div>
 
-        <a class="instagram-card"
-           href="https://www.instagram.com/reel/DenggLEPfnd/"
-           target="_blank" rel="noopener noreferrer">
-          <div class="instagram-preview preview-two">
-            <i class="fa-solid fa-bolt"></i>
-            <span>USEFUL APPS</span>
-            <div class="reel-play">▶</div>
-          </div>
-          <div class="instagram-card-info">
-            <h3>Apps & Tricks</h3>
-            <span>Watch Reel <b>↗</b></span>
-          </div>
-        </a>
+        <div class="instagram-embed-card">
+          <blockquote class="instagram-media"
+            data-instgrm-permalink="https://www.instagram.com/reel/DenggLEPfnd/"
+            data-instgrm-version="14">
+          </blockquote>
+        </div>
 
-        <a class="instagram-card"
-           href="https://www.instagram.com/reel/Db-vf6nIlgA/"
-           target="_blank" rel="noopener noreferrer">
-          <div class="instagram-preview preview-three">
-            <i class="fa-solid fa-clapperboard"></i>
-            <span>TECH UPDATES</span>
-            <div class="reel-play">▶</div>
-          </div>
-          <div class="instagram-card-info">
-            <h3>Latest Tech Reels</h3>
-            <span>Watch Reel <b>↗</b></span>
-          </div>
-        </a>
+        <div class="instagram-embed-card">
+          <blockquote class="instagram-media"
+            data-instgrm-permalink="https://www.instagram.com/reel/Db-vf6nIlgA/"
+            data-instgrm-version="14">
+          </blockquote>
+        </div>
 
       </div>
 
@@ -2431,7 +2446,7 @@ Live Deals</h3>
 
         <a href="https://www.instagram.com/zubairtechtalks/"
            target="_blank" rel="noopener noreferrer">
-          Follow on Instagram <span>↗</span>
+          Follow on Instagram ↗
         </a>
       </div>
 
@@ -2766,5 +2781,6 @@ navLinks.querySelectorAll("a").forEach(link => {
 });
 
 </script>
+  <script async src="https://www.instagram.com/embed.js"></script>
 </body>
 </html>
