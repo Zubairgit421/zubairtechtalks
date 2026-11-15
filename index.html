@@ -1952,6 +1952,222 @@ footer p {
   }
 }
 
+    
+/* PREMIUM INSTAGRAM SECTION */
+
+.instagram-section {
+  padding: 65px 0;
+}
+
+.instagram-heading {
+  text-align: center;
+  max-width: 700px;
+  margin: 0 auto 38px;
+}
+
+.instagram-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  color: #c77dff;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  margin-bottom: 15px;
+}
+
+.instagram-eyebrow i {
+  font-size: 19px;
+  background: linear-gradient(45deg,#ffb347,#ff3d81,#a855f7);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.instagram-heading h2 {
+  color: #fff;
+  font-size: clamp(30px,4vw,43px);
+  font-weight: 900;
+  margin-bottom: 14px;
+}
+
+.instagram-heading h2 span {
+  background: linear-gradient(90deg,#f9a8d4,#c084fc,#60a5fa);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.instagram-heading p {
+  color: #9aacc3;
+  font-size: 14px;
+  line-height: 1.8;
+}
+
+.instagram-grid {
+  display: grid;
+  grid-template-columns: repeat(3,minmax(0,1fr));
+  gap: 22px;
+}
+
+.instagram-card {
+  overflow: hidden;
+  border-radius: 17px;
+  background: linear-gradient(145deg,#10233c,#091629);
+  border: 1px solid rgba(85,166,255,.17);
+  transition: .3s ease;
+}
+
+.instagram-card:hover {
+  transform: translateY(-7px);
+  border-color: #a855f7;
+  box-shadow: 0 15px 35px rgba(120,60,200,.16);
+}
+
+.instagram-preview {
+  position: relative;
+  min-height: 230px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  overflow: hidden;
+}
+
+.preview-one {
+  background: radial-gradient(circle at 50% 40%,#245c99,#10233c 70%);
+}
+
+.preview-two {
+  background: radial-gradient(circle at 50% 40%,#68419c,#10233c 70%);
+}
+
+.preview-three {
+  background: radial-gradient(circle at 50% 40%,#126d78,#10233c 70%);
+}
+
+.instagram-preview > i {
+  font-size: 65px;
+  color: rgba(255,255,255,.9);
+}
+
+.instagram-preview > span {
+  color: #fff;
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 2px;
+}
+
+.reel-play {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  background: rgba(255,255,255,.15);
+  border: 1px solid rgba(255,255,255,.3);
+  border-radius: 50%;
+  font-size: 12px;
+}
+
+.instagram-card-info {
+  padding: 19px;
+}
+
+.instagram-card-info h3 {
+  color: #fff;
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+.instagram-card-info span {
+  color: #70b4ff;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.instagram-card-info b {
+  margin-left: 5px;
+}
+
+.instagram-follow {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-top: 30px;
+  padding: 23px;
+  border-radius: 17px;
+  border: 1px solid rgba(168,85,247,.3);
+  background: linear-gradient(100deg,#17172f,#10233c);
+}
+
+.instagram-follow-icon {
+  width: 55px;
+  height: 55px;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  border-radius: 16px;
+  background: linear-gradient(135deg,#f9a825,#e1306c,#833ab4);
+  color: #fff;
+  font-size: 27px;
+}
+
+.instagram-follow-text {
+  flex: 1;
+}
+
+.instagram-follow-text h3 {
+  color: #fff;
+  font-size: 17px;
+  margin-bottom: 5px;
+}
+
+.instagram-follow-text p {
+  color: #9aacc3;
+  font-size: 12px;
+}
+
+.instagram-follow > a {
+  padding: 13px 20px;
+  border-radius: 30px;
+  background: linear-gradient(100deg,#d946a6,#9333ea);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 800;
+  transition: .3s ease;
+}
+
+.instagram-follow > a:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 22px rgba(217,70,166,.3);
+}
+
+@media(max-width:700px) {
+  .instagram-grid {
+    grid-template-columns: 1fr;
+    max-width: 430px;
+    margin: auto;
+  }
+
+  .instagram-preview {
+    min-height: 200px;
+  }
+
+  .instagram-follow {
+    flex-wrap: wrap;
+  }
+
+  .instagram-follow > a {
+    width: 100%;
+    text-align: center;
+  }
+}
+
   </style>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 </head>
@@ -2138,47 +2354,86 @@ Live Deals</h3>
 
   </div>
 </section>
+
 <section id="instagram">
   <div class="container">
     <div class="instagram-section">
 
-      <div class="eyebrow">FOLLOW OUR JOURNEY</div>
-      <h2>Follow us on <span class="blue-text">Instagram</span></h2>
-      <p>Tech tips, useful apps, smartphone updates and exciting tech reels.</p>
+      <div class="instagram-heading">
+        <div class="instagram-eyebrow">
+          <i class="fa-brands fa-instagram"></i>
+          FOLLOW OUR JOURNEY
+        </div>
+
+        <h2>Tech is better <span>together.</span></h2>
+
+        <p>
+          Follow @zubairtechtalks for technology updates,
+          smartphone tips, useful apps and exciting tech reels.
+        </p>
+      </div>
 
       <div class="instagram-grid">
 
         <a class="instagram-card"
            href="https://www.instagram.com/reel/DepQH0FBzHo/"
            target="_blank" rel="noopener noreferrer">
-          <div class="instagram-preview">📱</div>
-          <h3>Watch Reel 01</h3>
-          <span>▶ View on Instagram</span>
+          <div class="instagram-preview preview-one">
+            <i class="fa-solid fa-mobile-screen-button"></i>
+            <span>TECH TIPS</span>
+            <div class="reel-play">▶</div>
+          </div>
+          <div class="instagram-card-info">
+            <h3>Smartphone Tips</h3>
+            <span>Watch Reel <b>↗</b></span>
+          </div>
         </a>
 
         <a class="instagram-card"
            href="https://www.instagram.com/reel/DenggLEPfnd/"
            target="_blank" rel="noopener noreferrer">
-          <div class="instagram-preview">⚡</div>
-          <h3>Watch Reel 02</h3>
-          <span>▶ View on Instagram</span>
+          <div class="instagram-preview preview-two">
+            <i class="fa-solid fa-bolt"></i>
+            <span>USEFUL APPS</span>
+            <div class="reel-play">▶</div>
+          </div>
+          <div class="instagram-card-info">
+            <h3>Apps & Tricks</h3>
+            <span>Watch Reel <b>↗</b></span>
+          </div>
         </a>
 
         <a class="instagram-card"
            href="https://www.instagram.com/reel/Db-vf6nIlgA/"
            target="_blank" rel="noopener noreferrer">
-          <div class="instagram-preview">🎬</div>
-          <h3>Watch Reel 03</h3>
-          <span>▶ View on Instagram</span>
+          <div class="instagram-preview preview-three">
+            <i class="fa-solid fa-clapperboard"></i>
+            <span>TECH UPDATES</span>
+            <div class="reel-play">▶</div>
+          </div>
+          <div class="instagram-card-info">
+            <h3>Latest Tech Reels</h3>
+            <span>Watch Reel <b>↗</b></span>
+          </div>
         </a>
 
       </div>
 
-      <a class="btn btn-blue"
-         href="https://www.instagram.com/zubairtechtalks/"
-         target="_blank" rel="noopener noreferrer">
-        📸 FOLLOW @zubairtechtalks
-      </a>
+      <div class="instagram-follow">
+        <div class="instagram-follow-icon">
+          <i class="fa-brands fa-instagram"></i>
+        </div>
+
+        <div class="instagram-follow-text">
+          <h3>@zubairtechtalks</h3>
+          <p>Stay updated. Stay connected.</p>
+        </div>
+
+        <a href="https://www.instagram.com/zubairtechtalks/"
+           target="_blank" rel="noopener noreferrer">
+          Follow on Instagram <span>↗</span>
+        </a>
+      </div>
 
     </div>
   </div>
