@@ -6,8 +6,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#071426">
   <meta name="description" content="zubairtechtalks – Technology news, smartphone updates, useful apps, tutorials and exclusive Amazon and Flipkart deals.">
-  <title>zubairtechtalks | Technology. Deals. Updates.</title>
-
+  <title>zubairtechtalks | Tech News, Smartphone Updates & Deals</title>
+<meta name="description" content="Explore the latest technology news, smartphone updates, useful apps, tech tips, tutorials and online deals at zubairtechtalks.">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -1454,7 +1456,104 @@ footer p {
     padding: 23px;
   }
 }
+/* STEP 4 - FOOTER & MOBILE FINISH */
+.site-footer {
+  margin-top: 70px;
+  padding: 55px 0 22px;
+  background: #06101e;
+  border-top: 1px solid rgba(85,166,255,.16);
+}
 
+.footer-main {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 40px;
+  padding-bottom: 35px;
+}
+
+.footer-brand img {
+  width: 55px;
+  height: 55px;
+  object-fit: contain;
+  margin-bottom: 12px;
+}
+
+.footer-brand h3 {
+  color: #fff;
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.footer-brand p,
+.footer-bottom p {
+  color: #91a4bd;
+  font-size: 12px;
+  line-height: 1.8;
+}
+
+.footer-brand p {
+  max-width: 350px;
+}
+
+.footer-links {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.footer-links h4 {
+  color: #fff;
+  margin-bottom: 5px;
+}
+
+.footer-links a {
+  color: #a9bad0;
+  font-size: 13px;
+  transition: color .2s ease;
+}
+
+.footer-links a:hover {
+  color: #55a6ff;
+}
+
+.footer-bottom {
+  border-top: 1px solid rgba(255,255,255,.09);
+  padding-top: 20px;
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+/* MOBILE RESPONSIVENESS */
+@media(max-width:700px) {
+  .footer-main {
+    grid-template-columns: 1fr 1fr;
+    gap: 30px 20px;
+  }
+
+  .footer-brand {
+    grid-column: 1 / -1;
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+  }
+
+  .site-footer {
+    padding-top: 40px;
+  }
+}
+
+@media(max-width:480px) {
+  .footer-main {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .footer-links a {
+    font-size: 12px;
+  }
+}
   </style>
 </head>
 
