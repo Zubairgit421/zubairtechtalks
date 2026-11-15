@@ -1619,6 +1619,137 @@ footer p {
   height: 48px;
   font-size: 21px;
 }
+    
+/* PREMIUM PROFESSIONAL FOOTER */
+
+.site-footer {
+  position: relative;
+  margin-top: 70px;
+  padding: 65px 0 25px;
+  background: linear-gradient(180deg, #0b192c 0%, #050d19 100%);
+  border-top: 1px solid rgba(85,166,255,.22);
+}
+
+.footer-main {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 65px;
+  padding-bottom: 45px;
+  align-items: start;
+}
+
+.footer-brand {
+  max-width: 390px;
+}
+
+.footer-brand img {
+  width: 65px;
+  height: 65px;
+  object-fit: contain;
+  padding: 5px;
+  background: #fff;
+  border-radius: 13px;
+  margin-bottom: 16px;
+}
+
+.footer-brand h3 {
+  color: #fff;
+  font-size: 23px;
+  font-weight: 800;
+  letter-spacing: -.5px;
+  margin-bottom: 12px;
+}
+
+.footer-brand p {
+  color: #9aacc3;
+  font-size: 13px;
+  line-height: 1.9;
+  max-width: 350px;
+}
+
+.footer-links {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 15px;
+}
+
+.footer-links h4 {
+  color: #fff;
+  font-size: 14px;
+  font-weight: 800;
+  margin-bottom: 7px;
+}
+
+.footer-links a {
+  color: #9aacc3;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: color .25s ease, transform .25s ease;
+}
+
+.footer-links a:hover {
+  color: #55a6ff;
+  transform: translateX(4px);
+}
+
+.footer-links a i {
+  color: #55a6ff;
+  font-size: 17px;
+  width: 20px;
+}
+
+.footer-bottom {
+  border-top: 1px solid rgba(255,255,255,.10);
+  padding-top: 23px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.footer-bottom p {
+  color: #8295ad;
+  font-size: 12px;
+  line-height: 1.8;
+}
+
+/* MOBILE FOOTER */
+
+@media(max-width:700px) {
+  .site-footer {
+    padding: 45px 0 22px;
+  }
+
+  .footer-main {
+    grid-template-columns: 1fr 1fr;
+    gap: 35px 20px;
+  }
+
+  .footer-brand {
+    grid-column: 1 / -1;
+    max-width: 100%;
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+@media(max-width:420px) {
+  .footer-main {
+    gap: 28px 14px;
+  }
+
+  .footer-brand h3 {
+    font-size: 20px;
+  }
+}
+
   </style>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 </head>
