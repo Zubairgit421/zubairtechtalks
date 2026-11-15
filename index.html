@@ -866,6 +866,197 @@
   border-radius: 7px;
   margin-top: 4px;
 }
+    
+/* =================================
+   ZUBAIRTECHTALKS - PREMIUM HOMEPAGE
+================================= */
+
+:root {
+  --blue: #1677f5;
+  --bright: #55a6ff;
+  --bg: #060d19;
+  --surface: #0c192b;
+  --muted: #a9bad0;
+}
+
+body {
+  background:
+    radial-gradient(ellipse at 50% -15%, rgba(22,119,245,.13), transparent 42%),
+    #060d19;
+}
+
+.site-header {
+  background: rgba(6,13,25,.92);
+  border-bottom: 1px solid rgba(85,166,255,.15);
+}
+
+.header-logo {
+  width: 125px;
+}
+
+.brand-name {
+  font-size: 19px;
+  letter-spacing: -.8px;
+}
+
+.nav-links a {
+  transition: .25s ease;
+}
+
+.nav-links a:hover {
+  color: #55a6ff;
+}
+
+.nav-links .nav-subscribe {
+  background: linear-gradient(135deg,#1677f5,#0756d8);
+  box-shadow: 0 5px 20px rgba(22,119,245,.25);
+}
+
+/* Hero background */
+.hero {
+  padding: 115px 0 85px;
+  position: relative;
+  isolation: isolate;
+  background:
+    radial-gradient(ellipse at 50% 15%,rgba(22,119,245,.22),transparent 55%),
+    linear-gradient(180deg,#08162a 0%,#060d19 100%);
+}
+
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(85,166,255,.035) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(85,166,255,.035) 1px,transparent 1px);
+  background-size: 45px 45px;
+  mask-image: linear-gradient(to bottom,black,transparent 85%);
+}
+
+.hero .eyebrow {
+  color: #83bdff;
+  background: rgba(22,119,245,.12);
+  border-color: rgba(85,166,255,.3);
+  letter-spacing: 1.5px;
+}
+
+.hero h1 {
+  max-width: 900px;
+  font-size: clamp(42px,7vw,78px);
+  line-height: 1.08;
+  letter-spacing: -3.5px;
+}
+
+.hero h1 span {
+  background: linear-gradient(90deg,#398bff,#83c5ff);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+.hero p {
+  max-width: 650px;
+  font-size: 16px;
+  line-height: 1.9;
+  color: #b1c3da;
+}
+
+.hero-buttons {
+  gap: 15px;
+}
+
+.btn {
+  border-radius: 10px;
+  padding: 14px 23px;
+}
+
+.btn-blue {
+  background: linear-gradient(135deg,#2689ff,#0756d8);
+  box-shadow: 0 8px 28px rgba(22,119,245,.3);
+}
+
+.btn-outline {
+  background: rgba(255,255,255,.025);
+  border-color: rgba(255,255,255,.18);
+}
+
+.stats {
+  max-width: 780px;
+  margin: 65px auto 0;
+  gap: 15px;
+}
+
+.stat-card {
+  background: linear-gradient(145deg,#10233c,#0a1729);
+  border: 1px solid rgba(85,166,255,.16);
+  border-radius: 15px;
+  padding: 24px 12px;
+  transition: .25s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-5px);
+  border-color: rgba(85,166,255,.5);
+}
+
+.stat-card strong {
+  color: #55a6ff;
+}
+
+/* General section headings */
+.section-heading h2,
+.instagram-section h2 {
+  color: #fff;
+}
+
+.section-heading p,
+.instagram-section > p {
+  color: #a9bad0;
+}
+
+section {
+  scroll-margin-top: 90px;
+}
+
+/* Mobile hero */
+@media(max-width:760px) {
+  .hero {
+    padding: 78px 0 55px;
+  }
+
+  .hero h1 {
+    font-size: clamp(39px,10vw,55px);
+    letter-spacing: -1.8px;
+  }
+
+  .hero p {
+    font-size: 14px;
+  }
+
+  .stats {
+    margin-top: 42px;
+  }
+
+  .stat-card strong {
+    font-size: 19px;
+  }
+}
+
+@media(max-width:420px) {
+  .brand-name {
+    font-size: 15px;
+  }
+
+  .header-logo {
+    width: 95px;
+  }
+
+  .hero-buttons .btn {
+    width: 100%;
+  }
+}
+
   </style>
 </head>
 
