@@ -2293,6 +2293,32 @@ footer p {
     margin: auto;
   }
 }
+    
+/* HOMEPAGE HERO BANNER */
+.hero-banner-section {
+  padding: 35px 0 55px;
+}
+
+.hero-banner-image {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+  object-fit: contain;
+  border-radius: 16px;
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.25);
+}
+
+@media (max-width: 600px) {
+  .hero-banner-section {
+    padding: 20px 0 35px;
+  }
+
+  .hero-banner-image {
+    border-radius: 10px;
+  }
+}
+
   </style>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 </head>
@@ -2336,31 +2362,21 @@ footer p {
 <main>
 
   
-<section class="hero" id="home">
+
+<section class="hero hero-banner-section" id="home">
   <div class="container">
-
-    <div class="eyebrow">
-      YOUR DAILY TECHNOLOGY DESTINATION
-    </div>
-
-    <h1>
-      Technology Made Simple.<br>
-      <span>Stay Ahead. Stay Smart.</span>
-    </h1>
-
-    <p>
-      Discover the latest technology news, smartphone updates,
-      useful apps, digital tips and handpicked online deals.
-      Everything you need to stay updated with technology.
-    </p>
-
-    <div class="hero-buttons">
-
-      
-    </div>
+    <a href="https://www.youtube.com/@zubairtechtalks"
+       target="_blank"
+       rel="noopener noreferrer"
+       aria-label="Visit zubairtechtalks YouTube channel">
+      <img
+        src="hero-banner.png"
+        alt="zubairtechtalks - Tech News, Unboxing and Deals"
+        class="hero-banner-image"
+      >
+    </a>
 
     <div class="stats">
-
       <div class="stat-card">
         <strong id="subscriberCount">Loading...</strong>
         <span>YouTube Subscribers</span>
@@ -2375,9 +2391,7 @@ footer p {
         <strong>24/7</strong>
         <span>Technology Updates</span>
       </div>
-
     </div>
-
   </div>
 </section>
 
